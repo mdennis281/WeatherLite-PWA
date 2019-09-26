@@ -1,0 +1,50 @@
+.div-hide {
+  display: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+    width: 0 !important
+}
+
+.no-scrollbar {
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+}
+
+.no-select {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+       supported by Chrome and Opera */
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.overflow-auto{
+    overflow: auto;
+}
+
+.overflow-y-auto {
+    overflow-y:auto;
+}
+.overflow-x-auto {
+    overflow-x:auto;
+}
+.vertical-center {
+    min-height: 100%;
+    /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh;
+    /* These two lines are counted as one :-)       */
+    display: flex;
+    align-items: center;
+}

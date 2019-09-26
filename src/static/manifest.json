@@ -1,0 +1,15 @@
+{
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "orientation": "portrait",
+  "start_url": ".",
+  "name": "Weather Lite",
+  "short_name": "WeatherLite",
+  "icons": [
+    {
+      "src": "/app/images/appIcon.png?width=144",
+      "type": "image/png",
+      "sizes": "144x144"
+    }
+  ]
+}
