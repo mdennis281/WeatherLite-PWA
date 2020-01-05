@@ -8,14 +8,14 @@
 		<link rel="manifest" href="/manifest.json">
 
 	<!--Favicon Shiznit-->
-		<link rel="icon" href="/static/img/appIcons/512.png" sizes="512x512">
-		<link rel="icon" href="/static/img/appIcons/256.png" sizes="256x256" />
-		<link rel="icon" href="/static/img/appIcons/128.png" sizes="128x128" />
-		<link rel="icon" href="/static/img/appIcons/64.png" sizes="64x64" />
-		<link rel="icon" href="/static/img/appIcons/32.png" sizes="32x32" />
+		<link rel="icon" href="/app/images/appIcon.png?width=512" sizes="512x512">
+		<link rel="icon" href="/app/images/appIcon.png?width=256" sizes="256x256" />
+		<link rel="icon" href="/app/images/appIcon.png?width=128" sizes="128x128" />
+		<link rel="icon" href="/app/images/appIcon.png?width=64" sizes="64x64" />
+		<link rel="icon" href="/app/images/appIcon.png?width=32" sizes="32x32" />
 
 	<!--APPLE PWA settings-->
-	  <link rel="apple-touch-icon" href="/static/img/apple/appIcons/180.png" />
+	  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 	  <meta name="apple-mobile-web-app-capable" content="yes" />
 	  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	  <meta name="apple-mobile-web-app-title" content="WeatherLite">
@@ -35,7 +35,6 @@
 
 	<!--Stylesheets -->
 		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
 
 
 	<!-- Scripts -->
@@ -60,17 +59,23 @@
 				'/layout/navbar'
 			]
 		}
-		//localStorage.clear()
+		localStorage.clear(); //DEBUG
 		assetLoader.JS(files.JS,function() {
-			assetLoader.CSS(files.CSS);
+			assetLoader.CSS(files.CSS,function() {
+				startApp();
+			});
 		});
+
 
 
 		</script>
 
 	</head>
-	<body>
+	<body class="no-select">
 
-		<div id="app"></div>
+		<div id="app">
+			<div id="page"></div>
+			<div id="nav"></div>
+		</div>
 
 	</html>

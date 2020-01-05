@@ -33,8 +33,8 @@ var fileStorage = {
   get: function(file,callback) {
     var content = localStorage.getItem('FILESTORAGE-'+file);
     if (content) {
-      callback(content);
       DEBUG('Loaded From LocalStorage: ' + file)
+      callback(content);
     } else {
       fileStorage.fetch(file,callback);
       DEBUG('Loaded From Web: ' + file)
@@ -62,4 +62,12 @@ if('serviceWorker' in navigator) {
   .catch(function() {
     console.log("Service worker registration failed");
   });
+}
+
+function startApp() {
+  try {
+    app.start();
+  } catch {
+    setTimeout(function(){startApp()},100);
+  }
 }

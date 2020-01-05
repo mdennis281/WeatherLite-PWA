@@ -12,13 +12,21 @@ app.config.update(
 def main():
     return render_template('init.html')
 
+@app.route('/parts/<part>')
+def getPart(part):
+    try:
+        return render_template('/parts/'+part+'.html')
+    except:
+        abort(404)
+        return
 
 @app.route('/API/weather/<lookupType>')
 def weatherInfo(lookupType):
     if lookupType == 'byCoordinates':
         coords = {
             'latitude': request.args.get('latitude'),
-            'longitude': request.args.get('longitude')
+            'longitude': request.args.get('longitude'),
+            'units': request.args.get('units')
         }
         return jsonify(weather.getWeatherByCoords(coords))
     if lookupType == 'byName':
@@ -66,4 +74,4 @@ def getATI():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return "Page Not Found"
+    return "Page Not Found", 404

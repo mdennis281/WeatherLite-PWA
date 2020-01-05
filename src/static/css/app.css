@@ -1,3 +1,110 @@
 .body-day {
   background-color: #55f;
 }
+
+
+body {
+  background-color: #0B132B;
+}
+
+/*
+------------------------------------------------
+    navbar
+------------------------------------------------
+*/
+
+#nav {
+  background-color: #1C2541;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 75px;
+  overflow: hidden;
+}
+
+
+#nav-row {
+  padding: 0;
+  margin: 0;
+}
+
+#nav-row .option {
+  display: block;
+  text-align: center;
+  margin: 5px;
+  color: #aaa;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+#nav-row .option i {
+  margin: auto;
+  font-size: 2em;
+}
+
+#nav-row .selected {
+  color: #5BC0BE;
+  transform: scale(1.1);
+}
+
+/*
+------------------------------------------------
+    Loading spinner
+------------------------------------------------
+*/
+
+#loader {
+  text-align: center;
+  font-size: 5em;
+  color: #1C2541;
+  padding-bottom: 75px;
+
+}
+
+.fa-pulse {
+    -webkit-animation: fa-spin .8s steps(8) infinite !important;
+    animation: fa-spin .8s steps(8) infinite !important;
+}
+
+
+/*
+------------------------------------------------
+    weather
+------------------------------------------------
+*/
+
+#weather-content {
+  color: #aaa;
+}
+
+#temperature {
+  font-size: 100px;
+}
+#location-info {
+  text-align: center;
+}
+
+#location-info #city {
+  font-size: 45px;
+  text-transform: capitalize;
+}
+
+#location-info #condition {
+  font-size: 30px;
+  text-transform: capitalize;
+}
+#wind-info {
+  font-size: 30px;
+  text-align: center;
+}
+#wind-info i {
+  font-size: 40px;
+}
+
+#sun-info {
+  font-size: 30px;
+  text-align: center;
+}
+#sun-info i {
+  font-size: 40px;
+}

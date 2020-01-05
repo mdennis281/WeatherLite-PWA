@@ -1,0 +1,69 @@
+<div id="loader" class="vertical-center d-flex justify-content-center">
+  <i class="fas fa-spinner fa-pulse"></i>
+</div>
+
+<div id="weather-content" class="div-hide">
+
+  <div id="weather-1st-row" class="d-flex justify-content-around flex-wrap">
+    <p id="temperature"></p>
+    <div id="location-info">
+      <div id="city"></div>
+      <div id="condition"></div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-around flex-wrap">
+    <div id="wind-info">
+      <i class="fas fa-wind"></i>
+      <p id="wind-speed"></p>
+      <p id="wind-direction"></p>
+    </div>
+    <div id="sun-info">
+      <i class="fas fa-sun"></i>
+      <div class="d-flex justify-content-center">
+        <div id="sunrise-container" class="m-2 sun-container">
+          <p>Sunrise</p>
+          <p id="sunrise-time"></p>
+        </div>
+        <div id="sunset-container" class="m-2 sun-container">
+          <p>Sunset</p>
+          <p id="sunset-time"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div>
+
+
+
+<script>
+
+  function waitForWeatherInfo() {
+    if (weather.isLoading) {
+      setTimeout(function(){waitForWeatherInfo()},100);
+    } else {
+      loadWeatherUI(weather.lastFetch.OWM);
+    }
+  }
+
+  function loadWeatherUI(wData) {
+    $('#temperature').html(wData.temp+'°F'); //TODO LOCALITY ISSUE
+    $('#city').html(wData.city);
+    $('#condition').html(wData.condition);
+    $('#wind-speed').html(wData.wind.speed + ' mph ');
+    $('#wind-direction').html(wData.wind.direction);
+    $('#sunrise-time').html(
+      (new Date(wData.sunInfo.sunrise * 1000)).toLocaleTimeString()
+    );
+    $('#sunset-time').html(
+      (new Date(wData.sunInfo.sunset * 1000)).toLocaleTimeString()
+    );
+
+
+    $('#loader').remove();
+    $('#weather-content').removeClass('div-hide');
+  }
+
+  waitForWeatherInfo()
+
+</script>
