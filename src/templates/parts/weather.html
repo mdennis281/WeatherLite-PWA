@@ -11,6 +11,9 @@
       <div id="condition"></div>
     </div>
   </div>
+  <div id="hourly-chart-container">
+    <canvas id="hourlyChart" height="300"></canvas>
+  </div>
   <div class="d-flex justify-content-around flex-wrap">
     <div id="wind-info">
       <i class="fas fa-wind"></i>
@@ -42,26 +45,64 @@
     if (weather.isLoading) {
       setTimeout(function(){waitForWeatherInfo()},100);
     } else {
-      loadWeatherUI(weather.lastFetch.OWM);
+      loadWeatherUI(weather.lastFetch);
     }
   }
 
   function loadWeatherUI(wData) {
-    $('#temperature').html(wData.temp+'°F'); //TODO LOCALITY ISSUE
-    $('#city').html(wData.city);
-    $('#condition').html(wData.condition);
-    $('#wind-speed').html(wData.wind.speed + ' mph ');
-    $('#wind-direction').html(wData.wind.direction);
+    var now = wData.NOAA.hourly.properties.periods[0];
+    loadHourlyChart(wData.NOAA.hourly.properties.periods)
+    $('#temperature').html(wData.OWM.temp+'°F'); //TODO LOCALITY ISSUE
+    $('#city').html(
+      wData.NOAA.base.properties.relativeLocation.properties.city
+    );
+    $('#condition').html(now.shortForecast);
+    $('#wind-speed').html(now.windSpeed);
+    $('#wind-direction').html(now.windDirection);
     $('#sunrise-time').html(
-      (new Date(wData.sunInfo.sunrise * 1000)).toLocaleTimeString()
+      (new Date(wData.OWM.sunInfo.sunrise * 1000)).toLocaleTimeString()
     );
     $('#sunset-time').html(
-      (new Date(wData.sunInfo.sunset * 1000)).toLocaleTimeString()
+      (new Date(wData.OWM.sunInfo.sunset * 1000)).toLocaleTimeString()
     );
 
 
     $('#loader').remove();
     $('#weather-content').removeClass('div-hide');
+  }
+
+  function loadHourlyChart(dataRaw) {
+    dataRaw = dataRaw.slice(0,24)
+    var data = [];
+    var labels = [];
+    dataRaw.forEach(function(row){
+      t = (new Date(row.startTime)).toLocaleTimeString([],
+        {hour: '2-digit', minute:'2-digit'}
+      );
+      data.push({
+        x: t,
+        y: row.temperature
+      });
+      labels.push(t);
+    });
+
+    var chartRef = $('#hourlyChart');
+    hourlyChart = new Chart(chartRef, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Hourly',
+
+            data: data
+          }
+        ]
+      },
+      options: {
+        maintainAspectRatio: false,
+      }
+    })
   }
 
   waitForWeatherInfo()

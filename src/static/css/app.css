@@ -1,10 +1,19 @@
-.body-day {
-  background-color: #55f;
-}
+/*
+------------------------------------------------
+    Layout Settings
+------------------------------------------------
+*/
 
 
 body {
   background-color: #0B132B;
+  overflow: hidden;
+}
+#page {
+  overflow: auto;
+  padding-bottom: 75px;
+  height: 100%;
+
 }
 
 /*
@@ -107,4 +116,10 @@ body {
 }
 #sun-info i {
   font-size: 40px;
+}
+
+#hourly-chart-container {
+  overflow-x: auto;
+  width: 100%;
+  height: 300px;
 }

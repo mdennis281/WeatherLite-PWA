@@ -64,10 +64,13 @@ if('serviceWorker' in navigator) {
   });
 }
 
-function startApp() {
-  try {
-    app.start();
-  } catch {
-    setTimeout(function(){startApp()},100);
-  }
+function startApp(count=1) {
+  $('document').ready(function(){
+    try {
+      app.start();
+    } catch {
+      DEBUG('Start Failed-- Retrying ('+String(count)+')')
+      setTimeout(function(){startApp(count+1)},100);
+    }
+  });
 }

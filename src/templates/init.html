@@ -48,7 +48,8 @@
 				'/static/js/application.js',
 				'/static/js/weather.js',
 				'https://kit.fontawesome.com/8f05590a3c.js',
-				'/static/js/general.js'
+				'/static/js/general.js',
+				'https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js'
 			],
 			CSS: [
 				'/static/css/general.css',
@@ -60,11 +61,14 @@
 			]
 		}
 		localStorage.clear(); //DEBUG
-		assetLoader.JS(files.JS,function() {
-			assetLoader.CSS(files.CSS,function() {
-				startApp();
+		$('document').ready(function(){
+			assetLoader.JS(files.JS,function() {
+				assetLoader.CSS(files.CSS,function() {
+					startApp();
+				});
 			});
 		});
+
 
 
 
