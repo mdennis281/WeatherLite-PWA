@@ -11,9 +11,9 @@
       <div id="condition"></div>
     </div>
   </div>
-  <div id="hourly-chart-container">
+  <div class="wide-container"><div id="chart-container">
     <canvas id="hourlyChart" height="300"></canvas>
-  </div>
+  </div></div>
   <div class="d-flex justify-content-around flex-wrap">
     <div id="wind-info">
       <i class="fas fa-wind"></i>
@@ -94,12 +94,16 @@
         datasets: [
           {
             label: 'Hourly',
-
-            data: data
+            data: data,
+            backgroundColor: 'rgba(91, 192, 190,.2)',
+            pointBorderWidth: 5,
           }
         ]
       },
       options: {
+        legend: {
+          display: false
+        },
         maintainAspectRatio: false,
       }
     })
