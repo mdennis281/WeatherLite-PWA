@@ -27,9 +27,11 @@ app = {
   devMode: { //disables caching & logs events in consle
     enable: function() {
       cookie.set('devMode','1',9999);
+      console.log('Developer Mode enabled.');
     },
     disable: function() {
       cookie.delete('devMode');
+      console.log('Developer Mode disabled.');
     }
   },
 

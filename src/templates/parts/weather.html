@@ -12,19 +12,7 @@
     </div>
   </div>
   <div class="wide-container">
-    <table class="forecast-table" id="hourly-forecast">
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </table>
+    <table class="forecast-table" id="hourly-forecast"></table>
   </div>
   <div class="d-flex justify-content-around flex-wrap">
     <div id="wind-info">
@@ -64,7 +52,11 @@
   function loadWeatherUI(wData) {
     var now = wData.NOAA.hourly.properties.periods[0];
 
-    $('#temperature').html(wData.OWM.temp+'°F'); //TODO LOCALITY ISSUE
+    loadHourlyForecast(wData.NOAA.hourly.properties.periods);
+
+    $('#temperature').html(
+      now.temperature + '°' + now.temperatureUnit
+    ); //TODO LOCALITY ISSUE
     $('#city').html(
       wData.NOAA.base.properties.relativeLocation.properties.city
     );
@@ -78,12 +70,14 @@
       (new Date(wData.OWM.sunInfo.sunset * 1000)).toLocaleTimeString()
     );
 
-
     $('#loader').remove();
     $('#weather-content').removeClass('div-hide');
   }
 
 
+function loadHourlyForecast() {
+
+}
 
   waitForWeatherInfo()
 
