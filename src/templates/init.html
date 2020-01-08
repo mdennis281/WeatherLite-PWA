@@ -42,14 +42,13 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 		<script src="/static/js/init.js"></script>
 		<script>
-		var debugEnabled = true;
 		var files = {
 			JS: [
 				'/static/js/application.js',
 				'/static/js/weather.js',
 				'https://kit.fontawesome.com/8f05590a3c.js',
 				'/static/js/general.js',
-				'https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js'
+				//'https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js'
 			],
 			CSS: [
 				'/static/css/general.css',
@@ -60,7 +59,6 @@
 				'/layout/navbar'
 			]
 		}
-		localStorage.clear(); //DEBUG
 		$('document').ready(function(){
 			assetLoader.JS(files.JS,function() {
 				assetLoader.CSS(files.CSS,function() {

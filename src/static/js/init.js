@@ -1,7 +1,7 @@
 
 
 function DEBUG(message){
-  if (debugEnabled) {
+  if (cookie.get('devMode')) {
     console.info(message);
   }
 }
@@ -32,7 +32,8 @@ var assetLoader = {
 var fileStorage = {
   get: function(file,callback) {
     var content = localStorage.getItem('FILESTORAGE-'+file);
-    if (content) {
+    //if file in localstorage and devmode not enabled
+    if (content && (!cookie.get('devMode'))) {
       DEBUG('Loaded From LocalStorage: ' + file)
       callback(content);
     } else {
@@ -51,16 +52,35 @@ var fileStorage = {
   }
 }
 
+var cookie =  {
+  get: function(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+  },
+  set: function(name,value,days) {
+    var expires = "";
+    var date = new Date();
+    date.setTime(date.getTime() + (days*24*60*60*1000));
+    expires = "; expires=" + date.toUTCString();
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+  },
+  delete: function(name) {
+    document.cookie = name+'=; Max-Age=-99999999;';
+  }
+}
+
+
 
 //Service Worker Registration (PWA)
 if('serviceWorker' in navigator) {
   navigator.serviceWorker
   .register('/worker.js')
   .then(function() {
-    console.log("Service Worker registered successfully");
+    DEBUG("Service Worker registered successfully");
   })
   .catch(function() {
-    console.log("Service worker registration failed");
+    DEBUG("Service worker registration failed");
   });
 }
 

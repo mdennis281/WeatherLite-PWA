@@ -24,5 +24,13 @@ app = {
 
     }
   },
+  devMode: { //disables caching & logs events in consle
+    enable: function() {
+      cookie.set('devMode','1',9999);
+    },
+    disable: function() {
+      cookie.delete('devMode');
+    }
+  },
 
 }
