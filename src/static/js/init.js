@@ -7,12 +7,22 @@ function DEBUG(message){
 }
 
 var assetLoader = {
+  finished: false,
+
   JS: async function(files,callback) {
+    buffer = ''
     await files.forEach(async function(file){
       await fileStorage.get(file,async function(content){
-        eval(content);
+        buffer += '\n\n\n'
+              + '///////////   '+ file +'   //////////'
+              + '\n\n\n'
+              + content;
       });
     });
+    buffer += '\n\n' + 'assetLoader.finished = true;';
+    buffer = '<script>\n' + buffer + '\n</script>';
+    $('#scripts').html(buffer);
+    //eval(buffer);
     if (typeof callback === 'function') callback();
   },
   CSS: async function(files,callback) {
@@ -26,27 +36,27 @@ var assetLoader = {
       });
     });
     if (typeof callback === 'function') callback();
-  }
+  },
 }
 
 var fileStorage = {
-  get: function(file,callback) {
+  get: async function(file,callback) {
     var content = localStorage.getItem('FILESTORAGE-'+file);
     //if file in localstorage and devmode not enabled
     if (content && (!cookie.get('devMode'))) {
       DEBUG('Loaded From LocalStorage: ' + file)
       callback(content);
     } else {
-      fileStorage.fetch(file,callback);
+      await fileStorage.fetch(file,callback);
       DEBUG('Loaded From Web: ' + file)
     }
   },
-  cache: function(name,script) {
+  cache: async function(name,script) {
     localStorage.setItem(name,script)
   },
-  fetch: function(URL,callback) {
-    $.get(URL+'?_=' + new Date().getTime(),function(data) {
-      fileStorage.cache('FILESTORAGE-'+URL,data);
+  fetch: async function(URL,callback) {
+    await $.get(URL+'?_=' + new Date().getTime(), async function(data) {
+      await fileStorage.cache('FILESTORAGE-'+URL,data);
       callback(data);
     })
   }
@@ -85,12 +95,17 @@ if('serviceWorker' in navigator) {
 }
 
 function startApp(count=1) {
-  $('document').ready(function(){
-    try {
-      app.start();
-    } catch {
-      DEBUG('Start Failed-- Retrying ('+String(count)+')')
-      setTimeout(function(){startApp(count+1)},100);
-    }
-  });
+  function retry() {
+    setTimeout(function(){startApp(count+1)},100);
+  }
+  if (assetLoader.finished) {
+    $('document').ready(function(){
+      try {
+        app.start();
+      } catch {
+        DEBUG('Start Failed-- Retrying ('+String(count)+')')
+        retry();
+      }
+    });
+  } else { retry(); }
 }

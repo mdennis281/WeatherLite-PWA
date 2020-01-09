@@ -106,11 +106,11 @@ body {
   text-transform: capitalize;
 }
 #wind-info {
-  font-size: 30px;
+  font-size: 15px;
   text-align: center;
 }
 #wind-info i {
-  font-size: 40px;
+  font-size: 20px;
 }
 
 #sun-info {
@@ -142,7 +142,7 @@ body {
 }
 
 #hourly-forecast td i {
-  font-size: 32px;
+  font-size: 20px;
   margin: 10px 0 10px 0;
 }
 #hourly-forecast td p {
@@ -161,6 +161,15 @@ body {
 #daily-forecast {
   width: 100%;
   text-align: center;
-  border-bottom: 1px solid rgba(204, 204, 204,.2);
+
   padding-bottom: 10px;
+}
+
+#radar-container, #radar-container iframe {
+  width: 100%;
+  height: 300px;
+}
+
+hr {
+  border-top: 1px solid rgba(204, 204, 204,.2);
 }

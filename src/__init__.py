@@ -28,13 +28,10 @@ def weatherInfo(lookupType):
             'longitude': request.args.get('longitude'),
             'units': request.args.get('units')
         }
-        return jsonify(weather.getWeatherByCoords(coords))
-    if lookupType == 'byName':
-        cityName = request.args.get('city')
-        try:
-            return jsonify(weather.getWeatherByName(city))
-        except:
-            abort(400, 'City Not Found')
+        data = weather.getWeatherByCoords(coords)
+        data['call'] = coords
+        return jsonify(data)
+
 
 
     return flask.redirect('/404')

@@ -10,7 +10,7 @@ var ui = {
 
     _render: function(wData) {
       var now = wData.NOAA.hourly.properties.periods[0];
-
+      ui.weather.generate.radar(wData.call);
       ui.weather.generate.forecast.hourly(wData.NOAA.hourly.properties.periods);
       ui.weather.generate.forecast.daily(wData.NOAA.daily.properties.periods);
 
@@ -45,8 +45,8 @@ var ui = {
       if (f.match(/Snow|Flurry|Flurries/)) {
         return 'fas fa-snowflake';
       }
-      if (f.match(/Rain|Showers|Thunder|Lightning/)) {
-        if (f.match(/(Scattered|Light|Slight)/)) {
+      if (f.match(/Rain|Showers|Thunder|Lightning|Drizzle/)) {
+        if (f.match(/(Scattered|Light|Slight|Patchy)/)) {
           if (w.isDaytime) {
             return 'fas fa-cloud-sun-rain';
           } else {
@@ -81,6 +81,7 @@ var ui = {
               '<td>'+
                 '<p class="time">'+time+'</p>'+
                 '<i class="'+ui.weather.selectIcon(w)+'" alt="'+w.shortForecast+'"></i>'+
+                '<p class="wind">'+w.windSpeed+'</p>'+
                 '<p class="temp">'+w.temperature+'°</p>'+
               '</td>'
             );
@@ -105,7 +106,12 @@ var ui = {
           }
         }
       },
+      radar: function(coords) {
+        var url = 'https://maps.darksky.net/@precipitation_rate,'+
+                  coords.latitude+','+coords.longitude+',10'
 
+        $('#radar-container').html('<iframe src="'+url+'" />')
+      }
     }
   },
 }
