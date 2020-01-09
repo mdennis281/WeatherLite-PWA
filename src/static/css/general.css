@@ -1,5 +1,5 @@
 .div-hide {
-  display: none;
+  display: none !important;
 }
 .no-scrollbar::-webkit-scrollbar {
     width: 0 !important
@@ -51,4 +51,8 @@
 
 p {
   margin: 0;
+}
+.no-scrollbar {
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
 }

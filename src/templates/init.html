@@ -47,12 +47,15 @@
 				'/static/js/application.js',
 				'/static/js/weather.js',
 				'https://kit.fontawesome.com/8f05590a3c.js',
-				'/static/js/general.js',
+				'/static/js/UI.js',
+				'https://unpkg.com/scrollbooster@2.0.0/dist/scrollbooster.min.js',
+				'/static/js/popup.js',
 				//'https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js'
 			],
 			CSS: [
 				'/static/css/general.css',
-				'/static/css/app.css'
+				'/static/css/app.css',
+				'/static/css/popup.css'
 			],
 			HTML: [
 				'/layout/weatherDetail',
@@ -78,6 +81,7 @@
 		<div id="app">
 			<div id="page"></div>
 			<div id="nav"></div>
+			<div id="popup" class="div-hide" onclick="popup.close()"></div>
 		</div>
 
 	</html>

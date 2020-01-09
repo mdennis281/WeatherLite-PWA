@@ -1,5 +1,5 @@
-<div id="loader" class="vertical-center d-flex justify-content-center">
-  <i class="fas fa-spinner fa-pulse"></i>
+<div id="loader-container" class="vertical-center d-flex justify-content-center">
+  <img id="loader" src="/static/img/loading.gif" />
 </div>
 
 <div id="weather-content" class="div-hide">
@@ -11,9 +11,12 @@
       <div id="condition"></div>
     </div>
   </div>
-  <div class="wide-container">
-    <table class="forecast-table" id="hourly-forecast"></table>
+  <div class="forecast-container">
+    <div class="wide-container no-scrollbar">
+      <table class="forecast-table" id="hourly-forecast"></table>
+    </div>
   </div>
+  <table id="daily-forecast"></table>
   <div class="d-flex justify-content-around flex-wrap">
     <div id="wind-info">
       <i class="fas fa-wind"></i>
@@ -40,45 +43,5 @@
 
 
 <script>
-
-  function waitForWeatherInfo() {
-    if (weather.isLoading) {
-      setTimeout(function(){waitForWeatherInfo()},100);
-    } else {
-      loadWeatherUI(weather.lastFetch);
-    }
-  }
-
-  function loadWeatherUI(wData) {
-    var now = wData.NOAA.hourly.properties.periods[0];
-
-    loadHourlyForecast(wData.NOAA.hourly.properties.periods);
-
-    $('#temperature').html(
-      now.temperature + '°' + now.temperatureUnit
-    ); //TODO LOCALITY ISSUE
-    $('#city').html(
-      wData.NOAA.base.properties.relativeLocation.properties.city
-    );
-    $('#condition').html(now.shortForecast);
-    $('#wind-speed').html(now.windSpeed);
-    $('#wind-direction').html(now.windDirection);
-    $('#sunrise-time').html(
-      (new Date(wData.OWM.sunInfo.sunrise * 1000)).toLocaleTimeString()
-    );
-    $('#sunset-time').html(
-      (new Date(wData.OWM.sunInfo.sunset * 1000)).toLocaleTimeString()
-    );
-
-    $('#loader').remove();
-    $('#weather-content').removeClass('div-hide');
-  }
-
-
-function loadHourlyForecast() {
-
-}
-
-  waitForWeatherInfo()
-
+  ui.weather.render();
 </script>

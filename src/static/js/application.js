@@ -2,6 +2,7 @@ app = {
   start: function() {
     app.load.div('#nav','/parts/navbar');
     app.load.div('#page','/parts/weather');
+    app.load.div('#popup','/parts/popup');
   },
 
   load: {
@@ -34,5 +35,39 @@ app = {
       console.log('Developer Mode disabled.');
     }
   },
+
+  strFormat: {
+    hour_min: function(date) {
+      return (new Date(date)).toLocaleTimeString([],
+        {timeStyle: 'short', minute:'2-digit'}
+      );
+    },
+    hour: function(date) {
+      var str = (new Date(date)).toLocaleTimeString([],
+        {timeStyle: 'short',}
+      );
+      return str.replace(/:\d\d/,'');
+    },
+    weekday: function(date) {
+      var str = (new Date(date)).toLocaleTimeString([],
+        {weekday: 'long',}
+      );
+      return str.split(' ')[0];
+    }
+  },
+
+  horizontalScroll: function(outer,inner) {
+    const viewport = document.querySelector(outer);
+    const content = document.querySelector(inner);
+
+    new ScrollBooster({
+      viewport,
+      content,
+      direction: 'horizontal',
+      onUpdate: (state) => {
+        viewport.scrollLeft = state.position.x;
+      }
+    });
+  }
 
 }

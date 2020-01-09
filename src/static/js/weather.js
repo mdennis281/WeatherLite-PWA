@@ -18,6 +18,7 @@ weather = {
 
   getByCoord: function(lat,lon,callback) {
     weather.isLoading = true;
+    DEBUG('Fetching weather from: '+lat+', '+lon);
     $.getJSON('/API/weather/byCoordinates'+ //TODO LOCALITY ISSUE
       '?latitude='+lat+
       '&longitude='+lon,
@@ -33,4 +34,4 @@ weather = {
 // loads in current browser location's weather data,
 // this is added here because the initial page needs this info.
 // added here for faster loadtimes.
-weather.getLocal();
+weather.getByCoord(30.3872209,-97.989232);
