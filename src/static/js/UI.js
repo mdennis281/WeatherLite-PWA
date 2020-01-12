@@ -34,7 +34,10 @@ var ui = {
       );
       $('#visibility').html(
         Math.round(weather.lastFetch.OWM.visibility/1609.34) + ' mi' //todo locality
-      )
+      );
+
+      //ui.weather.generate.pullToRefresh();
+
       $('#loader-container').remove();
       $('#weather-content').removeClass('div-hide');
     },
@@ -133,6 +136,20 @@ var ui = {
           return buffer;
         }
       },
+      pullToRefresh: function() {
+        PullToRefresh.setPassiveMode(true);
+        PullToRefresh.init({
+          mainElement: '#weather-content', // above which element?
+          onRefresh: function (done) {
+            done();
+            PullToRefresh.destroyAll()
+            var lat = weather.lastFetch.call.latitude;
+            var lon = weather.lastFetch.call.longitude;
+            weather.getByCoord(lat,lon);
+            app.load.div('#page','/parts/weather');
+          }
+        });
+      }
     },
     radar: {
       open: function() {

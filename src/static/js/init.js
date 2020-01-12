@@ -10,20 +10,21 @@ var assetLoader = {
   finished: false,
 
   JS: async function(files,callback) {
-    buffer = ''
-    await files.forEach(async function(file){
-      await fileStorage.get(file,async function(content){
-        buffer += '\n\n\n'
-              + '///////////   '+ file +'   //////////'
-              + '\n\n\n'
-              + content;
-      });
+    var file = files.pop();
+    fileStorage.get(file,function(content){
+      $('#scripts').append(
+        '<script>\n'+
+          '///////////   '+ file +'   //////////\n\n\n'+
+          content+
+        '\n</script>\n'
+      );
+      if (files.length) {
+        assetLoader.JS(files,callback);
+      } else {
+        assetLoader.finished = true;
+        if (typeof callback === 'function') callback();
+      }
     });
-    buffer += '\n\n' + 'assetLoader.finished = true;';
-    buffer = '<script>\n' + buffer + '\n</script>';
-    $('#scripts').html(buffer);
-    //eval(buffer);
-    if (typeof callback === 'function') callback();
   },
   CSS: async function(files,callback) {
     await files.forEach(async function(file){
@@ -110,9 +111,9 @@ function startApp(count=1) {
   } else { retry(); }
 }
 
-$(window).on('popstate' function() {
+$(window).on('popstate', function() {
   return '';
-}
-$(window).on('pushstate' function() {
+})
+$(window).on('pushstate', function() {
   return '';
-}
+})

@@ -19,7 +19,7 @@ weather = {
   getByCoord: function(lat,lon,callback) {
     weather.isLoading = true;
     DEBUG('Fetching weather from: '+lat+', '+lon);
-    $.getJSON('/API/weather/byCoordinates'+ //TODO LOCALITY ISSUE
+    $.getJSON('/API/weatherLookup'+
       '?latitude='+lat+
       '&longitude='+lon,
       function(data){

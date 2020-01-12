@@ -8,6 +8,11 @@ app.config.update(
     SECRET_key='54685'
 )
 
+
+#####################################################
+#       HTML Web Parts
+#####################################################
+
 @app.route('/')
 def main():
     return render_template('init.html')
@@ -17,24 +22,36 @@ def getPart(part):
     try:
         return render_template('/parts/'+part+'.html')
     except:
-        abort(404)
-        return
-
-@app.route('/API/weather/<lookupType>')
-def weatherInfo(lookupType):
-    if lookupType == 'byCoordinates':
-        coords = {
-            'latitude': request.args.get('latitude'),
-            'longitude': request.args.get('longitude'),
-            'units': request.args.get('units')
-        }
-        data = weather.getWeatherByCoords(coords)
-        data['call'] = coords
-        return jsonify(data)
+        return flask.redirect('/404')
 
 
+#####################################################
+#       API Calls
+#####################################################
 
-    return flask.redirect('/404')
+@app.route('/API/weatherLookup')
+def weatherInfo():
+    coords = {
+        'latitude': request.args.get('latitude'),
+        'longitude': request.args.get('longitude'),
+        'units': request.args.get('units')
+    }
+    data = weather.getWeatherByCoords(coords)
+    data['call'] = coords
+    return jsonify(data)
+
+
+
+@app.route('/API/location2Coords')
+def location2Coords():
+    location = request.args.get('address')
+    data = googleMapsGeocoding.lookup(location)
+    return jsonify(data)
+
+
+#####################################################
+#       Image Resizing/Path Redirection
+#####################################################
 
 @app.route('/appIcon.png')
 def appIcon():
@@ -52,9 +69,17 @@ def customImage(imagePath,imageWidth=None, imageHeight=None):
         if imageHeight:
             imageHeight = int(imageHeight)
 
-
     image = general.imageResizer(imagePath,imageWidth,imageHeight)
     return send_file(image,mimetype='image/png',as_attachment=False)
+
+@app.route('/apple-touch-icon.png')
+def getATI():
+    return customImage('appIcon.png',180)
+
+
+#####################################################
+#       PWA Files
+#####################################################
 
 @app.route('/manifest.json')
 def getManifest():
@@ -65,9 +90,10 @@ def getManifest():
 def getSW():
     return send_from_directory('./static/js', 'worker.js')
 
-@app.route('/apple-touch-icon.png')
-def getATI():
-    return customImage('appIcon.png',180)
+
+#####################################################
+#       Error Handling
+#####################################################
 
 @app.errorhandler(404)
 def page_not_found(e):

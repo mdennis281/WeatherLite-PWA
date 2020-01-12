@@ -1,6 +1,9 @@
-from src.libraries import *
+from src.libraries import (
+    threading,
+    requests,
+    APIKeys
+)
 
-OWMAPIKey = 'a1cf0a5ff6cbdc4c19234bbd4c686299'
 
 def threadedRequest(url,headers,obj,key):
     data = requests.get(url,headers=headers).json()
@@ -79,7 +82,7 @@ def callNOAA(coords,wData):
     wData['NOAA'] = data
 
 def callOpenWeatherMap(customParams,wData):
-    sParams = { 'appid': OWMAPIKey }
+    sParams = { 'appid': APIKeys.OWM }
 
     for k,v in customParams.items():
         sParams[k] = v
