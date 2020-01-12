@@ -91,35 +91,33 @@ body {
 
 #temperature {
   font-size: 100px;
+  line-height: 100px;
 }
 #location-info {
   text-align: center;
+  margin-bottom: 10px;
 }
 
 #location-info #city {
   font-size: 45px;
   text-transform: capitalize;
+  line-height: 60px;
 }
 
 #location-info #condition {
   font-size: 30px;
+  line-height: 40px;
   text-transform: capitalize;
 }
-#wind-info {
+
+.detail-row {
   font-size: 15px;
   text-align: center;
-}
-#wind-info i {
-  font-size: 20px;
+  border-bottom: 1px solid rgba(204, 204, 204,.2);
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 
-#sun-info {
-  font-size: 30px;
-  text-align: center;
-}
-#sun-info i {
-  font-size: 40px;
-}
 
 .wide-container {
   overflow-x: auto;
@@ -161,15 +159,50 @@ body {
 #daily-forecast {
   width: 100%;
   text-align: center;
-
+  cursor: ponter;
+}
+#daily-forecast td {
   padding-bottom: 10px;
+  width: 25%;
 }
 
-#radar-container, #radar-container iframe {
+#radar-container {
+  z-index: 5;
+  position: absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+}
+#radar-container .header {
+  background-color: #0B132B;
+  color: #ccc;
+  text-align: right;
   width: 100%;
-  height: 300px;
+  padding: 5px 10px 5px 10px;
+  font-size: 25px;
+  height: 35px;
+}
+#radar-container .body {
+  width: 100%;
+  height: calc(100% - 35px);
+}
+#radar-container .body iframe {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+#detailed-forecast-today {
+  text-align: center;
+  border-top: 1px solid rgba(204, 204, 204,.2);
+  padding: 10px 10px 0 10px;
 }
 
 hr {
   border-top: 1px solid rgba(204, 204, 204,.2);
+}
+
+.map {
+  font-size: 40px;
 }

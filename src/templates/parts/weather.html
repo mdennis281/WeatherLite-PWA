@@ -11,34 +11,46 @@
       <div id="condition"></div>
     </div>
   </div>
+  <p id="detailed-forecast-today"></p>
   <div class="forecast-container">
     <div class="wide-container no-scrollbar">
       <table class="forecast-table" id="hourly-forecast"></table>
     </div>
   </div>
   <table id="daily-forecast"></table>
-
-  <div class="d-flex justify-content-around flex-wrap">
-    <div id="wind-info">
-      <i class="fas fa-wind"></i>
-      <p id="wind-speed"></p>
-      <p id="wind-direction"></p>
-    </div>
-    <div id="sun-info">
-      <i class="fas fa-sun"></i>
-      <div class="d-flex justify-content-center">
-        <div id="sunrise-container" class="m-2 sun-container">
-          <p>Sunrise</p>
-          <p id="sunrise-time"></p>
-        </div>
-        <div id="sunset-container" class="m-2 sun-container">
-          <p>Sunset</p>
-          <p id="sunset-time"></p>
-        </div>
-      </div>
+  <hr class="m-0" />
+  <div class="flex-around detail-row">
+    <div  onclick="ui.weather.radar.open()" class="hover-pointer">
+      <i class="fas fa-map-marked-alt map"></i>
+      <p>View Weather Map</p>
     </div>
   </div>
-  <div id="radar-container"></div>
+  <div class="flex-around detail-row">
+    <div>
+      <p>Sunrise</p>
+      <p id="sunrise-time"></p>
+    </div>
+    <div>
+      <p>Sunset</p>
+      <p id="sunset-time"></p>
+    </div>
+  </div>
+  <div class="flex-around detail-row">
+    <div>
+      <p>Humidity</p>
+      <p id="humidity"></p>
+    </div>
+    <div>
+      <p>Visibility</p>
+      <p id="visibility"></p>
+    </div>
+  </div>
+  <div id="radar-container" class="div-hide">
+    <div class="header" onclick="ui.weather.radar.close()">
+      <i class="fas fa-times"></i>
+    </div>
+    <div class="body"></div>
+  </div>
 
 <div>
 

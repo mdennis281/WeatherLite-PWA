@@ -56,3 +56,14 @@ p {
     overflow: -moz-scrollbars-none;
     -ms-overflow-style: none;
 }
+
+.flex-around {
+  display: -ms-flexbox!important;
+  display: flex!important;
+  -ms-flex-pack: distribute!important;
+  justify-content: space-around!important;
+}
+
+.hover-pointer:hover {
+  cursor: pointer;
+}

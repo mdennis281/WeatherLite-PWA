@@ -13,7 +13,9 @@ var ui = {
       ui.weather.generate.radar(wData.call);
       ui.weather.generate.forecast.hourly(wData.NOAA.hourly.properties.periods);
       ui.weather.generate.forecast.daily(wData.NOAA.daily.properties.periods);
-
+      $('#detailed-forecast-today').html(
+        wData.NOAA.daily.properties.periods[0].detailedForecast
+      );
       $('#temperature').html(
         now.temperature + '°' + now.temperatureUnit
       );
@@ -21,14 +23,18 @@ var ui = {
         wData.NOAA.base.properties.relativeLocation.properties.city
       );
       $('#condition').html(now.shortForecast);
-      $('#wind-speed').html(now.windSpeed);
-      $('#wind-direction').html(now.windDirection);
       $('#sunrise-time').html(
-        (new Date(wData.OWM.sunInfo.sunrise * 1000)).toLocaleTimeString()
+        app.strFormat.hourMin(wData.OWM.sys.sunrise * 1000)
       );
       $('#sunset-time').html(
-        (new Date(wData.OWM.sunInfo.sunset * 1000)).toLocaleTimeString()
+        app.strFormat.hourMin(wData.OWM.sys.sunset * 1000)
       );
+      $('#humidity').html(
+        weather.lastFetch.OWM.main.humidity + '%'
+      );
+      $('#visibility').html(
+        Math.round(weather.lastFetch.OWM.visibility/1609.34) + ' mi' //todo locality
+      )
       $('#loader-container').remove();
       $('#weather-content').removeClass('div-hide');
     },
@@ -86,17 +92,18 @@ var ui = {
               '</td>'
             );
           });
-          /*app.horizontalScroll(
-            '#hourly-forecast-container',
-            '#hourly-forecast'
-          );*/
         },
         daily: function(forecast) {
           var i;
           for (i=0; i < forecast.length; i+=2) {
             DEBUG(forecast[i].shortForecast);
             $('#daily-forecast').append(
-              '<tr>' +
+              '<tr onclick="popup.open(\''+
+                        ui.weather.generate.detail.daily(
+                          forecast[i],
+                          forecast[i+1]
+                        )+
+                        '\')" class="hover-pointer">' +
                 '<td>'+app.strFormat.weekday(forecast[i].startTime)+'</td>'+
                 '<td><i class="'+ui.weather.selectIcon(forecast[i])+'"></i></td>'+
                 '<td>'+forecast[i].temperature+'°</td>'+
@@ -110,7 +117,31 @@ var ui = {
         var url = 'https://maps.darksky.net/@precipitation_rate,'+
                   coords.latitude+','+coords.longitude+',10'
 
-        $('#radar-container').html('<iframe src="'+url+'" />')
+        $('#radar-container .body').html('<iframe src="'+url+'" />')
+      },
+      detail: {
+        daily: function(day,night) {
+          buffer = '';
+          buffer += '<h4>'+day.name+'</h4>';
+          buffer += '<h6>'+day.temperature+'° - '+night.temperature+'°</h6>';
+          buffer += '<p>'+day.detailedForecast+'</p><br/>';
+          buffer += '<p> Wind: '+day.windSpeed+' '+day.windDirection+'</p>';
+          buffer += '<hr />';
+          buffer += '<h4>'+night.name+'</h4>';
+          buffer += '<p>'+night.detailedForecast+'</p><br/>';
+          buffer += '<p> Wind: '+night.windSpeed+' '+night.windDirection+'</p>';
+          return buffer;
+        }
+      },
+    },
+    radar: {
+      open: function() {
+        $('#radar-container').removeClass('div-hide');
+        $('#radar-container .body iframe').focus();
+      },
+      close: function() {
+        $('#radar-container').addClass('div-hide');
+        $('#weather-content').focus();
       }
     }
   },

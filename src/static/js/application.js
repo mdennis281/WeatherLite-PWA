@@ -37,7 +37,7 @@ app = {
   },
 
   strFormat: {
-    hour_min: function(date) {
+    hourMin: function(date) {
       return (new Date(date)).toLocaleTimeString([],
         {timeStyle: 'short', minute:'2-digit'}
       );

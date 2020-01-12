@@ -109,3 +109,10 @@ function startApp(count=1) {
     });
   } else { retry(); }
 }
+
+$(window).on('popstate' function() {
+  return '';
+}
+$(window).on('pushstate' function() {
+  return '';
+}

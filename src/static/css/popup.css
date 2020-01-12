@@ -31,4 +31,8 @@
     text-align: center;
     z-index: 2;
     border: 1px solid rgba(204, 204, 204,.4);
+    max-height: 80%;
+    overflow-y: auto;
+    max-width: 95%
+    overflow-x: hidden;
 }
