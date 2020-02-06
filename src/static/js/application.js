@@ -17,10 +17,10 @@ app = {
   page: {
     select: function(option) {
        //if pressed option isnt already selected
-      if (! $(option).hasClass('selected')) {
+      if (! $('#'+option).hasClass('selected')) {
         $('#nav-row .option').removeClass('selected');
-        $(option).addClass('selected');
-        //TODO load page
+        $('#'+option).addClass('selected');
+        app.load.div('#page','/parts/'+option);
       }
 
     }

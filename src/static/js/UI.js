@@ -36,8 +36,6 @@ var ui = {
         Math.round(weather.lastFetch.OWM.visibility/1609.34) + ' mi' //todo locality
       );
 
-      //ui.weather.generate.pullToRefresh();
-
       $('#loader-container').remove();
       $('#weather-content').removeClass('div-hide');
     },
@@ -75,6 +73,9 @@ var ui = {
         } else {
           return 'fas fa-cloud';
         }
+      }
+      if (f.match(/Fog/)) {
+        return 'fas fa-smog';
       }
       return 'fas fa-question';
     },
@@ -136,20 +137,6 @@ var ui = {
           return buffer;
         }
       },
-      pullToRefresh: function() {
-        PullToRefresh.setPassiveMode(true);
-        PullToRefresh.init({
-          mainElement: '#weather-content', // above which element?
-          onRefresh: function (done) {
-            done();
-            PullToRefresh.destroyAll()
-            var lat = weather.lastFetch.call.latitude;
-            var lon = weather.lastFetch.call.longitude;
-            weather.getByCoord(lat,lon);
-            app.load.div('#page','/parts/weather');
-          }
-        });
-      }
     },
     radar: {
       open: function() {
@@ -162,4 +149,32 @@ var ui = {
       }
     }
   },
+  favorites: {
+    generate: function() {
+      if (!localStorage.favoriteLocations) {
+        localStorage.favoriteLocations = '';
+      }
+      var favorites = maps.favorites.get();
+      ui.favorites._createLocationEntry(
+        'Current Location',
+        'weather.getLocal()'
+      );
+      favorites.forEach(function(location) {
+        ui.favorites._createLocationEntry(
+          location.name,
+          'weather.getByCoord('+location.lat+','+location.lon+')'
+        );
+      });
+    },
+    _createLocationEntry(name,onClick) {
+      $('#favorites-list').append(
+        '<div class="favorite-entry"'+
+          'onclick="'+onClick+';app.page.select(\'weather\')"'+
+        '>' +
+          '<p>'+name+'</p>'+
+        '</div>'
+      );
+    }
+
+  }
 }

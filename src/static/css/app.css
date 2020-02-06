@@ -78,6 +78,29 @@ body {
   padding-bottom: 100px;
 }
 
+/*
+------------------------------------------------
+    global
+------------------------------------------------
+*/
+hr {
+  border-top: 1px solid rgba(204, 204, 204,.2);
+}
+#page {
+  color: #ccc;
+}
+
+
+.ptr--ptr {
+  box-shadow: none;
+  border-bottom: 1px solid rgba(204, 204, 204,.2);
+}
+.ptr--icon {
+  color: rgba(170,170,170, 0.3)  !important;
+}
+  .ptr--text {
+  color: rgba(170,170,170, 0.3)  !important;
+}
 
 /*
 ------------------------------------------------
@@ -199,21 +222,26 @@ body {
   padding: 10px 10px 0 10px;
 }
 
-hr {
-  border-top: 1px solid rgba(204, 204, 204,.2);
-}
+
 
 .map {
   font-size: 40px;
 }
 
-.ptr--ptr {
-  box-shadow: none;
-  border-bottom: 1px solid rgba(204, 204, 204,.2);
+
+
+/*
+------------------------------------------------
+    favorites
+------------------------------------------------
+*/
+#favorites-container {
+  min-width: 40%;
+  max-width: 100%;
 }
-.ptr--icon {
-  color: rgba(170,170,170, 0.3)  !important;
-}
-  .ptr--text {
-  color: rgba(170,170,170, 0.3)  !important;
+.favorite-entry {
+  background-color: #1C2541;
+  height: 50px;
+  text-align: center;
+  margin: 5px;
 }
