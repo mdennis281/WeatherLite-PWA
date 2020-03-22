@@ -1,5 +1,6 @@
 import io
 import time
+import psycopg2
 import requests
 import threading
 from PIL import Image
@@ -24,5 +25,7 @@ from src.libraries import (
     general,
     weather,
     APIKeys,
-    googleMapsGeocoding
+    googleMapsGeocoding,
+    psql,
+    clientErrors
 )

@@ -235,7 +235,7 @@ hr {
     favorites
 ------------------------------------------------
 */
-#favorites-container {
+#favorites-container, #new-favorite {
   min-width: 75%;
   max-width: 90%;
 }
@@ -248,6 +248,11 @@ hr {
 
 .favorite-entry p {
   padding-top: 11;
+}
+
+#new-favorite header {
+  background-color: #ccc;
+
 }
 
 #add-favorite {

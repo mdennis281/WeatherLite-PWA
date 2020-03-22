@@ -62,12 +62,10 @@
 				'/layout/navbar'
 			]
 		}
+
 		$('document').ready(function(){
-			assetLoader.CSS(files.CSS,function() {
-				assetLoader.JS(files.JS,function() {
-					startApp();
-				});
-			});
+			assetLoader.CSS(files.CSS);
+			assetLoader.JS(files.JS);
 		});
 
 

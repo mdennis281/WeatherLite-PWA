@@ -2,12 +2,6 @@ from src.libraries import *
 
 app = Flask(__name__)
 
-# config
-app.config.update(
-    DEBUG=True,
-    SECRET_key='54685'
-)
-
 
 #####################################################
 #       HTML Web Parts
@@ -110,7 +104,15 @@ def page_not_found(e):
 
 @app.route('/errorLogger',methods=['POST'])
 def errorLogger():
-    x=request.json
-
-    print(x)
-    return 'yee'
+    clientErrors.add(
+        (
+            request.form['message'],
+            request.form['url'],
+            int(request.form['line']),
+            request.remote_addr,
+            request.headers.get('User-Agent'),
+            time.strftime('%Y-%m-%dT%H:%M:%S', time.gmtime())+'.'+
+                str(time.time()).split('.')[1]
+        )
+    )
+    return jsonify({'success':True})

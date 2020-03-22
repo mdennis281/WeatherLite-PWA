@@ -7,28 +7,25 @@ function DEBUG(message){
 }
 
 var assetLoader = {
-  finished: false,
-
-  JS: async function(files,callback) {
-    var file = files.pop();
-    fileStorage.get(file,function(content){
-      $('#scripts').append(
-        '<script>\n'+
-          '///////////   '+ file +'   //////////\n\n\n'+
-          content+
-        '\n</script>\n'
-      );
-      if (files.length) {
-        assetLoader.JS(files,callback);
-      } else {
-        assetLoader.finished = true;
-        if (typeof callback === 'function') callback();
-      }
+  JSLoadCount: 0,
+  JS: function(files,callback) {
+    files.forEach(function(file){
+      fileStorage.get(file,function(content){
+        $('#scripts').append(
+          '<script>\n'+
+            '///////////   '+ file +'   //////////\n\n\n'+
+            content+
+            '\nassetLoader.JSLoadCount++;\n \/\/Generated from assetLoader'+
+          '\n</script>\n'
+        );
+      });
     });
+    assetLoader.checkComplete(callback);
+
   },
-  CSS: async function(files,callback) {
-    await files.forEach(async function(file){
-      await fileStorage.get(file,function(rule){
+  CSS: function(files,callback) {
+    files.forEach(function(file){
+      fileStorage.get(file,function(rule){
         let css = document.createElement('style');
         css.type = 'text/css';
         if (css.styleSheet) css.styleSheet.cssText = rule; // Support for IE
@@ -38,28 +35,37 @@ var assetLoader = {
     });
     if (typeof callback === 'function') callback();
   },
+  checkComplete: function(callback) {
+    if(assetLoader.JSLoadCount == files.JS.length){
+      app.start();
+    } else {
+      setTimeout(function(){
+        assetLoader.checkComplete()
+      },100)
+    }
+  }
 }
 
 var fileStorage = {
-  get: async function(file,callback) {
+  get: function(file,callback) {
     var content = localStorage.getItem('FILESTORAGE-'+file);
     //if file in localstorage and devmode not enabled
     if (content && (!cookie.get('devMode'))) {
       DEBUG('Loaded From LocalStorage: ' + file)
       callback(content);
     } else {
-      await fileStorage.fetch(file,callback);
+      fileStorage.fetch(file,callback);
       DEBUG('Loaded From Web: ' + file)
     }
   },
-  cache: async function(name,script) {
+  cache: function(name,script) {
     localStorage.setItem(name,script)
   },
-  fetch: async function(URL,callback) {
-    await $.get(URL+'?_=' + new Date().getTime(), async function(data) {
-      await fileStorage.cache('FILESTORAGE-'+URL,data);
+  fetch: function(URL,callback) {
+    $.get(URL+'?_=' + new Date().getTime(), function(data) {
+      fileStorage.cache('FILESTORAGE-'+URL,data);
       callback(data);
-    })
+    },null,'text');
   }
 }
 
@@ -99,7 +105,7 @@ function startApp(count=1) {
   function retry() {
     setTimeout(function(){startApp(count+1)},100);
   }
-  if (assetLoader.finished) {
+  if (assetLoader.JSLoadCount == files.JS.length) {
     $('document').ready(function(){
       try {
         app.start();
