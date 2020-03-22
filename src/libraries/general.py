@@ -1,4 +1,4 @@
-from src.libraries import Image,io
+from src.libraries import Image,io,requests
 
 def imageResizer(imagePath,width,height):
     imagePath = './src/static/img/' + imagePath
@@ -11,3 +11,11 @@ def imageResizer(imagePath,width,height):
     img.save(output, format='PNG')
     output.seek(0,0)
     return output
+
+
+def IP2Coords(IP):
+    position = {}
+    data = requests.get('https://tools.keycdn.com/geo.json?host='+IP).json()
+    position['latitude'] = data['data']['geo']['latitude']
+    position['longitude'] = data['data']['geo']['longitude']
+    return position

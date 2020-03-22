@@ -236,12 +236,28 @@ hr {
 ------------------------------------------------
 */
 #favorites-container {
-  min-width: 40%;
-  max-width: 100%;
+  min-width: 75%;
+  max-width: 90%;
 }
 .favorite-entry {
   background-color: #1C2541;
   height: 50px;
   text-align: center;
   margin: 5px;
+}
+
+.favorite-entry p {
+  padding-top: 11;
+}
+
+#add-favorite {
+    background-color: #1C2541;
+    margin: 5px;
+    text-align: right;
+    padding: 3px;
+}
+
+#add-favorite i {
+    font-size: 20px;
+    padding: 3px 5px 3px 0;
 }

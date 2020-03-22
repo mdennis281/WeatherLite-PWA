@@ -174,7 +174,16 @@ var ui = {
           '<p>'+name+'</p>'+
         '</div>'
       );
+    },
+    new: {
+      open: function() {
+        $('#favorites-container').addClass('div-hide');
+        $('#new-favorite').removeClass('div-hide');
+      },
+      close: function() {
+        $('#favorites-container').removeClass('div-hide');
+        $('#new-favorite').addClass('div-hide');
+      }
     }
-
   }
 }

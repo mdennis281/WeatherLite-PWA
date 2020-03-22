@@ -48,6 +48,11 @@ def location2Coords():
     data = googleMapsGeocoding.lookup(location)
     return jsonify(data)
 
+@app.route('/API/IP2Coords')
+def IP2Coords():
+    clientIP = request.remote_addr
+    return jsonify(general.IP2Coords(clientIP))
+
 
 #####################################################
 #       Image Resizing/Path Redirection
@@ -98,3 +103,14 @@ def getSW():
 @app.errorhandler(404)
 def page_not_found(e):
     return "Page Not Found", 404
+
+#####################################################
+#       Error Logging
+#####################################################
+
+@app.route('/errorLogger',methods=['POST'])
+def errorLogger():
+    x=request.json
+
+    print(x)
+    return 'yee'

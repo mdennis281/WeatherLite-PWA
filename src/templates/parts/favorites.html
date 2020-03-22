@@ -3,10 +3,19 @@
     <div id="favorites-list">
 
     </div>
-    <div id="add-favorite"><i class="fas fa-plus-circle"></i></div>
+    <div id="add-favorite">
+      <i class="fas fa-plus-circle" onclick="ui.favorites.new.open()"></i>
+    </div>
+  </div>
+  <div id="new-favorite" class="div-hide">
+    <div class="bar">
+      <i class="fas fa-times-circle" onclick="ui.favorites.new.close()"></i>
+    </div>
+    <input class="form-control" type="text" placeholder="location">
   </div>
 </div>
 
+
 <script>
-ui.favorites.generate();
+  ui.favorites.generate();
 </script>

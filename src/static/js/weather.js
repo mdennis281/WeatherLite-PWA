@@ -6,6 +6,12 @@ weather = {
       var lat = position.coords.latitude;
       var lon = position.coords.longitude;
       if (typeof callback === 'function') callback(lat,lon);
+    },function(){ //fail
+      $.getJSON('/API/IP2Coords',function(data){
+        var lat = data.latitude;
+        var lon = data.longitude;
+        if (typeof callback === 'function') callback(lat,lon);
+      })
     });
   },
 
@@ -34,4 +40,4 @@ weather = {
 // loads in current browser location's weather data,
 // this is added here because the initial page needs this info.
 // added here for faster loadtimes.
-weather.getByCoord(30.3872209,-97.989232);
+weather.getLocal();

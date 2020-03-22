@@ -2,3 +2,4 @@
 *.pyo
 *.pyc
 src/libraries/APIKeys.py
+.remote-sync.json
