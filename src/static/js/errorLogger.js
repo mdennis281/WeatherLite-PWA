@@ -1,7 +1,7 @@
 var errorLogger = {
   send: function (message,url,line) {
     $.post(
-      '/errorLogger',
+      '/clientErrors/submit',
 
       {
         message: message,
@@ -24,8 +24,3 @@ window.onerror = function(message, url, line, column, error) {
   console.log(message+'\n-'+url+'\n-'+line)
   return true;
 };
-
-function loop() {
-setTimeout(function() { var n = null + 11 + [] +'afad' + xyz;},1000);
-}
-loop();
