@@ -4,4 +4,4 @@
 
 Demo: (Unfinished)
 ------
-https://weatherlite.devduo.us
+https://weatherlite.app
