@@ -44,40 +44,40 @@ var ui = {
       var f = w.shortForecast;
       if (f.match(/Sunny|Clear/)) {
         if (w.isDaytime) {
-          return 'fas fa-sun';
+          return 'fad fa-sun';
         } else {
-          return 'fas fa-moon';
+          return 'fad fa-moon';
         }
       }
       if (f.match(/Snow|Flurry|Flurries/)) {
-        return 'fas fa-snowflake';
+        return 'fad fa-snowflake';
       }
       if (f.match(/Rain|Showers|Thunder|Lightning|Drizzle/)) {
         if (f.match(/(Scattered|Light|Slight|Patchy)/)) {
           if (w.isDaytime) {
-            return 'fas fa-cloud-sun-rain';
+            return 'fad fa-cloud-sun-rain';
           } else {
-            return 'fas fa-cloud-moon-rain';
+            return 'fad fa-cloud-moon-rain';
           }
         } else {
-          return 'fas fa-cloud-showers-heavy';
+          return 'fad fa-cloud-showers-heavy';
         }
       }
       if (f.match(/Cloud/)) {
         if (f.match(/Part/)) {
           if (w.isDaytime) {
-            return 'fas fa-cloud-sun';
+            return 'fad fa-cloud-sun';
           } else {
-            return 'fas fa-cloud-moon';
+            return 'fad fa-cloud-moon';
           }
         } else {
-          return 'fas fa-cloud';
+          return 'fad fa-cloud';
         }
       }
       if (f.match(/Fog/)) {
-        return 'fas fa-smog';
+        return 'fad fa-smog';
       }
-      return 'fas fa-question';
+      return 'fad fa-question';
     },
 
     generate: {
@@ -155,10 +155,7 @@ var ui = {
         localStorage.favoriteLocations = '';
       }
       var favorites = maps.favorites.get();
-      ui.favorites._createLocationEntry(
-        'Current Location',
-        'weather.getLocal()'
-      );
+      $('#favorites-list').html();
       favorites.forEach(function(location) {
         ui.favorites._createLocationEntry(
           location.name,
@@ -168,7 +165,7 @@ var ui = {
     },
     _createLocationEntry(name,onClick) {
       $('#favorites-list').append(
-        '<div class="favorite-entry"'+
+        '<div class="favorite-entry list-item"'+
           'onclick="'+onClick+';app.page.select(\'weather\')"'+
         '>' +
           '<p>'+name+'</p>'+
@@ -184,6 +181,53 @@ var ui = {
         $('#favorites-container').removeClass('div-hide');
         $('#new-favorite').addClass('div-hide');
       }
+    },
+    updateSearch: function(query) {
+      maps.lookup(query,function(results){
+        $('#search-results').html('');
+        results.forEach(function(result){
+          $('#search-results').append(
+            '<div class="list-item" onclick="maps.favorites.add(\''+result+'\')">'+
+              '<p>'+result+'</p>'+
+            '</li>'
+          );
+        });
+      });
+      if (!query) {
+        $('#search-results').html(
+          '<div class="list-item bg-none"><p>Please enter a city name in the textbox above</p></div>'
+        );
+      }
     }
+  },
+  settings: {
+    loadContext: function() {
+      ui.settings.onlineMode.genToggle();
+      ui.settings.onlineMode.updateText();
+
+    },
+    onlineMode: {
+      genToggle: function() {
+        general.createToggle(
+          '#cached-mode-toggle', //parentElement
+          app.devMode.isEnabled(), //isToggled
+          function() { //Toggle on callback
+            app.devMode.disable();
+            ui.settings.onlineMode.updateText();
+          },
+          function() { //Toggle off callback
+            app.devMode.enable();
+            ui.settings.onlineMode.updateText();
+          }
+        )
+      },
+      updateText: function() {
+        if (app.devMode.isEnabled()) {
+          $('#cached-mode-desc').html('Online');
+        } else {
+          $('#cached-mode-desc').html('Cached');
+        }
+      }
+    },
   }
 }

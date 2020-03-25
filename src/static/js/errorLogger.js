@@ -21,6 +21,6 @@ var errorLogger = {
 
 window.onerror = function(message, url, line, column, error) {
   errorLogger.send(message.replace('\n',''),url,line);
-  console.log(message+'\n-'+url+'\n-'+line)
+  console.error(error)
   return true;
 };

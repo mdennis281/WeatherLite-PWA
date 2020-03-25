@@ -1,20 +1,12 @@
 var maps = {
   lookup: function(location,callback) {
-    $.get('/API/location2Coords?address='+location,function(data) {
-      var entries = [];
-      data.results.forEach(function(entry) {
-        entries.push(
-          {
-            'address': entry.formatted_address,
-            'coords': {
-              'lat': entry.geometry.location.lat,
-              'lon': entry.geometry.location.lng
-            }
-          }
-        )
+    if (location) {
+      $.get('/API/placesLookup?query='+location,function(data) {
+        if (location == $('#favorite-searchbox').val()) {
+          callback(data);
+        }
       });
-      callback(entries);
-    });
+    }
   },
   favorites: {
     get: function() {
@@ -33,9 +25,12 @@ var maps = {
       });
       return locations;
     },
-    add: function(name,lat,lon) {
-      localStorage.favoriteLocations +=
-        name + '\t' + lat + '\t' + lon + '\n';
+    add: function(name) {
+      $.get('/API/address2Coords?address='+name,function(coords) {
+        localStorage.favoriteLocations +=
+          name + '\t' + coords.lat + '\t' + coords.lng + '\n';
+        ui.favorites.generate();
+      });
     },
     delete: function(name) {
       var locationList = localStorage.favoriteLocations.split('\n');

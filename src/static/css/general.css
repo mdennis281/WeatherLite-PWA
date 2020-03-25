@@ -57,6 +57,11 @@ p {
     -ms-overflow-style: none;
 }
 
+.flex {
+  display: -ms-flexbox!important;
+  display: flex!important;
+}
+
 .flex-around {
   display: -ms-flexbox!important;
   display: flex!important;
@@ -64,6 +69,27 @@ p {
   justify-content: space-around!important;
 }
 
+.flex-between {
+  display: -ms-flexbox!important;
+  display: flex!important;
+  -ms-flex-pack: justify!important;
+  justify-content: space-between!important;
+}
+
+.flex-center {
+  display: -ms-flexbox!important;
+  display: flex!important;
+  -ms-flex-pack: justify!important;
+  justify-content: center!important;
+}
+
 .hover-pointer:hover {
   cursor: pointer;
+}
+
+.text-left {
+  text-align: left !important;
+}
+.bg-none,.bg-none:hover{
+  background-color: RGBA(0,0,0,0) !important;
 }

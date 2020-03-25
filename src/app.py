@@ -47,6 +47,10 @@ app.add_url_rule(
 def page_not_found(e):
     return "Page Not Found", 404
 
+@app.errorhandler(400)
+def malformed_request(e):
+    return "Malformed Request", 400
+
 
 #####################################################
 #       Import Blueprints

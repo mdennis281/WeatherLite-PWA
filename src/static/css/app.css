@@ -51,6 +51,10 @@ body {
   transition: all 0.3s ease;
 }
 
+#nav-row .option:hover {
+  cursor: pointer;
+}
+
 #nav-row .option i {
   margin: auto;
   font-size: 2em;
@@ -222,8 +226,6 @@ hr {
   padding: 10px 10px 0 10px;
 }
 
-
-
 .map {
   font-size: 40px;
 }
@@ -235,34 +237,96 @@ hr {
     favorites
 ------------------------------------------------
 */
-#favorites-container, #new-favorite {
+#location-icon {
+  font-size: 12px;
+  margin: 0,5px,3px,0;
+
+}
+.list-container {
   min-width: 75%;
   max-width: 90%;
+  background-color: #101933;
 }
-.favorite-entry {
+@media (max-width: 500px) {
+  .list-container {
+    min-width: 90%;
+    max-width: 95%;
+  }
+}
+
+
+
+.list-item {
   background-color: #1C2541;
-  height: 50px;
+  min-height: 50px;
+  text-align: center;
+  margin: 5px;
+  transition: all 0.3s ease;
+}
+.list-item:hover {
+  background-color: #253050;
+  color: #eee;
+  cursor: pointer;
+}
+
+.list-item p {
+  padding-top: 11;
+}
+
+
+.list-container .list-item-square {
+  height: 100px;
+  width: 100px;
+  background-color: #1C2541;
   text-align: center;
   margin: 5px;
 }
 
-.favorite-entry p {
-  padding-top: 11;
+
+.list-bar {
+  background-color: #253050;
+  margin: 5px;
+  padding: 3px;
+  text-align:  center;
+  color: #eee;
+  transition: all 0.3s ease;
 }
 
-#new-favorite header {
-  background-color: #ccc;
+.list-bar i {
+  font-size: 20px;
+  padding: 3px 5px 3px 5px;
+  transition: all 0.3s ease;
 
 }
-
-#add-favorite {
-    background-color: #1C2541;
-    margin: 5px;
-    text-align: right;
-    padding: 3px;
+.list-bar i:hover {
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
-#add-favorite i {
-    font-size: 20px;
-    padding: 3px 5px 3px 0;
+.list-bar .title {
+  font-size: 18px;
+  font-weight: 550;
+}
+
+.list-bar input {
+  margin: 3px;
+  border-radius: 0;
+  background: RGBA(255,255,255,.2);
+  border-color: RGBA(255,255,255,.3);
+  color: #ccc;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.list-bar input:focus {
+    background-color: RGBA(200,200,200,.4);
+    border-color: RGBA(255,255,255,.6);
+    color: #ccc;
+}
+
+
+
+.list-bar ::placeholder {
+  color: #999;
+  text-transform: capitalize;
 }

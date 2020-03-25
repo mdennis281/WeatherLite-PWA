@@ -3,9 +3,11 @@ from src.libraries import (
 ####    Flask
     jsonify,
     request,
+    abort,
 ####    Internal
     weather,
-    general
+    general,
+    googleMaps
 )
 
 #####################################################
@@ -19,19 +21,32 @@ def weatherInfo():
         'longitude': request.args.get('longitude'),
         'units': request.args.get('units')
     }
-    data = weather.getWeatherByCoords(coords)
-    data['call'] = coords
-    return jsonify(data)
+    if coords['latitude'] and coords['longitude']:
+        data = weather.getWeatherByCoords(coords)
+        data['call'] = coords
+        return jsonify(data)
+    return abort(400)
 
 
 
-@API.route('/location2Coords')
-def location2Coords():
+@API.route('/address2Coords')
+def address2Coords():
     location = request.args.get('address')
-    data = googleMapsGeocoding.lookup(location)
-    return jsonify(data)
+    if location:
+        return jsonify(googleMaps.geocoding(location))
+    return abort(400)
 
 @API.route('/IP2Coords')
 def IP2Coords():
     clientIP = request.remote_addr
-    return jsonify(general.IP2Coords(clientIP))
+    if clientIP:
+        return jsonify(general.IP2Coords(clientIP))
+    return abort(400)
+
+@API.route('/placesLookup')
+def placesLookup():
+    query = request.args.get('query')
+    debug = request.args.get('debug')
+    if query:
+        return jsonify(googleMaps.places(query,debug))
+    return abort(400)

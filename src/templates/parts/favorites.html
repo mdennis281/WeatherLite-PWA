@@ -1,21 +1,50 @@
 <div class="flex-around">
-  <div id="favorites-container">
+  <div id="favorites-container" class="list-container">
+    <!-- list favorites view -->
+    <div class="list-bar">
+      <span class="title">Favorite Locations</span>
+    </div>
+    <div class="favorite-entry list-item"
+         onclick="weather.getLocal();app.page.select('weather')">
+            <p>
+              <i class="fas fa-location-arrow" id="location-icon"></i>
+              Current Location
+            </p>
+    </div>
     <div id="favorites-list">
 
     </div>
-    <div id="add-favorite">
-      <i class="fas fa-plus-circle" onclick="ui.favorites.new.open()"></i>
+    <div class="list-bar flex-between">
+      <i
+        id="edit-favorite-btn"
+        class="fad fa-pen-square"
+        onclick="ui.favorites.edit.start()">
+      </i>
+      <i
+        id="unedit-favorite-btn"
+        class="fad fa-check-square div-hide"
+        onclick="ui.favorites.edit.stop()">
+      </i>
+      <i
+        id="add-favorite-btn"
+        class="fad fa-plus-square"
+        onclick="ui.favorites.new.open()">
+      </i>
     </div>
   </div>
-  <div id="new-favorite" class="div-hide">
-    <div class="header">
-      <i class="fas fa-times-circle" onclick="ui.favorites.new.close()"></i>
-      <input class="form-control" type="text" placeholder="location">
+
+  <!-- add favorite view -->
+  <div id="new-favorite" class="div-hide list-container">
+    <div class="list-bar flex">
+      <input
+        id="favorite-searchbox"
+        class="form-control"
+        type="text"
+        placeholder="location"
+        onkeyup="ui.favorites.updateSearch(this.value)"
+      />
+      <div><i class="fad fa-times-square" onclick="ui.favorites.new.close()"></i></div>
     </div>
+    <div id="search-results"></div>
   </div>
 </div>
-
-
-<script>
-  ui.favorites.generate();
-</script>
