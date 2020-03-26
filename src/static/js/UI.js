@@ -155,7 +155,7 @@ var ui = {
         localStorage.favoriteLocations = '';
       }
       var favorites = maps.favorites.get();
-      $('#favorites-list').html();
+      $('#favorites-list').html('');
       favorites.forEach(function(location) {
         ui.favorites._createLocationEntry(
           location.name,

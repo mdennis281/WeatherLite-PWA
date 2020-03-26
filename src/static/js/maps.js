@@ -30,6 +30,7 @@ var maps = {
         localStorage.favoriteLocations +=
           name + '\t' + coords.lat + '\t' + coords.lng + '\n';
         ui.favorites.generate();
+        ui.favorites.new.close();
       });
     },
     delete: function(name) {
