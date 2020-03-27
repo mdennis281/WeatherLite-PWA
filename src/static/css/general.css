@@ -93,3 +93,51 @@ p {
 .bg-none,.bg-none:hover{
   background-color: RGBA(0,0,0,0) !important;
 }
+
+.toggle-container {
+  height: 35px;
+  width: 40px;
+  position: relative;
+}
+.createToggle-on, .createToggle-off {
+  font-size: 35px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.createToggle-on::before {
+  color: #166c16;
+  opacity: 1;
+}
+.createToggle-on::after {
+  color: #888;
+  opacity: 1;
+}
+.createToggle-off::before {
+  color: #888;
+  opacity: 1;
+}
+.createToggle-off::after {
+  color: #585858;
+  opacity: 1;
+}
+.animated {
+  -webkit-animation-duration: .4s;
+  animation-duration: .4s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.btn-active {
+  transition: all 0.3s ease;
+  color: #aaa
+  font-size: 20px;
+}
+.btn-active:hover {
+  transform: scale(1.04);
+  color: #fff;
+}
+
+a i {
+  color: #aaa;
+}

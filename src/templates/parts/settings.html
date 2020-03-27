@@ -1,14 +1,30 @@
-<div class="flex-center">
-  <div class="list-container">
-    <div class="list-bar">
-      <span class="title">App Settings</span>
-    </div>
-    <div class="flex-around">
-      <div class="list-item-square">
-        <p>Cached Mode</p>
-        <div id="cached-mode-toggle"></div>
-        <p id="cached-mode-desc" class="sub"></p>
-      </div>
-    </div>
+
+<div class="list-container">
+  <div class="list-bar">
+    <span class="title">App Settings</span>
   </div>
+  <table class="list-table">
+    <tr>
+      <td>Cached Mode</td>
+      <td id="cached-mode-desc" class="sub"></td>
+      <td><div id="cached-mode-toggle"></div></td>
+    </tr>
+  </table>
+  <div class="list-bar">
+    <span class="title">App Info</span>
+  </div>
+  <table class="list-table">
+    <tr>
+      <td>Browser</td>
+      <td id='device-browser'></td>
+    </tr>
+    <tr>
+      <td>OS</td>
+      <td id="device-os"></td>
+    </tr>
+    <tr>
+      <td>PWA</td>
+      <td id="device-isPWA"></td>
+    </tr>
+  </table>
 </div>

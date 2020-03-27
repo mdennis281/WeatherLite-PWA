@@ -72,11 +72,13 @@ body {
 ------------------------------------------------
 */
 
-#loader-containter {
+#loader-container {
   text-align: center;
   font-size: 5em;
   color: #1C2541;
-
+  height: calc(100vh - 100px);
+  align-items: center;
+  padding-top:100px;
 }
 #loader {
   padding-bottom: 100px;
@@ -243,18 +245,35 @@ hr {
 
 }
 .list-container {
-  min-width: 75%;
-  max-width: 90%;
+  width: 75%;
+  max-width: 650px;
   background-color: #101933;
+  text-align: center;
+  margin: 0 auto;
 }
 @media (max-width: 500px) {
   .list-container {
-    min-width: 90%;
-    max-width: 95%;
+    width: 100%;
   }
 }
 
+.list-table {
+  width: 100%;
+  text-align:  center;
+  transition: all 0.3s ease;
+}
+.list-table tr td:nth-child(1) {
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+.list-table tr td:nth-child(1)::after {
+  content: ":";
+}
 
+.list-table tr td {
+  padding-bottom: 10px;
+  transition: all 0.3s ease;
+}
 
 .list-item {
   background-color: #1C2541;
@@ -274,18 +293,29 @@ hr {
 }
 
 
-.list-container .list-item-square {
-  height: 100px;
-  width: 100px;
+.list-container .list-item-sm {
   background-color: #1C2541;
   text-align: center;
   margin: 5px;
+  padding: 10px;
+  transition: all 0.3s ease;
+}
+.list-container .list-item-sm:hover {
+  background-color: #253050;
+  color: #eee;
+  cursor: pointer;
 }
 
+.list-item-square .sub, .list-table .sub{
+  color: #777;
+}
+.list-container .list-item-square p {
+  white-space: nowrap;
+}
 
 .list-bar {
   background-color: #253050;
-  margin: 5px;
+  margin: 5px 0 5px 0;
   padding: 3px;
   text-align:  center;
   color: #eee;

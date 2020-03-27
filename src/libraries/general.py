@@ -12,6 +12,16 @@ def imageResizer(imagePath,width,height):
     output.seek(0,0)
     return output
 
+def appleTouchIcon():
+    logo = Image.open(imageResizer('appIcon.png',160,160))
+    ico = Image.new("RGB",(180,180),(11, 19, 43))
+    ico.paste(logo,(10,10),logo)
+    output = io.BytesIO()
+    ico.save(output,format='PNG')
+    output.seek(0,0)
+    return output
+
+
 
 def IP2Coords(IP):
     position = {}

@@ -35,4 +35,5 @@
     overflow-y: auto;
     max-width: 95%
     overflow-x: hidden;
+    margin: 3px;
 }

@@ -1,8 +1,9 @@
 from src.blueprints import all as blueprints
-from src.views.appImages import customImage
+from src.libraries.general import appleTouchIcon
 from src.libraries import (
 ####    Flask
     Flask,
+    send_file,
 ####    External
     import_module
 )
@@ -35,7 +36,11 @@ app.add_url_rule(
 app.add_url_rule(
     '/apple-touch-icon.png',
     'apple-touch-icon',
-    lambda: customImage('appIcon.png',180)
+    lambda: send_file(
+        appleTouchIcon(),
+        mimetype='image/png',
+        as_attachment=False
+    )
 )
 
 

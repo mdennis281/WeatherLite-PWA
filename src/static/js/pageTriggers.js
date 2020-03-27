@@ -8,6 +8,9 @@ var pageTriggers = {
   },
   settings: function() {
     ui.settings.loadContext();
+    $('#device-browser').html(device.getBrowser());
+    $('#device-os').html(device.getOS());
+    $('#device-isPWA').html((device.isPWA) ? 'Yes' : 'No');
   },
   about: function() {
 

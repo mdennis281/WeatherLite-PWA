@@ -1,0 +1,14 @@
+.notifyjs-corner .notifyjs-wrapper, .notifyjs-corner .notifyjs-container {
+    position: relative;
+    display: block;
+    height: inherit;
+    width: inherit;
+    padding: 3px;
+    margin: 0px;
+}
+.notifyjs-corner {
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    margin: 0px;
+}

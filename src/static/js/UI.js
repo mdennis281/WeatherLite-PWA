@@ -169,6 +169,12 @@ var ui = {
           'onclick="'+onClick+';app.page.select(\'weather\')"'+
         '>' +
           '<p>'+name+'</p>'+
+          '<div class="edit-entry div-hide">'+
+            '<i '+
+              'class="fad fa-trash-alt" '+
+              'onclick="ui.favorites.delete(\''+name+'\')">'+
+            '</i>'+
+          '</div>'+
         '</div>'
       );
     },
@@ -210,20 +216,20 @@ var ui = {
       genToggle: function() {
         general.createToggle(
           '#cached-mode-toggle', //parentElement
-          app.devMode.isEnabled(), //isToggled
+          !(app.devMode.isEnabled()), //isToggled
           function() { //Toggle on callback
-            app.devMode.disable();
+            app.devMode.enable();
             ui.settings.onlineMode.updateText();
           },
           function() { //Toggle off callback
-            app.devMode.enable();
+            app.devMode.disable();
             ui.settings.onlineMode.updateText();
           }
         )
       },
       updateText: function() {
         if (app.devMode.isEnabled()) {
-          $('#cached-mode-desc').html('Online');
+          $('#cached-mode-desc').html('Online&nbsp;');
         } else {
           $('#cached-mode-desc').html('Cached');
         }
