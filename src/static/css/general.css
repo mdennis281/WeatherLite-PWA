@@ -122,20 +122,19 @@ p {
   opacity: 1;
 }
 .animated {
-  -webkit-animation-duration: .4s;
-  animation-duration: .4s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
+  -webkit-animation-duration: .4s !important;
+  animation-duration: .4s !important;
 }
 
 .btn-active {
   transition: all 0.3s ease;
-  color: #aaa
-  font-size: 20px;
+  color: #aaa;
+  font-size: 25px;
 }
 .btn-active:hover {
   transform: scale(1.04);
   color: #fff;
+  cursor: pointer;
 }
 
 a i {

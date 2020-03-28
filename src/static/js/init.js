@@ -8,41 +8,47 @@ function DEBUG(message){
 
 var assetLoader = {
   JSLoadCount: 0,
-  JS: function(files,callback) {
-    files.forEach(function(file){
-      fileStorage.get(file,function(content){
-        $('#scripts').append(
-          '<script>\n'+
-            '///////////   '+ file +'   //////////\n\n\n'+
-            content+
-            '\nassetLoader.JSLoadCount++;\n \/\/Generated from assetLoader'+
-          '\n</script>\n'
-        );
-      });
+  JSBuffer: [],
+  JS: function(files,i=0) {
+
+    var file = files[i]
+
+    fileStorage.get(file,function(content){
+      assetLoader.JSBuffer[i] =
+      '\n<!-- ||||||||||     '+file+'     |||||||||| -->\n'+
+      '\n<script>\n'+
+        content+
+      '</script>';
+      assetLoader.JSLoadCount++;
+
     });
-    assetLoader.checkComplete(callback);
+
+    if (files.length != i+1){
+      assetLoader.JS(files,i+1);
+    } else {
+      startApp();
+
+    }
 
   },
   CSS: function(files,callback) {
-    files.forEach(function(file){
-      fileStorage.get(file,function(rule){
-        let css = document.createElement('style');
-        css.type = 'text/css';
-        if (css.styleSheet) css.styleSheet.cssText = rule; // Support for IE
-        else css.appendChild(document.createTextNode(rule)); // Support for the rest
-        document.getElementsByTagName("head")[0].appendChild(css);
-      });
+
+    var file = files.pop();
+
+    fileStorage.get(file,function(rule){
+      let css = document.createElement('style');
+      css.type = 'text/css';
+      if (css.styleSheet) css.styleSheet.cssText = rule; // Support for IE
+      else css.appendChild(document.createTextNode(rule)); // Support for the rest
+      document.getElementsByTagName("head")[0].appendChild(css);
     });
-    if (typeof callback === 'function') callback();
-  },
-  checkComplete: function(callback) {
-    if(assetLoader.JSLoadCount == files.JS.length){
-      app.start();
+
+    if (files.length){
+      assetLoader.CSS(files,callback);
     } else {
-      setTimeout(function(){
-        assetLoader.checkComplete()
-      },100)
+      if (typeof callback === 'function') callback();
     }
+
   }
 }
 
@@ -103,12 +109,21 @@ if('serviceWorker' in navigator) {
 
 function startApp(count=1) {
   function retry() {
-    setTimeout(function(){startApp(count+1)},100);
+    setTimeout(function(){startApp(count+1)},1000);
   }
-  if (assetLoader.JSLoadCount == files.JS.length) {
+
+  if (assetLoader.JSLoadCount == Files.JSLength) {
+    if (!$('#scripts').html()){
+      assetLoader.JSBuffer.forEach(function(script){
+        $('#scripts').append(
+          script
+        );
+      });
+    }
     $('document').ready(function(){
       try {
         app.start();
+        DEBUG('Started App.');
       } catch {
         DEBUG('Start Failed-- Retrying ('+String(count)+')')
         retry();

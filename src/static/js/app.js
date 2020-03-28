@@ -22,6 +22,7 @@ app = {
           pageTriggers[option]();
           $('#nav-row .option').removeClass('selected');
           $('#'+option).addClass('selected');
+          $('[data-toggle="tooltip"]').tooltip(); //popper
         });
       }
 
@@ -43,9 +44,11 @@ app = {
 
   strFormat: {
     hourMin: function(date) {
-      return (new Date(date)).toLocaleTimeString([],
-        {timeStyle: 'short', minute:'2-digit'}
-      );
+      var dt = (new Date(date));
+      var hr = (dt.getHours() > 12) ? (dt.getHours()-12) : dt.getHours();
+      var min = dt.getMinutes();
+      var am_pm = (dt.getHours()>11) ? 'PM' : 'AM';
+      return hr + ':' + min + ' ' + am_pm;
     },
     hour: function(date) {
       var str = (new Date(date)).toLocaleTimeString([],
@@ -61,18 +64,17 @@ app = {
     }
   },
 
-  horizontalScroll: function(outer,inner) {
-    const viewport = document.querySelector(outer);
-    const content = document.querySelector(inner);
-
-    new ScrollBooster({
-      viewport,
-      content,
-      direction: 'horizontal',
-      onUpdate: (state) => {
-        viewport.scrollLeft = state.position.x;
+  clearCache: function() {
+    var LS = Object.entries(localStorage);
+    LS.forEach(function(entry) {
+      if (entry[0].startsWith('FILESTORAGE-')) {
+        localStorage.removeItem(entry[0]);
       }
     });
+    $.notify(
+      {title:"Cache Cleared.",message:"Press this notification to reload the app."},
+
+    )
   }
 
 }

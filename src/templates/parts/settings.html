@@ -5,9 +5,21 @@
   </div>
   <table class="list-table">
     <tr>
-      <td>Cached Mode</td>
-      <td id="cached-mode-desc" class="sub"></td>
+      <td>Cache Assets</td>
+      <td id="cached-mode-desc" class="sub div-hide"></td>
       <td><div id="cached-mode-toggle"></div></td>
+    </tr>
+    <tr>
+      <td>Restart App</td>
+      <td class="text-left">
+        <i class="fad fa-sync btn-active ml-2" onclick="location.reload(true)"></i>
+      </td>
+    </tr>
+    <tr>
+      <td>Clear Cache</td>
+      <td class="text-left">
+        <i class="fad fa-window-close btn-active ml-2" onclick="app.clearCache()"></i>
+      </td>
     </tr>
   </table>
   <div class="list-bar">

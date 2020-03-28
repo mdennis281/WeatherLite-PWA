@@ -14,6 +14,7 @@ html,body {
 body {
   background-color: #0B132B;
   color: #aaa;
+      font-family: 'Inconsolata', monospace;
 }
 #page {
   overflow-y: auto;
@@ -35,6 +36,7 @@ body {
   width: 100%;
   height: 100px;
   overflow: hidden;
+  z-index: 1071;
 }
 
 
@@ -257,6 +259,18 @@ hr {
   }
 }
 
+.list-item .edit-entry {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 50px;
+  text-align: center;
+  background-color: #253050;
+  padding: 17px;
+  border-left: 1px solid #777;
+}
+
 .list-table {
   width: 100%;
   text-align:  center;
@@ -265,13 +279,15 @@ hr {
 .list-table tr td:nth-child(1) {
   font-weight: 500;
   transition: all 0.3s ease;
+  text-align: center;
 }
 .list-table tr td:nth-child(1)::after {
   content: ":";
 }
 
+
 .list-table tr td {
-  padding-bottom: 10px;
+  padding: 5px 0 5px 0;
   transition: all 0.3s ease;
 }
 
@@ -281,13 +297,25 @@ hr {
   text-align: center;
   margin: 5px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 .list-item:hover {
   background-color: #253050;
   color: #eee;
   cursor: pointer;
 }
-
+.list-item .edit-entry {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 50px;
+  text-align: center;
+  background-color: #253050;
+  padding: 17px;
+  border-left: 1px solid #777;
+}
 .list-item p {
   padding-top: 11;
 }
@@ -304,6 +332,12 @@ hr {
   background-color: #253050;
   color: #eee;
   cursor: pointer;
+}
+
+.list-container .disabled:hover {
+  background-color: #1C2541;
+  cursor: default;
+  color: #ccc;
 }
 
 .list-item-square .sub, .list-table .sub{
@@ -353,6 +387,7 @@ hr {
     border-color: RGBA(255,255,255,.6);
     color: #ccc;
 }
+
 
 
 

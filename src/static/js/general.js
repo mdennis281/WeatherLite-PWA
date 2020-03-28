@@ -23,11 +23,13 @@ var general = {
       {'this':'#'+ids.off,'callback':offCallback,'other':'#'+ids.on }
     ].forEach(function(data){
       $(data.this).click(function(){
-        $(data.this).animateCss('fadeOut',function(){
-          $(data.this).addClass('div-hide');
-        })
-        $(data.other).removeClass('div-hide').animateCss('fadeIn');
-        data.callback();
+        if(!$(data.this).hasClass('animated')){
+          $(data.this).animateCss('fadeOut',function(){
+            $(data.this).addClass('div-hide');
+          })
+          $(data.other).removeClass('div-hide').animateCss('fadeIn');
+          data.callback();
+        }
       });
     });
     if (isToggled) {

@@ -100,7 +100,6 @@ var ui = {
         daily: function(forecast) {
           var i;
           for (i=0; i < forecast.length; i+=2) {
-            DEBUG(forecast[i].shortForecast);
             $('#daily-forecast').append(
               '<tr onclick="popup.open(\''+
                         ui.weather.generate.detail.daily(
@@ -166,12 +165,12 @@ var ui = {
     _createLocationEntry(name,onClick) {
       $('#favorites-list').append(
         '<div class="favorite-entry list-item"'+
-          'onclick="'+onClick+';app.page.select(\'weather\')"'+
+          'onclick="if(!$(this).hasClass(\'disabled\')){'+onClick+';app.page.select(\'weather\')}"'+
         '>' +
           '<p>'+name+'</p>'+
           '<div class="edit-entry div-hide">'+
             '<i '+
-              'class="fad fa-trash-alt" '+
+              'class="fad fa-trash-alt btn-active" '+
               'onclick="ui.favorites.delete(\''+name+'\')">'+
             '</i>'+
           '</div>'+
@@ -182,11 +181,37 @@ var ui = {
       open: function() {
         $('#favorites-container').addClass('div-hide');
         $('#new-favorite').removeClass('div-hide');
+        ui.favorites.edit.stop();
       },
       close: function() {
         $('#favorites-container').removeClass('div-hide');
         $('#new-favorite').addClass('div-hide');
+        ui.favorites.generate();
       }
+    },
+    edit: {
+      start: function() {
+        $('#edit-favorite-btn').addClass('div-hide');
+        $('#unedit-favorite-btn').removeClass('div-hide');
+        $('.edit-entry').removeClass('div-hide');
+        $('.edit-entry').animateCss('slideInRight')
+        $('.list-item').addClass('disabled');
+      },
+      stop: function() {
+        $('#unedit-favorite-btn').addClass('div-hide');
+        $('#edit-favorite-btn').removeClass('div-hide');
+        $('.list-item').removeClass('disabled');
+
+        $('.edit-entry').animateCss('slideOutRight',function(){
+          $('.edit-entry').addClass('div-hide');
+        });
+      }
+    },
+    delete: function(name) {
+      maps.favorites.delete(name);
+      ui.favorites.generate();
+      $('.edit-entry').removeClass('div-hide');
+      $('.list-item').addClass('disabled');
     },
     updateSearch: function(query) {
       maps.lookup(query,function(results){
