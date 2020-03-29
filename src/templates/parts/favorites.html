@@ -17,17 +17,17 @@
     <div class="list-bar flex-between">
       <i
         id="edit-favorite-btn"
-        class="fad fa-pen-square"
+        class="fad fa-pen-square btn-active"
         onclick="ui.favorites.edit.start()">
       </i>
       <i
         id="unedit-favorite-btn"
-        class="fad fa-check-square div-hide"
+        class="fad fa-check-square btn-active div-hide"
         onclick="ui.favorites.edit.stop()">
       </i>
       <i
         id="add-favorite-btn"
-        class="fad fa-plus-square"
+        class="fad fa-plus-square btn-active"
         onclick="ui.favorites.new.open()">
       </i>
     </div>
@@ -43,7 +43,7 @@
         placeholder="location"
         onkeyup="ui.favorites.updateSearch(this.value)"
       />
-      <div><i class="fad fa-times-square" onclick="ui.favorites.new.close()"></i></div>
+      <div><i class="fad fa-times-square btn-active" onclick="ui.favorites.new.close()"></i></div>
     </div>
     <div id="search-results"></div>
   </div>

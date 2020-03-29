@@ -313,7 +313,7 @@ hr {
   width: 50px;
   text-align: center;
   background-color: #253050;
-  padding: 17px;
+  padding: 13px;
   border-left: 1px solid #777;
 }
 .list-item p {
@@ -357,14 +357,7 @@ hr {
 }
 
 .list-bar i {
-  font-size: 20px;
   padding: 3px 5px 3px 5px;
-  transition: all 0.3s ease;
-
-}
-.list-bar i:hover {
-  transform: scale(1.1);
-  cursor: pointer;
 }
 
 .list-bar .title {

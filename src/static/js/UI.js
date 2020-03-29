@@ -4,7 +4,7 @@ var ui = {
       if (weather.isLoading) {
         setTimeout(function(){ui.weather.render();},100);
       } else {
-        ui.weather._render(weather.lastFetch);
+        ui.weather._render(weather.lastFetch());
       }
     },
 
@@ -30,10 +30,10 @@ var ui = {
         app.strFormat.hourMin(wData.OWM.sys.sunset * 1000)
       );
       $('#humidity').html(
-        weather.lastFetch.OWM.main.humidity + '%'
+        weather.lastFetch().OWM.main.humidity + '%'
       );
       $('#visibility').html(
-        Math.round(weather.lastFetch.OWM.visibility/1609.34) + ' mi' //todo locality
+        Math.round(weather.lastFetch().OWM.visibility/1609.34) + ' mi' //todo locality
       );
 
       $('#loader-container').remove();
@@ -52,7 +52,7 @@ var ui = {
       if (f.match(/Snow|Flurry|Flurries/)) {
         return 'fad fa-snowflake';
       }
-      if (f.match(/Rain|Showers|Thunder|Lightning|Drizzle/)) {
+      if (f.match(/Rain|Showers|Thunder|Lightning|Drizzle|T-storms/)) {
         if (f.match(/(Scattered|Light|Slight|Patchy)/)) {
           if (w.isDaytime) {
             return 'fad fa-cloud-sun-rain';
@@ -88,7 +88,7 @@ var ui = {
             var time = app.strFormat.hour(w.startTime);
             if (!i) {time = 'Now'}
             $('#hourly-forecast').append(
-              '<td>'+
+              '<td alt="'+w.shortForecast+'">'+
                 '<p class="time">'+time+'</p>'+
                 '<i class="'+ui.weather.selectIcon(w)+'" alt="'+w.shortForecast+'"></i>'+
                 '<p class="wind">'+w.windSpeed+'</p>'+
@@ -150,15 +150,13 @@ var ui = {
   },
   favorites: {
     generate: function() {
-      if (!localStorage.favoriteLocations) {
-        localStorage.favoriteLocations = '';
-      }
+      weather.getAll();
       var favorites = maps.favorites.get();
       $('#favorites-list').html('');
       favorites.forEach(function(location) {
         ui.favorites._createLocationEntry(
           location.name,
-          'weather.getByCoord('+location.lat+','+location.lon+')'
+          'weather.get({lat:'+location.lat+',lng:'+location.lng+'})'
         );
       });
     },
@@ -182,6 +180,7 @@ var ui = {
         $('#favorites-container').addClass('div-hide');
         $('#new-favorite').removeClass('div-hide');
         ui.favorites.edit.stop();
+        $('#favorite-searchbox').focus();
       },
       close: function() {
         $('#favorites-container').removeClass('div-hide');
@@ -218,7 +217,7 @@ var ui = {
         $('#search-results').html('');
         results.forEach(function(result){
           $('#search-results').append(
-            '<div class="list-item" onclick="maps.favorites.add(\''+result+'\')">'+
+            '<div class="list-item" onclick="ui.favorites.addEntry(\''+result+'\')">'+
               '<p>'+result+'</p>'+
             '</li>'
           );
@@ -229,12 +228,20 @@ var ui = {
           '<div class="list-item bg-none"><p>Please enter a city name in the textbox above</p></div>'
         );
       }
+    },
+    addEntry: function(query) {
+      maps.favorites.add(query,function(){
+        ui.favorites.generate();
+        ui.favorites.updateSearch('');
+        $('#favorite-searchbox').val('');
+        ui.favorites.new.close();
+      });
     }
   },
   settings: {
     loadContext: function() {
       ui.settings.onlineMode.genToggle();
-      ui.settings.onlineMode.updateText();
+      //ui.settings.onlineMode.updateText();
 
     },
     onlineMode: {

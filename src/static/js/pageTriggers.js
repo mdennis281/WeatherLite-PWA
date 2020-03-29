@@ -1,6 +1,8 @@
 var pageTriggers = {
   weather: function() {
+    if (!weather.cache().last){ weather.getLocal() }
     ui.weather.render();
+    weather.getAll();
   },
   favorites: function() {
     ui.favorites.generate();

@@ -27,11 +27,6 @@ app.add_url_rule(
     lambda: app.send_static_file('manifest.json')
 )
 
-app.add_url_rule(
-    '/worker.js',
-    'worker',
-    lambda: app.send_static_file('js/worker.js')
-)
 
 app.add_url_rule(
     '/apple-touch-icon.png',

@@ -10,38 +10,33 @@ var maps = {
   },
   favorites: {
     get: function() {
-      var locations = [];
-      var data = localStorage.favoriteLocations;
-      var locationList = data.split("\n");
-      locationList.forEach(function(locationRaw){
-        var location = locationRaw.split('\t');
-        if (location.length == 3) {
-          locations.push({
-            'name': location[0],
-            'lat': location[1],
-            'lon': location[2]
-          });
-        }
-      });
-      return locations;
+      var fl = app.storage('favoriteLocations');
+      return (fl) ? fl : [];
+
     },
-    add: function(name) {
+    add: function(name,callback) {
+      var fl = maps.favorites.get();
       $.get('/API/address2Coords?address='+name,function(coords) {
-        localStorage.favoriteLocations +=
-          name + '\t' + coords.lat + '\t' + coords.lng + '\n';
-        ui.favorites.generate();
-        ui.favorites.new.close();
+        fl.push({
+          name: name,
+          lat: coords.lat,
+          lng: coords.lng
+        });
+        app.storage('favoriteLocations',fl);
+
+        if (typeof callback === 'function') callback();
       });
     },
     delete: function(name) {
-      var locationList = localStorage.favoriteLocations.split('\n');
-      var buffer = '';
-      locationList.forEach(function(location) {
-        if (!location.startsWith(name)) {
-          buffer += location + '\n';
-        }
+      var fl_old = maps.favorites.get();
+      var fl = [];
+      var isFound = false;
+      fl_old.forEach(function(location) {
+        if ((!location.name.startsWith(name)) || (isFound)) {
+          fl.push(location);
+        } else {isFound = true;}
       });
-      localStorage.favoriteLocations = buffer;
+      app.storage('favoriteLocations',fl);
     }
   }
 }

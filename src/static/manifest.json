@@ -1,9 +1,9 @@
 {
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#0B132B",
   "orientation": "portrait",
-  "start_url": "https://weatherlite.app/?source=pwa",
-  "name": "Weather Lite",
+  "start_url": "/",
+  "name": "WeatherLite",
   "short_name": "WeatherLite",
   "icons": [
     {

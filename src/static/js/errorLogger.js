@@ -18,9 +18,10 @@ var errorLogger = {
   }
 }
 
-
+/*
 window.onerror = function(message, url, line, column, error) {
   errorLogger.send(message.replace('\n',''),url,line);
   console.error(error)
   return true;
 };
+*/

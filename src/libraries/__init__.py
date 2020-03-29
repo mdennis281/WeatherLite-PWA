@@ -3,10 +3,12 @@ import time
 import psycopg2
 import requests
 import threading
-from PIL import Image
+import PIL
+import textwrap
 from importlib import import_module
 from flask import (
     render_template,
+    make_response,
     send_file,
     Blueprint,
     redirect,

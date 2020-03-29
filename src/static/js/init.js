@@ -1,54 +1,9 @@
 
 
+
 function DEBUG(message){
   if (cookie.get('devMode')) {
     console.info(message);
-  }
-}
-
-var assetLoader = {
-  JSLoadCount: 0,
-  JSBuffer: [],
-  JS: function(files,i=0) {
-
-    var file = files[i]
-
-    fileStorage.get(file,function(content){
-      assetLoader.JSBuffer[i] =
-      '\n<!-- ||||||||||     '+file+'     |||||||||| -->\n'+
-      '\n<script>\n'+
-        content+
-      '</script>';
-      assetLoader.JSLoadCount++;
-
-    });
-
-    if (files.length != i+1){
-      assetLoader.JS(files,i+1);
-    } else {
-      startApp();
-
-    }
-
-  },
-  CSS: function(files,callback) {
-
-    var file = files.pop();
-
-    fileStorage.get(file,function(rule){
-      let css = document.createElement('style');
-      css.type = 'text/css';
-      if (css.styleSheet) css.styleSheet.cssText = rule; // Support for IE
-      else css.appendChild(document.createTextNode(rule)); // Support for the rest
-      document.getElementsByTagName("head")[0].appendChild(css);
-    });
-
-    if (files.length){
-      assetLoader.CSS(files,callback);
-    } else {
-      if (typeof callback === 'function') callback();
-    }
-
   }
 }
 
@@ -107,30 +62,6 @@ if('serviceWorker' in navigator) {
   });
 }
 
-function startApp(count=1) {
-  function retry() {
-    setTimeout(function(){startApp(count+1)},1000);
-  }
-
-  if (assetLoader.JSLoadCount == Files.JSLength) {
-    if (!$('#scripts').html()){
-      assetLoader.JSBuffer.forEach(function(script){
-        $('#scripts').append(
-          script
-        );
-      });
-    }
-    $('document').ready(function(){
-      try {
-        app.start();
-        DEBUG('Started App.');
-      } catch {
-        DEBUG('Start Failed-- Retrying ('+String(count)+')')
-        retry();
-      }
-    });
-  } else { retry(); }
-}
 
 $(window).on('popstate', function() {
   return '';

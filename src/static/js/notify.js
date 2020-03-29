@@ -3,6 +3,7 @@ $.notifyDefaults({
 	allow_dismiss: true,
 	delay: 500000,
   showProgressbar: true,
+  offset: 5,
   placement: {
 		from: "top",
     align: "right"
