@@ -50,3 +50,7 @@ def placesLookup():
     if query:
         return jsonify(googleMaps.places(query,debug))
     return abort(400)
+
+@API.route('/app/version')
+def getVersion():
+    return jsonify({'version': 1.0})

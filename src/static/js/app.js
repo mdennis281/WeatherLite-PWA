@@ -3,7 +3,21 @@ app = {
   start: function() {
     app.load.div('#nav','/parts/navbar');
     app.load.div('#popup','/parts/popup');
+    app.updateCheck();
     app.page.selectStart();
+  },
+
+  updateCheck: function() {
+    $.get('/API/app/version',function(data){
+      var v = app.settings().version;
+      app.settings('version',data.version);
+      if (v) {
+        if (v != data.version) {
+          location.reload();
+        }
+      }
+    });
+
   },
 
   load: {
@@ -74,12 +88,13 @@ app = {
     }
   },
   settings: function(newData=null,value=null) {
-    if (newData && value) {
+    if(newData=='version'&&!value) {console.error('wutr')}
+    if (newData!=null && value!=null) {
       var settings = app.settings();
       settings[newData] = value;
       app.storage('settings',settings);
-    } else if (newData && (!value)) {
-      app.storage.set('settings',newData);
+    } else if (newData!=null && !(value!=null)) {
+      app.storage('settings',newData);
     } else {
       var settings = app.storage('settings');
       return (settings) ? settings : {};

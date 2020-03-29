@@ -13,6 +13,7 @@ var pageTriggers = {
     $('#device-browser').html(device.getBrowser());
     $('#device-os').html(device.getOS());
     $('#device-isPWA').html((device.isPWA) ? 'Yes' : 'No');
+    $('#app-version').html(app.settings().version);
   },
   about: function() {
 
