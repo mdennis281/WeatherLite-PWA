@@ -10,6 +10,7 @@ files = {
 
         '/static/js/init.js',
         '/static/js/weather.js',
+        '/static/js/PWANotify.js',
         '/static/js/popup.js',
         '/static/js/app.js',
         '/static/js/UI.js',

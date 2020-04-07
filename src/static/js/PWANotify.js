@@ -9,12 +9,11 @@
 function PWANotify() {
   if (device.getOS() == 'iOS') { //if iOS
     if (!device.isPWA) { // if not already PWA
-      $.notify(
-        'This app works best as a PWA.<br />'+
-        'Tap here for installation instructions!',
-        'iOS-PWA-Notify'
-      );
-
+      n.info(
+        'This app works best as a PWA.',
+        'Tap here to Install!',
+        function(){app.page.select('iOS-PWA')}
+      )
     }
   }
 }

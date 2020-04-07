@@ -1,10 +1,14 @@
 app = {
   title: 'WeatherLite',
   start: function() {
+    $('#app').addClass('div-hide');
     app.load.div('#nav','/parts/navbar');
     app.load.div('#popup','/parts/popup');
+    $('#app').removeClass('div-hide');
+    $('#app').animateCss('fadeIn');
     app.updateCheck();
     app.page.selectStart();
+    PWANotify();
   },
 
   updateCheck: function() {
@@ -13,7 +17,8 @@ app = {
       app.settings('version',data.version);
       if (v) {
         if (v != data.version) {
-          location.reload();
+          app.clearCache(0);
+          app.refresh();
         }
       }
     });
@@ -27,6 +32,13 @@ app = {
         if (typeof callback === 'function') callback();
       });
     },
+  },
+
+  refresh: function() {
+    $('#app').animateCss('fadeOut',function(){
+      $('#app').addClass('div-hide');
+      location.reload(true);
+    })
   },
 
   page: {
@@ -70,7 +82,7 @@ app = {
     hourMin: function(date) {
       var dt = (new Date(date));
       var hr = (dt.getHours() > 12) ? (dt.getHours()-12) : dt.getHours();
-      var min = dt.getMinutes();
+      var min = (dt.getMinutes() < 10) ? '0'+dt.getMinutes() : dt.getMinutes();
       var am_pm = (dt.getHours()>11) ? 'PM' : 'AM';
       return hr + ':' + min + ' ' + am_pm;
     },
@@ -110,17 +122,21 @@ app = {
     }
   },
 
-  clearCache: function() {
+  clearCache: function(notification=1) {
     var LS = Object.entries(localStorage);
     LS.forEach(function(entry) {
       if (entry[0].startsWith('FILESTORAGE-')) {
         localStorage.removeItem(entry[0]);
       }
     });
-    $.notify(
-      {title:"Cache Cleared.",message:"Press this notification to reload the app."},
+    caches.delete('weatherlite');
+    if (notification){
+      n.info(
+        'Cache Cleared.<br/>','Press here to reload the app.',
+        function() { app.refresh() }
+      );
+    }
 
-    )
   },
 
   getQSP: function(key) {

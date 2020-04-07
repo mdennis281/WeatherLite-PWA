@@ -9,7 +9,6 @@ from src.libraries import (
 )
 
 
-
 app = Flask(__name__)
 
 app.config.update(

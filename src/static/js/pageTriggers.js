@@ -17,5 +17,8 @@ var pageTriggers = {
   },
   about: function() {
 
+  },
+  'iOS-PWA': function() {
+    
   }
 }
