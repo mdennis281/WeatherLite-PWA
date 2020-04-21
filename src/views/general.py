@@ -4,7 +4,8 @@ from src.libraries import (
 ####    Flask
     render_template,
     make_response,
-    request
+    request,
+    APIKeys
 )
 
 
@@ -14,11 +15,15 @@ from src.libraries import (
 @general.route('/')
 def main():
     assets = files
-    if request.cookies.get('devMode'):
-        assets = randomize(assets)
-    return render_template('init/index.html',assets=assets)
+    return render_template(
+        'init/index.html',
+        assets=assets,
+        analyticsID=APIKeys.GAnalytics
+    )
 
-
+#####################################################
+#       PWA Service Worker
+#####################################################
 @general.route('/worker.js')
 def workerJS():
     r = make_response(
