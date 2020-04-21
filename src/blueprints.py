@@ -20,7 +20,6 @@ def Initialize(view_path, url_prefix):
 general      = Initialize('general', '/')
 webParts     = Initialize('webParts','/parts')
 API          = Initialize('API','/API')
-clientErrors = Initialize('clientErrors','/clientErrors')
 appImages    = Initialize('appImages','/app/images')
 
 
@@ -28,6 +27,5 @@ all = (
     general,
     webParts,
     API,
-    clientErrors,
     appImages
 )

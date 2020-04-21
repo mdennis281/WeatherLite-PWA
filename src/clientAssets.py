@@ -16,7 +16,6 @@ files = {
         '/static/js/UI.js',
         '/static/js/pageTriggers.js',
         '/static/js/maps.js',
-        '/static/js/errorLogger.js',
         '/static/js/general.js',
         '/static/js/notify.js',
         '/static/js/device.js',
