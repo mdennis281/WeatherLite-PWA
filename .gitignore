@@ -4,3 +4,4 @@
 src/libraries/APIKeys.py
 .remote-sync.json
 /src/static/bundles
+tools/
