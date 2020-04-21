@@ -90,7 +90,7 @@ var ui = {
             $('#hourly-forecast').append(
               '<td alt="'+w.shortForecast+'">'+
                 '<p class="time">'+time+'</p>'+
-                '<i class="'+ui.weather.selectIcon(w)+'" alt="'+w.shortForecast+'"></i>'+
+                '<i class="'+ui.weather.selectIcon(w)+'" data-toggle="tooltip" title="'+w.shortForecast+'"></i>'+
                 '<p class="wind">'+w.windSpeed+'</p>'+
                 '<p class="temp">'+w.temperature+'°</p>'+
               '</td>'
