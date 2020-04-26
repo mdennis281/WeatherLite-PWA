@@ -88,14 +88,23 @@ var ui = {
             var time = app.strFormat.hour(w.startTime);
             if (!i) {time = 'Now'}
             $('#hourly-forecast').append(
-              '<td alt="'+w.shortForecast+'">'+
+              '<td '+
+                'alt="'+w.shortForecast+'" '+
+                'data-toggle="tooltip" '+
+                'data-html="true" '+
+                'title="'+ui.weather.generate.forecast.hourlyDetail(w)+'"'+
+              '>'+
                 '<p class="time">'+time+'</p>'+
-                '<i class="'+ui.weather.selectIcon(w)+'" data-toggle="tooltip" title="'+w.shortForecast+'"></i>'+
+                '<i class="'+ui.weather.selectIcon(w)+'"></i>'+
                 '<p class="wind">'+w.windSpeed+'</p>'+
                 '<p class="temp">'+w.temperature+'°</p>'+
               '</td>'
             );
           });
+        },
+        hourlyDetail: function(x) {
+          return '<p>'+x.shortForecast+'</p>' +
+            '<p>Wind: '+x.windSpeed+' '+x.windDirection+'</p>';
         },
         daily: function(forecast) {
           var i;
