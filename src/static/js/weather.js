@@ -1,18 +1,49 @@
+/*
+  the weather object is an extremely overcomplicated tool
+  that relies heavily on timing.
+
+  When the weather page is loaded, ui.weather.generate()
+  loops through a call until the following condition is true:
+    (weather.lastFetch != null) && (weather.isLoading == false)
+
+  There is a forecast caching feature that caches all forecasts if:
+    (current hour == current hour when data was cached) &&
+    (cache time < 30 minutes from now)
+
+  The app automatically checks the cache of all favorited locations
+  when the user opens the weather page or the favorites page.
+*/
 weather = {
   lastFetch: function(){
     return weather.cache().last.w;
   },
   isLoading: false,
   get: function(coords,callback) {
-    weather.isLoading = true;
+    //a way to determine if the data was fetched directly
+    //or if the application was attempting to cache
+    //all favorites.
+    //This prevents the wrong weather data from being loaded
+    //unintentionally.
+    // TLDR: if callback == true, it's not the user directly asking
+    // to see this data.
+    if (callback != true) {
+      weather.isLoading = true;
+    }
     var lat = parseFloat((coords.lat).toFixed(4));
     var lng = parseFloat((coords.lng).toFixed(4));
     var data = weather.checkCache(lat,lng);
-    if (data && !(callback)) {
+
+    if (data && !(callback == true)) {
       weather.cache('last',data);
       weather.isLoading = false;
     } else if (!data) {
-      weather.fetchByCoord(lat,lng,callback);
+      weather.fetchByCoord(lat,lng,function(){
+        if (callback != true) {
+          weather.cache('last',data);
+        } else {
+          if (typeof callback === 'function') callback(data);
+        }
+      });
     } else {
       weather.isLoading = false;
       if (typeof callback === 'function') callback(data);
@@ -57,7 +88,8 @@ weather = {
           w: data,
           fetch: Date.now()
         }
-        weather.cache('last',data);
+
+        //cache the data for this lat/lng
         weather.cache(lat+','+lng,data);
 
         weather.isLoading = false;

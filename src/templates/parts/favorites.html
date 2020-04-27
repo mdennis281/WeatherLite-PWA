@@ -1,9 +1,10 @@
 <div class="flex-around">
+  <!-- list favorites view -->
   <div id="favorites-container" class="list-container">
-    <!-- list favorites view -->
     <div class="list-bar">
       <span class="title">Favorite Locations</span>
     </div>
+    <!-- Current Location Item -->
     <div class="favorite-entry list-item"
          onclick="weather.getLocal();app.page.select('weather')">
             <p>
@@ -11,9 +12,13 @@
               Current Location
             </p>
     </div>
+    <!-- Saved Favorites List
+        ( loaded from pageTriggers.favorites() > ui.favorites.generate() )
+    -->
     <div id="favorites-list">
 
     </div>
+    <!-- Favorites bottom nav -->
     <div class="list-bar flex-between">
       <i
         id="edit-favorite-btn"

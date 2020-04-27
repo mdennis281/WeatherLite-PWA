@@ -1,10 +1,11 @@
 var ui = {
   weather: {
-    render: function () {
+    render: function (callback) {
       if (weather.isLoading) {
-        setTimeout(function(){ui.weather.render();},100);
+        setTimeout(function(){ui.weather.render(callback);},100);
       } else {
         ui.weather._render(weather.lastFetch());
+        callback();
       }
     },
 
@@ -92,6 +93,7 @@ var ui = {
                 'alt="'+w.shortForecast+'" '+
                 'data-toggle="tooltip" '+
                 'data-html="true" '+
+                'data-placement="top" '+
                 'title="'+ui.weather.generate.forecast.hourlyDetail(w)+'"'+
               '>'+
                 '<p class="time">'+time+'</p>'+
@@ -234,7 +236,9 @@ var ui = {
       });
       if (!query) {
         $('#search-results').html(
-          '<div class="list-item bg-none"><p>Please enter a city name in the textbox above</p></div>'
+          '<div class="list-item bg-none">'+
+            '<p>Please enter a city name in the textbox above</p>'+
+          '</div>'
         );
       }
     },

@@ -1,3 +1,18 @@
+/*
+  the app object is the backbone to this PWA
+    app.start():
+      -loads in the appropriate divs
+      -notifies user about PWA compatibility if on iOS
+      -Checks for updates (reloads app if updates are available)
+      -Chooses either the last open page, or opens the weather.
+    app.refresh():
+      -soft reloads the application
+    app.page.select():
+      -standardized way to load pages into the content div
+      -highlights appropriate icon
+      -executes page-specific JS
+      -initializes tooltips
+*/
 app = {
   title: 'WeatherLite',
   start: function() {
@@ -47,11 +62,18 @@ app = {
        //if pressed option isnt already selected
       if (! $('#'+option).hasClass('selected')) {
         app.load.div('#page','/parts/'+option,function() {
+          // Sets page url
           window.history.replaceState(option,app.title,'/?page='+option);
-          pageTriggers[option]();
+          //removes navbar selected icon
           $('#nav-row .option').removeClass('selected');
+          //adds correct selected icon
           $('#'+option).addClass('selected');
-          $('[data-toggle="tooltip"]').tooltip(); //popper
+          //loads any page specific JS
+          pageTriggers[option](function(){
+            //tooltip loading
+            $('[data-toggle="tooltip"]').tooltip();
+          });
+          //sets lastpage is the app is closed and re-opened
           app.settings('lastPage',option);
         });
       }
