@@ -1,7 +1,16 @@
 from src.libraries import io,requests,weather,textwrap
 from PIL import Image, ImageDraw, ImageFont
-
-
+"""
+resizes an image
+Args:
+    required:
+        imagePath : path to img wihin ./src/static/img
+        width : pixel width
+    optional:
+        height : pixel height | will constrain proportions if unspecified
+    returns:
+        PNG image
+"""
 def imageResizer(imagePath,width,height):
     imagePath = './src/static/img/' + imagePath
     img = Image.open(imagePath)
@@ -14,6 +23,8 @@ def imageResizer(imagePath,width,height):
     output.seek(0,0)
     return output
 
+#returns an image of the apple touch icon
+# it grabs the logo and puts a background behind it
 def appleTouchIcon():
     logo = Image.open(imageResizer('appIcon.png',160,160))
     ico = Image.new("RGB",(180,180),(11, 19, 43))
@@ -23,6 +34,8 @@ def appleTouchIcon():
     output.seek(0,0)
     return output
 
+#generates a website thumbnail dependant
+#on the location of the IP address of the requestor.
 def websiteThumbnail(IP):
     wInfo = weather.getWeatherByCoords(IP2Coords(IP))
     thumbnail = Image.new("RGBA",(1200,630),(11, 19, 43))
@@ -70,7 +83,7 @@ def websiteThumbnail(IP):
     output.seek(0,0)
     return output
 
-
+#converts an IP address to coordinates
 def IP2Coords(IP):
     position = {}
     data = requests.get('https://tools.keycdn.com/geo.json?host='+IP).json()

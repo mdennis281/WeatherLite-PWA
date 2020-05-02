@@ -4,11 +4,16 @@ from src.libraries import (
     APIKeys
 )
 
-
+# used to make multiple requests
+# and append the response to an object
+# used in callNOAA()
 def threadedRequest(url,headers,obj,key):
     data = requests.get(url,headers=headers).json()
     obj[key] = data
 
+# Gets weather info from OWM and NOAA APIs
+# returns an object with all weather info
+# in the formatting expected by clientside
 def getWeatherByCoords(data):
     sParams = {
         'lat': data['latitude'],

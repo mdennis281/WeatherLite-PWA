@@ -1,3 +1,4 @@
+//Defines notification settings for bootstrap notify
 
 $.notifyDefaults({
 	allow_dismiss: true,
@@ -14,6 +15,8 @@ $.notifyDefaults({
 	}
 });
 
+
+//n.info() is a basic. informational popup themed for this application
 var n = {
   info: function(title,message,callback) {
     $.notify({

@@ -113,6 +113,7 @@ app = {
       var dt = (new Date(date));
       var hr = (dt.getHours() > 12) ? (dt.getHours()-12) : dt.getHours();
       var am_pm = (dt.getHours()>11) ? 'PM' : 'AM';
+      if (hr == 0) hr = 12 //if midnight
       return hr + ' ' + am_pm;
     },
     weekday: function(date) {
@@ -122,8 +123,16 @@ app = {
       return str.split(' ')[0];
     }
   },
+  /*
+    Usage:
+      settings()
+        get all app settings as obj
+      settings(key)
+        get specific app setting
+      settings(key,val)
+        update specific app setting
+  */
   settings: function(newData=null,value=null) {
-    if(newData=='version'&&!value) {console.error('wutr')}
     if (newData!=null && value!=null) {
       var settings = app.settings();
       settings[newData] = value;
@@ -135,6 +144,14 @@ app = {
       return (settings) ? settings : {};
     }
   },
+  /*
+    uses localstorage to store various settings
+    usage:
+      app.storage(key)
+        returns object
+      app.storage(key,data)
+        updates keyed object with data
+  */
   storage: function(key,data=null) {
     if (!data) {
       if (localStorage['APPSTORAGE-'+key]){
@@ -144,7 +161,10 @@ app = {
       localStorage['APPSTORAGE-'+key] = JSON.stringify(data);
     }
   },
-
+  /*
+    attempted solution to clearing cache.
+    behavior varies between browsers
+  */
   clearCache: function(notification=1) {
     var LS = Object.entries(localStorage);
     LS.forEach(function(entry) {
@@ -161,7 +181,7 @@ app = {
     }
 
   },
-
+  //gets QSP value from key
   getQSP: function(key) {
     return (new URLSearchParams(window.location.search)).get(key);
   },

@@ -3,7 +3,13 @@ from src.libraries import (
     APIKeys
 )
 
-
+"""
+    converts location to coords with GCP geocoding API
+    args:
+        location : string of location
+    returns:
+        {latitude: <val>, longitude: <val>}
+"""
 def geocoding(location):
     params = {
         'address': location,
@@ -17,7 +23,18 @@ def geocoding(location):
 
     return data['results'][0]['geometry']['location']
 
-def places(query,debug):
+
+"""
+    Converts a partial location string to options for a full location string
+    Args:
+        Required:
+            query : partial location string
+        Optional:
+            debug : will not filter results for addresses
+                        (dont need addresses for weather info)
+    Returns: List of location strings
+"""
+def places(query,debug=False):
     def filterResults(locations):
         results = []
         badTypes = ['establishment','street_address','premise','route']

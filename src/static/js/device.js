@@ -1,3 +1,11 @@
+//Device detection script
+//Doesnt work perfectly for mobile- but it's the most in depth
+//ive found to date
+
+//Extenal calls:
+//    device.getOS()
+//    device.getBrowser()
+
 var device = {
   getOS: function() {
     var userAgent = window.navigator.userAgent,

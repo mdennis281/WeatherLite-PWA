@@ -1,5 +1,12 @@
+/*
+  An admittedly messy solution to encapsulate all the javascript needed
+  to make the individual pages functional.
+*/
 var ui = {
   weather: {
+    //Called on weather page load
+    //waits until the weather object is finished
+    //loading. When it is, it will move onto ui.weather._render()
     render: function (callback) {
       if (weather.isLoading) {
         setTimeout(function(){ui.weather.render(callback);},100);
@@ -9,6 +16,7 @@ var ui = {
       }
     },
 
+    //Renders the webpage with data retrieved from weather.lastFetch()
     _render: function(wData) {
       var now = wData.NOAA.hourly.properties.periods[0];
       ui.weather.generate.radar(wData.call);
@@ -41,6 +49,8 @@ var ui = {
       $('#weather-content').removeClass('div-hide');
     },
 
+    //Logic to determine which icon to display for the user.
+    //Used for both hourly and daily forecasts
     selectIcon: function(w) {
       var f = w.shortForecast;
       if (f.match(/Sunny|Clear/)) {
@@ -80,9 +90,10 @@ var ui = {
       }
       return 'fad fa-question';
     },
-
+    //called from ui.weather._render()
     generate: {
       forecast: {
+        //creates the horizontal scrolling hourly forecast table
         hourly: function(forecast) {
           forecast = forecast.slice(0,24);
           forecast.forEach(function(w,i){
@@ -104,15 +115,18 @@ var ui = {
             );
           });
         },
+        //creates the tooltips when tapped
         hourlyDetail: function(x) {
           return '<p>'+x.shortForecast+'</p>' +
             '<p>Wind: '+x.windSpeed+' '+x.windDirection+'</p>';
         },
+        //generate the daily table.
+        //also generates the popup when clicking for details
         daily: function(forecast) {
           var i;
           for (i=0; i < forecast.length; i+=2) {
             $('#daily-forecast').append(
-              '<tr onclick="popup.open(\''+
+              '<tr onclick="popup.open(\''+ //popup content
                         ui.weather.generate.detail.daily(
                           forecast[i],
                           forecast[i+1]
@@ -127,13 +141,16 @@ var ui = {
           }
         }
       },
+      //this opens the radar screen
       radar: function(coords) {
-        var url = 'https://maps.darksky.net/@precipitation_rate,'+
+        var url = 'https://maps.darksky.net/@radar,'+
                   coords.latitude+','+coords.longitude+',10'
 
         $('#radar-container .body').html('<iframe src="'+url+'" />')
       },
       detail: {
+        //generates content seen when tapping the detail for weather
+        //on a specific day
         daily: function(day,night) {
           buffer = '';
           buffer += '<h4>'+day.name+'</h4>';
@@ -149,10 +166,12 @@ var ui = {
       },
     },
     radar: {
+      //shows the iframe
       open: function() {
         $('#radar-container').removeClass('div-hide');
         $('#radar-container .body iframe').focus();
       },
+      //hides the iframe
       close: function() {
         $('#radar-container').addClass('div-hide');
         $('#weather-content').focus();
@@ -160,6 +179,7 @@ var ui = {
     }
   },
   favorites: {
+    //populates the favorites list (runs on page load)
     generate: function() {
       weather.getAll();
       var favorites = maps.favorites.get();
@@ -171,6 +191,7 @@ var ui = {
         );
       });
     },
+    //helper for ui.favorites.generate()
     _createLocationEntry(name,onClick) {
       $('#favorites-list').append(
         '<div class="favorite-entry list-item"'+
@@ -187,12 +208,14 @@ var ui = {
       );
     },
     new: {
+      //opens add a favorite screen
       open: function() {
         $('#favorites-container').addClass('div-hide');
         $('#new-favorite').removeClass('div-hide');
         ui.favorites.edit.stop();
         $('#favorite-searchbox').focus();
       },
+      //closes add a favorite screen
       close: function() {
         $('#favorites-container').removeClass('div-hide');
         $('#new-favorite').addClass('div-hide');
@@ -200,6 +223,7 @@ var ui = {
       }
     },
     edit: {
+      //allows you to remove favorites
       start: function() {
         $('#edit-favorite-btn').addClass('div-hide');
         $('#unedit-favorite-btn').removeClass('div-hide');
@@ -217,12 +241,14 @@ var ui = {
         });
       }
     },
+    //run when favorites page is edited, then entry is deleted
     delete: function(name) {
       maps.favorites.delete(name);
       ui.favorites.generate();
       $('.edit-entry').removeClass('div-hide');
       $('.list-item').addClass('disabled');
     },
+    //run whenever the location search texbox changes
     updateSearch: function(query) {
       maps.lookup(query,function(results){
         $('#search-results').html('');
@@ -234,7 +260,7 @@ var ui = {
           );
         });
       });
-      if (!query) {
+      if (!query) { //if no results
         $('#search-results').html(
           '<div class="list-item bg-none">'+
             '<p>Please enter a city name in the textbox above</p>'+
@@ -242,6 +268,7 @@ var ui = {
         );
       }
     },
+    //run when a new favorite entry opt is selected
     addEntry: function(query) {
       maps.favorites.add(query,function(){
         ui.favorites.generate();
@@ -252,32 +279,26 @@ var ui = {
     }
   },
   settings: {
+    //called when opening the page
     loadContext: function() {
       ui.settings.onlineMode.genToggle();
-      //ui.settings.onlineMode.updateText();
 
     },
+    //refers to the onlinemode toggle btn
     onlineMode: {
+      //defines what JS is run when the onlinemode toggle button
+      //is toggled on and off
       genToggle: function() {
         general.createToggle(
           '#cached-mode-toggle', //parentElement
           !(app.devMode.isEnabled()), //isToggled
           function() { //Toggle on callback
             app.devMode.enable();
-            ui.settings.onlineMode.updateText();
           },
           function() { //Toggle off callback
             app.devMode.disable();
-            ui.settings.onlineMode.updateText();
           }
         )
-      },
-      updateText: function() {
-        if (app.devMode.isEnabled()) {
-          $('#cached-mode-desc').html('Online&nbsp;');
-        } else {
-          $('#cached-mode-desc').html('Cached');
-        }
       }
     },
   }

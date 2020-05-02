@@ -1,3 +1,7 @@
+// used to interface with the webserver regarding:
+//    Partial matches of geolocation names (adding favorites)
+//    Matching geolocation names to favorites
+
 var maps = {
   lookup: function(location,callback) {
     if (location) {
