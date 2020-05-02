@@ -58,6 +58,7 @@ files = {
         'https://cdn.devduo.us/bundles/FA/webfonts/fa-solid-900.woff2',
         'https://cdn.devduo.us/bundles/FA/webfonts/fa-brands-400.woff2',
         'https://fonts.gstatic.com/s/inconsolata/v18/QldKNThLqRwH-OJ1UHjlKGlZ5qg.woff2',
+        '/manifest.json'
     ]
 }
 
