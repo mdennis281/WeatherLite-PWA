@@ -141,7 +141,7 @@ app = {
       app.storage('settings',newData);
     } else {
       var settings = app.storage('settings');
-      return (settings) ? settings : {};
+      return (typeof settings === 'object') ? settings : {};
     }
   },
   /*
@@ -155,7 +155,8 @@ app = {
   storage: function(key,data=null) {
     if (!data) {
       if (localStorage['APPSTORAGE-'+key]){
-        return JSON.parse(localStorage['APPSTORAGE-'+key]);
+        var r = JSON.parse(localStorage['APPSTORAGE-'+key]);
+        return (typeof r === 'object') ? r : {};
       }
     } else {
       localStorage['APPSTORAGE-'+key] = JSON.stringify(data);

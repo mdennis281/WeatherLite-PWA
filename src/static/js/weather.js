@@ -37,7 +37,7 @@ weather = {
       weather.cache('last',data);
       weather.isLoading = false;
     } else if (!data) {
-      weather.fetchByCoord(lat,lng,function(){
+      weather.fetchByCoord(lat,lng,function(data){
         if (callback != true) {
           weather.cache('last',data);
         } else {
@@ -109,11 +109,11 @@ weather = {
     return false;
   },
   cache: function(newData=null,value=null) {
-    if (newData && value) {
+    if ((newData != null) && (value != null)) {
       var settings = weather.cache();
       settings[newData] = value;
       app.storage('weatherCache',settings);
-    } else if (newData) {
+    } else if (newData != null) {
       app.storage('weatherCache',newData);
     } else {
       var weatherCache = app.storage('weatherCache');
