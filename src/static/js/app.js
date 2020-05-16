@@ -5,10 +5,11 @@ app = {
     app.load.div('#nav','/parts/navbar');
     app.load.div('#popup','/parts/popup');
     $('#app').removeClass('div-hide');
-    $('#app').animateCss('fadeIn');
+    $('#app').animateCss('fadeIn',function(){
+      PWANotify();
+    });
     app.updateCheck();
     app.page.selectStart();
-    PWANotify();
   },
 
   updateCheck: function() {

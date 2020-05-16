@@ -13,6 +13,7 @@
   justify-content: space-around;
   display: -ms-flexbox;
   display: flex;
+  z-index: 1072;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
 }
 
@@ -21,7 +22,7 @@
   background-color: rgba(0,0,0,.6);
   width: 100%;
   cursor: pointer;
-  z-index: 1;
+  z-index: 1073;
   position: absolute;
 }
 
@@ -29,7 +30,7 @@
     background-color: #0B132B;
     padding: 15px;
     text-align: center;
-    z-index: 2;
+    z-index: 1074;
     border: 1px solid rgba(204, 204, 204,.4);
     max-height: 80%;
     overflow-y: auto;
