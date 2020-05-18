@@ -15,7 +15,16 @@
 */
 weather = {
   lastFetch: function(){
-    return weather.cache().last.w;
+    var x = weather.cache().last;
+    var wData = weather.checkCache(x.lat,x.lng);
+    if (wData) {
+      weather.cache('last',wData);
+      return wData.w;
+    } else {
+      weather.getLocal();
+      return false;
+    }
+
   },
   isLoading: false,
   get: function(coords,callback) {
@@ -87,6 +96,8 @@ weather = {
       function(data){
         data = {
           w: data,
+          lat: lat,
+          lng: lng,
           fetch: Date.now()
         }
 

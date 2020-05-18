@@ -11,8 +11,14 @@ var ui = {
       if (weather.isLoading) {
         setTimeout(function(){ui.weather.render(callback);},100);
       } else {
-        ui.weather._render(weather.lastFetch());
-        callback();
+        var wData = weather.lastFetch();
+        if (wData) {
+          ui.weather._render(wData);
+          callback();
+        } else {
+          ui.weather.render(callback);
+        }
+
       }
     },
 
