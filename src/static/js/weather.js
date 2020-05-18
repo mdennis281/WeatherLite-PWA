@@ -78,6 +78,7 @@ weather = {
   },
 
   fetchByCoord: function(lat,lng,callback) {
+
     weather.isLoading = true;
     DEBUG('Fetching weather from: '+lat+', '+lng);
     $.getJSON('/API/weatherLookup'+
@@ -89,11 +90,13 @@ weather = {
           fetch: Date.now()
         }
 
-        //cache the data for this lat/lng
-        weather.cache(lat+','+lng,data);
-
-        weather.isLoading = false;
-        if (typeof callback === 'function') callback(data);
+        if (data.w.success) {
+          weather.cache(lat+','+lng,data);
+          weather.isLoading = false;
+          if (typeof callback === 'function') callback(data);
+        } else {
+          n.info('Weather Fetch failed. ', data.w.error);
+        }
       }
     );
   },
