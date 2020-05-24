@@ -7,7 +7,7 @@
   "short_name": "WeatherLite",
   "icons": [
     {
-      "src": "/app/images/appIcon.png?width=144",
+      "src": "/app/images/appIcon.png?width=250",
       "type": "image/png",
       "sizes": "144x144"
     }
