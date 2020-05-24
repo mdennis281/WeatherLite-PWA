@@ -106,18 +106,19 @@ var ui = {
             var time = app.strFormat.hour(w.startTime);
             if (!i) {time = 'Now'}
             $('#hourly-forecast').append(
-              '<td '+
-                'alt="'+w.shortForecast+'" '+
+              '<td alt="'+w.shortForecast+'"> '+
+              '<div class="hourly-item" '+
                 'data-toggle="tooltip" '+
                 'data-html="true" '+
                 'data-placement="top" '+
+                'v-b-tooltip.hover.viewport '+
                 'title="'+ui.weather.generate.forecast.hourlyDetail(w)+'"'+
               '>'+
                 '<p class="time">'+time+'</p>'+
                 '<i class="'+ui.weather.selectIcon(w)+'"></i>'+
                 '<p class="wind">'+w.windSpeed+'</p>'+
                 '<p class="temp">'+w.temperature+'°</p>'+
-              '</td>'
+              '</div></td>'
             );
           });
         },

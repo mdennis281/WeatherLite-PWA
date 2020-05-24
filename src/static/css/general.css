@@ -140,3 +140,9 @@ p {
 a i {
   color: #aaa;
 }
+.hourly-item {
+  z-index: 1;
+  position: relative;
+  left: 0;
+  top: 0;
+}
