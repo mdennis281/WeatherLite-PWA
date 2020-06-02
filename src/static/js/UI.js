@@ -132,19 +132,31 @@ var ui = {
         daily: function(forecast) {
           var i;
           for (i=0; i < forecast.length; i+=2) {
-            $('#daily-forecast').append(
-              '<tr onclick="popup.open(\''+ //popup content
-                        ui.weather.generate.detail.daily(
-                          forecast[i],
-                          forecast[i+1]
-                        )+
-                        '\')" class="hover-pointer">' +
-                '<td>'+app.strFormat.weekday(forecast[i].startTime)+'</td>'+
-                '<td><i class="'+ui.weather.selectIcon(forecast[i])+'"></i></td>'+
-                '<td>'+forecast[i].temperature+'°</td>'+
-                '<td>'+forecast[i+1].temperature+'°</td>'+
-              '</tr>'
-            )
+            var day = app.strFormat.weekday(forecast[i].startTime);
+            if (forecast[i].name.includes('night')) {
+              var f1 = forecast[i];
+              var f2 = null;
+              i-=1;
+              day = 'Overnight';
+            } else {
+              var f1 = forecast[i];
+              var f2 = forecast[i+1];
+            }
+            if (f1) {
+              $('#daily-forecast').append(
+                '<tr onclick="popup.open(\''+ //popup content
+                          ui.weather.generate.detail.daily(
+                            f1,
+                            f2
+                          )+
+                          '\')" class="hover-pointer">' +
+                  '<td>'+day+'</td>'+
+                  '<td><i class="'+ui.weather.selectIcon(f1)+'"></i></td>'+
+                  '<td>'+f1.temperature+'°</td>'+
+                  '<td>'+((f2) ? f2.temperature : '-')+'°</td>'+
+                '</tr>'
+              )
+            }
           }
         }
       },
@@ -161,13 +173,17 @@ var ui = {
         daily: function(day,night) {
           buffer = '';
           buffer += '<h4>'+day.name+'</h4>';
-          buffer += '<h6>'+day.temperature+'° - '+night.temperature+'°</h6>';
+          buffer += '<h6>'+day.temperature+'°';
+          if (night) {buffer += ' - '+night.temperature+'°'}
+          buffer += '</h6>';
           buffer += '<p>'+day.detailedForecast+'</p><br/>';
           buffer += '<p> Wind: '+day.windSpeed+' '+day.windDirection+'</p>';
-          buffer += '<hr />';
-          buffer += '<h4>'+night.name+'</h4>';
-          buffer += '<p>'+night.detailedForecast+'</p><br/>';
-          buffer += '<p> Wind: '+night.windSpeed+' '+night.windDirection+'</p>';
+          if (night) {
+            buffer += '<hr />';
+            buffer += '<h4>'+night.name+'</h4>';
+            buffer += '<p>'+night.detailedForecast+'</p><br/>';
+            buffer += '<p> Wind: '+night.windSpeed+' '+night.windDirection+'</p>';
+          }
           return buffer;
         }
       },
