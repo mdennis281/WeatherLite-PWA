@@ -3,21 +3,25 @@
   <div class="list-bar">
     <span class="title">App Settings</span>
   </div>
-  <table class="list-table">
+  <table class="list-table two-col">
     <tr>
       <td>Cache Assets</td>
       <td id="cached-mode-desc" class="sub div-hide"></td>
-      <td><div id="cached-mode-toggle"></div></td>
+      <td>
+        <div class="flex-center">
+          <div class="ml-1" id="cached-mode-toggle"></div>
+        </div>
+      </td>
     </tr>
     <tr>
       <td>Restart App</td>
-      <td class="text-left">
+      <td >
         <i class="fad fa-sync btn-active ml-2" onclick="app.refresh()"></i>
       </td>
     </tr>
     <tr>
       <td>Clear Cache</td>
-      <td class="text-left">
+      <td >
         <i class="fad fa-window-close btn-active ml-2" onclick="app.clearCache()"></i>
       </td>
     </tr>
@@ -25,7 +29,7 @@
   <div class="list-bar">
     <span class="title">App Info</span>
   </div>
-  <table class="list-table">
+  <table class="list-table two-col">
     <tr>
       <td>Version</td>
       <td id="app-version"></td>
@@ -41,6 +45,23 @@
     <tr>
       <td>PWA</td>
       <td id="device-isPWA"></td>
+    </tr>
+  </table>
+  <div class="list-bar">
+    <span class="title">Location Info</span>
+  </div>
+  <table class="list-table two-col">
+    <tr>
+      <td>Latitude</td>
+      <td id="lat-val"></td>
+    </tr>
+    <tr>
+      <td>Longitude</td>
+      <td id="lon-val"></td>
+    </tr>
+    <tr>
+      <td>Map View</td>
+      <td id="cl-link"></td>
     </tr>
   </table>
 </div>

@@ -381,6 +381,10 @@ hr {
     color: #ccc;
 }
 
+.two-col td {
+  width:50%;
+}
+
 
 
 

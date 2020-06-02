@@ -23,7 +23,13 @@ var pageTriggers = {
     $('#device-os').html(device.getOS());
     $('#device-isPWA').html((device.isPWA) ? 'Yes' : 'No');
     $('#app-version').html(app.settings().version);
-    callback();
+    weather.fetchLocation(function(lat,lng){
+      $('#lat-val').html(Number((lat).toFixed(2)));
+      $('#lon-val').html(Number((lng).toFixed(2)));
+      var link = 'https://www.google.com/maps/place/'+lat+','+lng;
+      $('#cl-link').html('<a target="_blank" href="'+link+'">Current Location</a>');
+      callback();
+    });
   },
   about: function(callback) {
     callback();
