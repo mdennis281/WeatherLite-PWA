@@ -2,8 +2,6 @@
 A PWA that visualizes weather.
 It features saving favorite locations, rain forecasts, heatmaps, etc.
 
-This is licensed as MIT- so use it how you want.
-
 Live Demo here: https://weatherlite.app
 
 I have commented each file out pretty well. So it should prove pretty easy to reverse engineer.
