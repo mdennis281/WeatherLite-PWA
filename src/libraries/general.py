@@ -1,4 +1,4 @@
-from src.libraries import io,requests,weather,textwrap
+from src.libraries import io,requests,weather,textwrap, json
 from PIL import Image, ImageDraw, ImageFont
 """
 resizes an image
@@ -90,3 +90,13 @@ def IP2Coords(IP):
     position['latitude'] = data['data']['geo']['latitude']
     position['longitude'] = data['data']['geo']['longitude']
     return position
+
+#returns current version of app from appInfo.json
+def getAppVersion():
+    f = open('appInfo.json')
+    data = f.read()
+    f.close()
+
+    data = json.loads(data)
+
+    return data['version']

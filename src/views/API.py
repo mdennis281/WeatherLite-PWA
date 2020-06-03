@@ -53,4 +53,6 @@ def placesLookup():
 
 @API.route('/app/version')
 def getVersion():
-    return jsonify({'version': '1.31'})
+    return jsonify({
+        'version': general.getAppVersion()
+    })
