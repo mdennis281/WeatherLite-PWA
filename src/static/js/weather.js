@@ -16,7 +16,7 @@
 weather = {
   lastFetch: function(){
     var x = weather.cache().last;
-    var wData = weather.checkCache(x.lat,x.lng);
+    if (x) {var wData = weather.checkCache(x.lat,x.lng);}
     if (wData) {
       weather.cache('last',wData);
       return wData.w;
