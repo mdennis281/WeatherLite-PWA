@@ -1,19 +1,24 @@
 from src.libraries import (
     threading,
     requests,
-    APIKeys
+    APIKeys,
+    time
 )
-
+TIMING = {}
 # used to make multiple requests
 # and append the response to an object
 # used in callNOAA()
 def threadedRequest(url,headers,obj,key):
+    global TIMING
+    start = time.time()
     r = requests.get(url,headers=headers)
     if r.status_code == 200:
         obj[key] = r.json()
     else:
         obj['success'] = False
         obj['error'] = 'NOAA API failed on call: '+key +' (HTTP '+str(r.status_code)+')'
+    end = time.time()
+    TIMING['NOAA-'+key] = round(end-start,2)
 
 
 
@@ -21,6 +26,7 @@ def threadedRequest(url,headers,obj,key):
 # returns an object with all weather info
 # in the formatting expected by clientside
 def getWeatherByCoords(data):
+    gStart = time.time()
     sParams = {
         'lat': data['latitude'],
         'lon': data['longitude'],
@@ -57,9 +63,15 @@ def getWeatherByCoords(data):
             wData['success'] = False
             wData['error'] = 'OWM API failed'
 
+    gEnd = time.time()
+    TIMING['global'] = round(gEnd-gStart,2)
+    wData['timing'] = TIMING
+
     return wData
 
 def callNOAA(coords,wData):
+    global TIMING
+    start = time.time()
     latitude  = round(float(coords['lat']),4)
     longitude = round(float(coords['lon']),4)
 
@@ -69,6 +81,8 @@ def callNOAA(coords,wData):
         'Accept': 'application/vnd.noaa.dwml+xml;version=1'
     }
     r = requests.get(baseURL,headers=headers)
+    end = time.time()
+    TIMING['NOAA'] = round(end-start,2)
     if r.status_code == 200:
         data['base'] = r.json()
     else:
@@ -110,6 +124,8 @@ def callNOAA(coords,wData):
     wData['NOAA'] = data
 
 def callOpenWeatherMap(customParams,wData):
+    global TIMING
+    start = time.time()
     sParams = { 'appid': APIKeys.OWM }
 
     for k,v in customParams.items():
@@ -128,3 +144,5 @@ def callOpenWeatherMap(customParams,wData):
     else:
         wData['success'] = False
         wData['error'] = 'OWM API failed. (HTTP '+str(r.status_code)+')'
+    end = time.time()
+    TIMING['OWM'] = round(end-start,2)
