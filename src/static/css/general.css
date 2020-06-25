@@ -10,6 +10,8 @@
     -ms-overflow-style: none;
 }
 
+
+
 .no-select {
     -webkit-touch-callout: none;
     /* iOS Safari */
@@ -145,4 +147,26 @@ a i {
   position: relative;
   left: 0;
   top: 0;
+}
+/*SCROLLBAR SETTINGS*/
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    background: #1c2541;
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: #253050;
+}
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, .5);
 }
