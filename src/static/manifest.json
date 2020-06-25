@@ -1,15 +1,35 @@
 {
-  "display": "standalone",
-  "background_color": "#0B132B",
-  "orientation": "portrait",
-  "start_url": "/",
+  "manifest_version": 2,
   "name": "WeatherLite",
-  "short_name": "WeatherLite",
+  "version": "2.0",
+
+  "default_locale": "en",
+  "description": "WeatherLite is a robust Progressive Web Application (PWA) that offers full-featured weather visualization.",
   "icons": [
+    {
+      "src": "/app/images/appIcon.png?width=64",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "/app/images/appIcon.png?width=150",
+      "type": "image/png",
+      "sizes": "150x150"
+    },
     {
       "src": "/app/images/appIcon.png?width=250",
       "type": "image/png",
-      "sizes": "144x144"
+      "sizes": "250x250"
+    },
+    {
+      "src": "/app/images/appIcon.png?width=500",
+      "type": "image/png",
+      "sizes": "500x500"
     }
-  ]
+  ],
+  "display": "standalone",
+  "background_color": "#1c2541",
+  "theme_color": "#1c2541",
+  "orientation": "portrait",
+  "start_url": "/"
 }
