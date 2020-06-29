@@ -151,6 +151,7 @@ a i {
 /*SCROLLBAR SETTINGS*/
 ::-webkit-scrollbar {
     width: 5px;
+    height: 5px
 }
 
 /* Track */
