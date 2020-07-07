@@ -8,17 +8,17 @@ var ui = {
     //waits until the weather object is finished
     //loading. When it is, it will move onto ui.weather._render()
     render: function (callback) {
+      DEBUG('render');
       if (weather.isLoading) {
-        setTimeout(function(){ui.weather.render(callback);},100);
+        setTimeout(function(){ui.weather.render(callback);},150);
       } else {
         var wData = weather.lastFetch();
         if (wData) {
           ui.weather._render(wData);
           callback();
         } else {
-          ui.weather.render(callback);
+          setTimeout(function(){ui.weather.render(callback);},150);
         }
-
       }
     },
 
@@ -35,6 +35,7 @@ var ui = {
         now.temperature + '°' + now.temperatureUnit
       );
       $('#city').html(
+        //wData.OWM.name
         wData.NOAA.base.properties.relativeLocation.properties.city
       );
       $('#condition').html(now.shortForecast);
@@ -210,7 +211,7 @@ var ui = {
       favorites.forEach(function(location) {
         ui.favorites._createLocationEntry(
           location.name,
-          'weather.get({lat:'+location.lat+',lng:'+location.lng+'})'
+          'weather.cache(\'last\',{}); weather.get({lat:'+location.lat+',lng:'+location.lng+'});'
         );
       });
     },
@@ -218,7 +219,7 @@ var ui = {
     _createLocationEntry(name,onClick) {
       $('#favorites-list').append(
         '<div class="favorite-entry list-item"'+
-          'onclick="if(!$(this).hasClass(\'disabled\')){'+onClick+';app.page.select(\'weather\')}"'+
+          'onclick="if(!$(this).hasClass(\'disabled\')){'+onClick+'app.page.select(\'weather\')}"'+
         '>' +
           '<p>'+name+'</p>'+
           '<div class="edit-entry div-hide">'+

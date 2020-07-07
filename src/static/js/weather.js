@@ -21,9 +21,12 @@ weather = {
       weather.cache('last',wData);
       return wData.w;
     } else {
-      weather.getLocal();
+      if (!weather.isLoading){
+        weather.getLocal();
+      }
       return false;
     }
+
 
   },
   isLoading: false,
@@ -37,6 +40,7 @@ weather = {
     // to see this data.
     if (callback != true) {
       weather.isLoading = true;
+      weather.cache('last',{});
     }
     var lat = parseFloat((coords.lat).toFixed(4));
     var lng = parseFloat((coords.lng).toFixed(4));
@@ -79,8 +83,7 @@ weather = {
     });
   },
 
-  getLocal: function(callback=false) {
-    weather.isLoading = true;
+  getLocal: function(callback) {
     weather.fetchLocation(function(lat,lng){
       weather.get({lat,lng},callback);
     });

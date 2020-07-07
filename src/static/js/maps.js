@@ -26,6 +26,7 @@ var maps = {
           lat: coords.lat,
           lng: coords.lng
         });
+        weather.get(coords);
         app.storage('favoriteLocations',fl);
 
         if (typeof callback === 'function') callback();

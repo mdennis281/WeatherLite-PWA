@@ -7,8 +7,11 @@
 */
 var pageTriggers = {
   weather: function(callback) {
-    //if not recently loaded cached forecast info
-    if (!weather.cache().last){ weather.getLocal() }
+    //if not recently loaded cached forecast info && not loading anything
+    if (!weather.cache().last && !weather.isLoading){
+      weather.getLocal();
+      console.log('HERE')
+    }
     ui.weather.render(callback);
     weather.getAll();
   },
