@@ -54,11 +54,11 @@ weather = {
         if (callback != true) {
           weather.cache('last',data);
         } else {
+          weather.isLoading = false;
           if (typeof callback === 'function') callback(data);
         }
       });
     } else {
-      weather.isLoading = false;
       if (typeof callback === 'function') callback(data);
     }
   },
@@ -90,9 +90,8 @@ weather = {
   },
 
   fetchByCoord: function(lat,lng,callback) {
-
-    weather.isLoading = true;
     DEBUG('Fetching weather from: '+lat+', '+lng);
+    var start = new Date();
     $.getJSON('/API/weatherLookup'+
       '?latitude='+lat+
       '&longitude='+lng,
@@ -101,12 +100,24 @@ weather = {
           w: data,
           lat: lat,
           lng: lng,
+          loadTime: ((new Date()).getTime() - start.getTime()) / 1000,
           fetch: Date.now()
         }
 
         if (data.w.success) {
           weather.cache(lat+','+lng,data);
-          weather.isLoading = false;
+          DEBUG('--------------------');
+          DEBUG('Weather API Timing:');
+          DEBUG('Location: '+data.w.NOAA.base.properties.relativeLocation.properties.city);
+          DEBUG('Client: '+data.loadTime.toFixed(3));
+          DEBUG('Server: '+data.w.timing.total.toFixed(3));
+          var tx_rx = data.loadTime - data.w.timing.total;
+          DEBUG('TX/RX: '+tx_rx.toFixed(3));
+          DEBUG('NOAA: '+data.w.timing.NOAA.toFixed(3));
+          DEBUG('NOAA-Daily: '+data.w.timing['NOAA-daily'].toFixed(3));
+          DEBUG('NOAA-Hourly: '+data.w.timing['NOAA-hourly'].toFixed(3));
+          DEBUG('OWM: '+data.w.timing.OWM.toFixed(3));
+          DEBUG('--------------------');
           if (typeof callback === 'function') callback(data);
         } else {
           n.info('Weather Fetch failed. ', data.w.error);

@@ -10,7 +10,6 @@ var pageTriggers = {
     //if not recently loaded cached forecast info && not loading anything
     if (!weather.cache().last && !weather.isLoading){
       weather.getLocal();
-      console.log('HERE')
     }
     ui.weather.render(callback);
     weather.getAll();
