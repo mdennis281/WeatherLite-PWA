@@ -1,5 +1,11 @@
-from src.libraries import io,requests,weather,textwrap, json
+from src.libraries import weather
+import requests
+import textwrap
+import json
+import io
+
 from PIL import Image, ImageDraw, ImageFont
+
 """
 resizes an image
 Args:

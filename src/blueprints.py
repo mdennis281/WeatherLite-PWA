@@ -1,4 +1,4 @@
-from src.libraries import Blueprint
+from flask import Blueprint
 from src import app
 
 

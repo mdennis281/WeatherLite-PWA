@@ -1,13 +1,11 @@
 from src.blueprints import all as blueprints
 from src.libraries.general import appleTouchIcon
-from src.libraries import (
-####    Flask
-    Flask,
-    send_file,
-####    External
-    import_module
-)
 
+from flask import (
+    Flask,
+    send_file
+)
+from importlib import import_module
 
 app = Flask(__name__)
 

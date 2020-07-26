@@ -1,10 +1,154 @@
-from src.libraries import (
-    threading,
-    requests,
-    APIKeys,
-    time
-)
-TIMING = {}
+from src.libraries.timer import Timer
+from src.libraries import APIKeys
+import threading
+import requests
+import time
+
+
+class WeatherInfo:
+    def __init__(self,lat,lng):
+        self.coords = {
+            'lng': float(lng),
+            'lat': float(lat)
+        }
+        self.data = {}
+        self.timing = {}
+        self.threads = []
+        self.fail = []
+    def _getJson(self,url,key,**kwargs):
+        if kwargs.get('threaded'):
+            kwargs.pop('threaded')
+            T = threading.Thread(
+                target = self._getJson,
+                args = (url,key),
+                kwargs = kwargs
+            )
+            self.threads.append(T)
+            self.threads[-1].start()
+        else:
+            r,time = self._get(
+                url,
+                kwargs.get('headers'),
+                kwargs.get('params')
+            )
+            self.timing[key] = time
+
+            if r['success']:
+                self.data[key] = r['request'].json()
+            else:
+                self.fail.append(key)
+                self.data[key] = r
+
+    @Timer
+    def _get(self,url,headers=None,params=None):
+        r = requests.get(
+            url,
+            headers=headers,
+            params=params
+        )
+
+        success = True if r.status_code == 200 else False
+
+        return {
+            'request': r,
+            'success': success
+        }
+
+    def waitUntilComplete(self):
+        for thread in self.threads:
+            thread.join()
+
+
+    def getOWM(self):
+        url = 'https://api.openweathermap.org/data/2.5/weather'
+
+        strParams = {
+            'lat': self.coords['lat'],
+            'lon': self.coords['lng'],
+            'appid': APIKeys.OWM,
+            'units': 'imperial'
+        }
+
+        self._getJson(
+            url,
+            'OWM',
+            params   = strParams,
+            threaded = True
+        )
+
+    def getNOAA(self):
+        urlBase = ('https://api.weather.gov/points/'+
+                str(self.coords['lat'])+','+str(self.coords['lng'])
+        )
+        headers = {'Accept': 'application/vnd.noaa.dwml+xml;version=1'}
+
+        #make request to get the closest station to the aforementioned coords
+        self._getJson(urlBase,'NOAA',headers=headers)
+
+        if 'NOAA' not in self.fail:
+            urlDaily  = self.data['NOAA']['properties']['forecast']
+            urlHourly = self.data['NOAA']['properties']['forecastHourly']
+        else:
+            urlDaily,urlHourly = None,None
+
+        self._getJson(
+            urlDaily,
+            'NOAA-daily',
+            headers=headers,
+            threaded=True
+        )
+        self._getJson(
+            urlHourly,
+            'NOAA-hourly',
+            headers=headers,
+            threaded=True
+        )
+
+
+
+def getWeatherByCoords(coords):
+
+    @Timer
+    def getWeatherData():
+        weather = WeatherInfo(coords['latitude'],coords['longitude'])
+        weather.getOWM()
+        weather.getNOAA()
+        weather.waitUntilComplete()
+        return weather
+
+    weather, gTime = getWeatherData()
+    weather.timing['total'] = gTime
+
+
+
+    return {
+        'success': False if weather.fail else True,
+        'error': 'External API Failure: ' + str(weather.fail) if weather.fail else None,
+        'timing': weather.timing,
+
+        'OWM': weather.data.get('OWM'),
+        'NOAA': {
+            'base': weather.data.get('NOAA'),
+            'hourly': weather.data.get('NOAA-hourly'),
+            'daily': weather.data.get('NOAA-daily')
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # used to make multiple requests
 # and append the response to an object
 # used in callNOAA()
@@ -25,7 +169,7 @@ def threadedRequest(url,headers,obj,key):
 # Gets weather info from OWM and NOAA APIs
 # returns an object with all weather info
 # in the formatting expected by clientside
-def getWeatherByCoords(data):
+def _getWeatherByCoords(data):
     gStart = time.time()
     sParams = {
         'lat': data['latitude'],
@@ -137,6 +281,7 @@ def callOpenWeatherMap(customParams,wData):
     r = requests.get('https://api.openweathermap.org/data/2.5/weather',
         params=sParams,
     )
+    print(r.url)
 
     if r.status_code == 200:
         data = r.json()
@@ -146,3 +291,4 @@ def callOpenWeatherMap(customParams,wData):
         wData['error'] = 'OWM API failed. (HTTP '+str(r.status_code)+')'
     end = time.time()
     TIMING['OWM'] = round(end-start,2)
+TIMING = {}

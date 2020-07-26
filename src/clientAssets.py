@@ -1,4 +1,4 @@
-from src.libraries import time
+import time
 
 # Stores all the files that get loaded by the client
 # This is directly used in both the service worker & base HTML page

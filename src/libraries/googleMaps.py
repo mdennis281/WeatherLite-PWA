@@ -1,8 +1,6 @@
-from src.libraries import (
-    requests,
-    APIKeys
-)
+from src.libraries import APIKeys
 
+import requests
 """
     converts location to coords with GCP geocoding API
     args:
