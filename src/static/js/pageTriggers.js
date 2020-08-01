@@ -11,8 +11,10 @@ var pageTriggers = {
     if (!weather.cache().last && !weather.isLoading){
       weather.getLocal();
     }
-    ui.weather.render(callback);
-    weather.getAll();
+    ui.weather.render(function(){
+      weather.getAll();
+      callback();
+    });
   },
   favorites: function(callback) {
     ui.favorites.generate();
