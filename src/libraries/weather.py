@@ -34,7 +34,12 @@ class WeatherInfo:
             self.timing[key] = time
 
             if r['success']:
-                self.data[key] = r['request'].json()
+                try:
+                    self.data[key] = r['request'].json()
+                except TypeError:
+                    self.fail.append(key)
+                    self.data[key] = r
+
             else:
                 self.fail.append(key)
                 self.data[key] = r
