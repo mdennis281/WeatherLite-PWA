@@ -14,6 +14,8 @@
   when the user opens the weather page or the favorites page.
 */
 weather = {
+  isLoading: false,
+  activeRequests: [],
   lastFetch: function(){
     var x = weather.cache().last;
     if (x) {var wData = weather.checkCache(x.lat,x.lng);}
@@ -29,7 +31,6 @@ weather = {
 
 
   },
-  isLoading: false,
   get: function(coords,callback) {
     //a way to determine if the data was fetched directly
     //or if the application was attempting to cache
@@ -90,40 +91,52 @@ weather = {
   },
 
   fetchByCoord: function(lat,lng,callback) {
-    DEBUG('Fetching weather from: '+lat+', '+lng);
-    var start = new Date();
-    $.getJSON('/API/weatherLookup'+
-      '?latitude='+lat+
-      '&longitude='+lng,
-      function(data){
-        data = {
-          w: data,
-          lat: lat,
-          lng: lng,
-          loadTime: ((new Date()).getTime() - start.getTime()) / 1000,
-          fetch: Date.now()
-        }
+    if (!weather.activeRequests.includes(`${lat},${lng}`)) {
+      DEBUG('Fetching weather from: '+lat+', '+lng);
+      //.push() returns index of new item
+      var reqIndex = weather.activeRequests.push(`${lat},${lng}`);
+      var start = new Date();
+      $.getJSON('/API/weatherLookup'+
+        '?latitude='+lat+
+        '&longitude='+lng,
+        function(data){
+          weather.activeRequests.splice(reqIndex,1);
+          data = {
+            w: data,
+            lat: lat,
+            lng: lng,
+            fetch: Date.now()
+          }
 
-        if (data.w.success) {
-          weather.cache(lat+','+lng,data);
-          DEBUG('--------------------');
-          DEBUG('Weather API Timing:');
-          DEBUG('Location: '+data.w.NOAA.base.properties.relativeLocation.properties.city);
-          DEBUG('Client: '+data.loadTime.toFixed(3));
-          DEBUG('Server: '+data.w.timing.total.toFixed(3));
-          var tx_rx = data.loadTime - data.w.timing.total;
-          DEBUG('TX/RX: '+tx_rx.toFixed(3));
-          DEBUG('NOAA: '+data.w.timing.NOAA.toFixed(3));
-          DEBUG('NOAA-Daily: '+data.w.timing['NOAA-daily'].toFixed(3));
-          DEBUG('NOAA-Hourly: '+data.w.timing['NOAA-hourly'].toFixed(3));
-          DEBUG('OWM: '+data.w.timing.OWM.toFixed(3));
-          DEBUG('--------------------');
-          if (typeof callback === 'function') callback(data);
-        } else {
-          n.info('Weather Fetch failed. ', data.w.error);
+          if (data.w.success) {
+            data.w.timing.client = ((new Date()).getTime() - start.getTime()) / 1000;
+            data.w.timing.tx_rx = data.w.timing.client - data.w.timing.total;
+
+            weather.cache(lat+','+lng,data);
+            DEBUG('--------------------');
+            DEBUG('Weather API Timing:');
+            DEBUG('Location: '+data.w.NOAA.base.properties.relativeLocation.properties.city);
+            DEBUG('Client: '+data.w.timing.client.toFixed(3));
+            DEBUG('Server: '+data.w.timing.total.toFixed(3));
+            DEBUG('TX/RX: '+data.w.timing.tx_rx.toFixed(3));
+            DEBUG('NOAA: '+data.w.timing.NOAA.toFixed(3));
+            DEBUG('NOAA-Daily: '+data.w.timing['NOAA-daily'].toFixed(3));
+            DEBUG('NOAA-Hourly: '+data.w.timing['NOAA-hourly'].toFixed(3));
+            DEBUG('OWM: '+data.w.timing.OWM.toFixed(3));
+            DEBUG('--------------------');
+            if (typeof callback === 'function') callback(data);
+          } else {
+            n.info('Weather Fetch failed. ', data.w.error);
+          }
         }
-      }
-    );
+      ).fail(function(){
+        weather.activeRequests.splice(reqIndex,1);
+        weather.fetchByCoord(lat,lng,callback);
+      });
+    } else {
+      DEBUG('Duplicate request.');
+    }
+
   },
   checkCache: function(lat,lng) {
     var data = weather.cache()[lat+','+lng]
@@ -137,15 +150,18 @@ weather = {
     return false;
   },
   cache: function(newData=null,value=null) {
-    if ((newData != null) && (value != null)) {
+    if ((newData != null) && (value != null)) { //weather.cache(x,y)
       var settings = weather.cache();
       settings[newData] = value;
       app.storage('weatherCache',settings);
-    } else if (newData != null) {
+    } else if (newData != null) { //weather.cache(x)
       app.storage('weatherCache',newData);
-    } else {
+    } else { //weather.cache()
       var weatherCache = app.storage('weatherCache');
       return (weatherCache) ? weatherCache : {};
     }
+  },
+  isActiveRequest: function(lat,lng) {
+
   }
 }
