@@ -22,7 +22,13 @@
     <tr>
       <td>Clear Cache</td>
       <td >
-        <i class="fad fa-window-close btn-active ml-2" onclick="app.clearCache()"></i>
+        <i class="fad fa-dumpster btn-active ml-2" onclick="app.clearCache()"></i>
+      </td>
+    </tr>
+    <tr>
+      <td>Clear Weather Cache</td>
+      <td>
+        <i class="fad fa-trash-alt btn-active ml-2" onclick="weather.cache({})"></i>
       </td>
     </tr>
   </table>
@@ -62,6 +68,19 @@
     <tr>
       <td>Map View</td>
       <td id="cl-link"></td>
+    </tr>
+  </table>
+  <div class="list-bar">
+    <span class="title">Debug</span>
+  </div>
+  <table class="list-table two-col">
+    <tr>
+      <td>Raw Weather Data</td>
+      <td><a onclick="ui.settings.debug.weatherData()" href="#">View</a></td>
+    </tr>
+    <tr>
+      <td>Weather Data Timing</td>
+      <td><a onclick="ui.settings.debug.weatherTiming()" href="#">View</a></td>
     </tr>
   </table>
 </div>

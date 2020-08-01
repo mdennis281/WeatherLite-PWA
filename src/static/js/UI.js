@@ -325,5 +325,29 @@ var ui = {
         )
       }
     },
+    debug: {
+      weatherData: function() {
+        popup.open('<div style="text-align:left; width:100%"> <pre style="color:#fff">' + JSON.stringify(weather.cache(),null,'  ') + '</pre></div>');
+      },
+      weatherTiming: function() {
+        var buffer = '';
+        Object.keys(weather.cache()).forEach(function(key){
+          console.log(key)
+          var timing = weather.cache()[key].w.timing;
+          var city = weather.cache()[key].w.NOAA.base.properties.relativeLocation.properties.city
+          buffer += '<h3>'+city+'</h3>';
+          buffer += '<p>Client: '+timing.client.toFixed(3)+'s</p>';
+          buffer += '<p>Server: '+timing.total.toFixed(3)+'s</p>';
+          buffer += '<p>TX/RX: '+timing.tx_rx.toFixed(3)+'s</p>';
+          buffer += '<p>NOAA: '+timing.NOAA.toFixed(3)+'s</p>';
+          buffer += '<p>NOAA-Daily: '+timing['NOAA-daily'].toFixed(3)+'s</p>';
+          buffer += '<p>NOAA-Hourly: '+timing['NOAA-hourly'].toFixed(3)+'s</p>';
+          buffer += '<p>OWM: '+timing.OWM.toFixed(3)+'s</p>';
+          buffer += '<hr/><br/>';
+        });
+        popup.open(buffer)
+
+      }
+    }
   }
 }
