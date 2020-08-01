@@ -80,7 +80,10 @@ class WeatherInfo:
         urlBase = ('https://api.weather.gov/points/'+
                 str(self.coords['lat'])+','+str(self.coords['lng'])
         )
-        headers = {'Accept': 'application/vnd.noaa.dwml+xml;version=1'}
+        headers = {
+            'Accept': 'application/vnd.noaa.dwml+xml;version=1',
+            'User-Agent': '(weatherlite.app, michael@dipduo.com)'
+        }
 
         #make request to get the closest station to the aforementioned coords
         self._getJson(urlBase,'NOAA',headers=headers)
