@@ -47,15 +47,15 @@ weather = {
     var lng = parseFloat((coords.lng).toFixed(4));
     var data = weather.checkCache(lat,lng);
 
-    if (data && !(callback == true)) {
+    if (data && !(callback == true)) { //if cached & direct request
       weather.cache('last',data);
       weather.isLoading = false;
-    } else if (!data) {
+    } else if (!data) { //if not cached
       weather.fetchByCoord(lat,lng,function(data){
         if (callback != true) {
+          weather.isLoading = false;
           weather.cache('last',data);
         } else {
-          weather.isLoading = false;
           if (typeof callback === 'function') callback(data);
         }
       });
@@ -130,11 +130,13 @@ weather = {
           }
         }
       ).fail(function(){
+        console.warn('Uncaught server error... retrying');
         weather.activeRequests.splice(reqIndex,1);
         weather.fetchByCoord(lat,lng,callback);
       });
     } else {
       DEBUG('Duplicate request.');
+
     }
 
   },
@@ -161,7 +163,4 @@ weather = {
       return (weatherCache) ? weatherCache : {};
     }
   },
-  isActiveRequest: function(lat,lng) {
-
-  }
 }
