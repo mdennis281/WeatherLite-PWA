@@ -67,6 +67,9 @@ body {
   color: #5BC0BE;
   transform: scale(1.1);
 }
+#nav-row .selected:hover {
+  cursor: default;
+}
 
 /*
 ------------------------------------------------

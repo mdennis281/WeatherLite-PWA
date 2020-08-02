@@ -30,7 +30,7 @@ var n = {
       		  '<i class="fad fa-info-circle fa-2x"></i>' +
           '</div>' +
           '<div class="n-body">'+
-        		'<span class="" data-notify="title">{1}</span> ' +
+        		'<p class="" data-notify="title"><b>{1}</b></p> ' +
         		'<span class="" data-notify="message">{2}</span>' +
           '</div>' +
         '</div>' +

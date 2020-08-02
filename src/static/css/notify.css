@@ -63,6 +63,7 @@
   right: 0;
   vertical-align: middle;
   font-size: 15px;
+  overflow: auto;
 }
 .n-icon {
   width: 15%;
