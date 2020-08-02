@@ -34,15 +34,21 @@ class WeatherInfo:
             self.timing[key] = time
 
             if r['success']:
-                try:
-                    self.data[key] = r['request'].json()
-                except TypeError:
-                    self.fail.append(key)
-                    self.data[key] = r
+                self.data[key] = r['request'].json()
 
             else:
                 self.fail.append(key)
-                self.data[key] = r
+                try:
+                    req = r['request'].json()
+                    self.data[key] = req.get(
+                        'detail',
+                        req.get(
+                            'title',
+                            'Uncaught API Error'
+                        )
+                    )
+                except TypeError:
+                    self.data[key] = r['request'].text
 
     @Timer
     def _get(self,url,headers=None,params=None):
@@ -62,6 +68,27 @@ class WeatherInfo:
     def waitUntilComplete(self):
         for thread in self.threads:
             thread.join()
+
+    def genErrMsg(self):
+        if self.fail:
+
+            error = 'External API failure: '
+            svc = [self.fail.pop()]
+            error += svc[-1]
+            while self.fail:
+                svc.append(self.fail.pop())
+                error += ', ' + svc[-1]
+            error += '<br/><p><b>Details:</b></p>'
+            while svc:
+                error += '<p>'+self.data[svc.pop()]+'</p>'
+            return error
+        else:
+            return None
+
+
+
+
+        'External API Failure: ' + str(weather.fail) if weather.fail else None
 
 
     def getOWM(self):
@@ -131,7 +158,7 @@ def getWeatherByCoords(coords):
 
     return {
         'success': False if weather.fail else True,
-        'error': 'External API Failure: ' + str(weather.fail) if weather.fail else None,
+        'error': weather.genErrMsg(),
         'timing': weather.timing,
 
         'OWM': weather.data.get('OWM'),
