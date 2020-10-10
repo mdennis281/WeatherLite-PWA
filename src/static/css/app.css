@@ -18,7 +18,7 @@ body {
 }
 #page {
   overflow-y: auto;
-  padding-bottom: 100px;
+  padding-bottom: 150px;
   height: 100%;
   overflow-x: hidden;
 }

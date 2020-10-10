@@ -98,7 +98,8 @@ weather = {
       var start = new Date();
       $.getJSON('/API/weatherLookup'+
         '?latitude='+lat+
-        '&longitude='+lng,
+        '&longitude='+lng+
+        '&units='+app.settings().units,
         function(data){
           weather.activeRequests.splice(reqIndex,1);
           data = {
@@ -110,19 +111,18 @@ weather = {
 
           if (data.w.success) {
             data.w.timing.client = ((new Date()).getTime() - start.getTime()) / 1000;
-            data.w.timing.tx_rx = data.w.timing.client - data.w.timing.total;
+            data.w.timing.tx_rx = data.w.timing.client - data.w.timing.serverTotal;
 
             weather.cache(lat+','+lng,data);
             DEBUG('--------------------');
             DEBUG('Weather API Timing:');
-            DEBUG('Location: '+data.w.NOAA.base.properties.relativeLocation.properties.city);
+            DEBUG('Location: '+data.w.OWM.name);
             DEBUG('Client: '+data.w.timing.client.toFixed(3));
-            DEBUG('Server: '+data.w.timing.total.toFixed(3));
+            DEBUG('Server: '+data.w.timing.serverTotal.toFixed(3));
             DEBUG('TX/RX: '+data.w.timing.tx_rx.toFixed(3));
-            DEBUG('NOAA: '+data.w.timing.NOAA.toFixed(3));
-            DEBUG('NOAA-Daily: '+data.w.timing['NOAA-daily'].toFixed(3));
-            DEBUG('NOAA-Hourly: '+data.w.timing['NOAA-hourly'].toFixed(3));
-            DEBUG('OWM: '+data.w.timing.OWM.toFixed(3));
+            DEBUG('hourly: '+data.w.timing['hourly'].toFixed(3));
+            DEBUG('daily: '+data.w.timing['daily'].toFixed(3));
+            DEBUG('OWM: '+data.w.timing['OWM'].toFixed(3));
             DEBUG('--------------------');
             if (typeof callback === 'function') callback(data);
           } else {

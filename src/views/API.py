@@ -1,4 +1,5 @@
 from src.blueprints import API
+from src.libraries.climacell import WeatherData
 from src.libraries import (
     weather,
     general,
@@ -12,7 +13,7 @@ from flask import (
 #####################################################
 #       API Calls
 #####################################################
-
+"""
 @API.route('/weatherLookup')
 def weatherInfo():
     coords = {
@@ -25,6 +26,25 @@ def weatherInfo():
         data['call'] = coords
         return jsonify(data)
     return abort(400)
+"""
+@API.route('/weatherLookup')
+def weatherInfoTest():
+    args = {}
+    for k,v in request.args.items(): args[k] = v
+
+    try:
+        coords = (
+            args.pop('latitude'),
+            args.pop('longitude')
+        )
+
+        ans = WeatherData.getWeather(coords,**args)
+        ans['call'] = request.args
+        return jsonify(ans)
+    except KeyError:
+        return abort(400)
+
+
 
 
 

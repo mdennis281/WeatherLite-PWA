@@ -23,6 +23,7 @@ app = {
     $('#app').animateCss('fadeIn',function(){
       PWANotify();
     });
+    if (!app.settings().units) app.settings('units','us');
     app.updateCheck();
     app.page.selectStart();
   },
@@ -121,6 +122,59 @@ app = {
         {weekday: 'long',}
       );
       return str.split(' ')[0];
+    },
+    isDaytime: function(date) {
+      if (date.includes('T')) {
+        var dateHrs = (new Date(date)).getHours();
+        if (dateHrs < 6 || dateHrs > 18) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    },
+    degreesToBearing: function(wind_dir,full) {
+      if(Array.isArray(wind_dir)){
+        var min = wind_dir[0].min.value;
+        var max = wind_dir[1].max.value;
+        var x = (min+max)/2; //avg
+      } else {
+        var x = wind_dir.value;
+      }
+
+      if (x<=22.5 || x>=337.5) {
+        return (full) ? 'North' : 'N';
+      } else if (x<=67.5) {
+        return (full) ? 'Northeast' : 'NE';
+      } else if (x<=112.5) {
+        return (full) ? 'East' : 'E';
+      } else if (x<=157.5) {
+        return (full) ? 'Southeast' : 'SE';
+      } else if (x<=202.5) {
+        return (full) ? 'South' : 'S';
+      } else if (x<=247.5) {
+        return (full) ? 'Southwest' : 'SW';
+      } else if (x<=292.5) {
+        return (full) ? 'West' : 'W';
+      } else if (x<337.5) {
+        return (full) ? 'Northwest' : 'NW';
+      } else {
+        return 'ERROR';
+      }
+    },
+    windSpeed: function(wind) {
+      if(Array.isArray(wind)){
+        var units = wind[0].min.units;
+        var min = wind[0].min.value.toFixed(0);
+        var max = wind[1].max.value.toFixed(0);
+        return min + '-' + max + ' ' + units;
+      } else {
+        var units = wind.units;
+        var speed = wind.value.toFixed(0);
+        return speed + ' ' + units;
+      }
     }
   },
   /*
