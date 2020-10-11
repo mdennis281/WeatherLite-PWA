@@ -136,6 +136,8 @@ weather = {
       });
     } else {
       DEBUG('Duplicate request.');
+      if (weather.checkCache(lat,lng))
+        cache('last',weather.checkCache(lat,lng))
 
     }
 
