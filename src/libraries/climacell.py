@@ -1,4 +1,4 @@
-import requests, threading,time
+import requests, threading,time,datetime
 
 from src.libraries.APIKeys import climacell as APIKEY
 
@@ -49,8 +49,9 @@ class WeatherData:
         kwargs['thread'] = True
         start = time.time()
         W = WeatherData(coords,**kwargs)
-
+        kwargs['end_time'] = ISO8601.addHrs(kwargs.pop('hourly_limit',24))
         W.getHourly(kwargs.get('hourlyFields'),**kwargs)
+        kwargs['end_time'] = ISO8601.addDays(kwargs.pop('days_limit',7))
         W.getDaily(kwargs.get('dailyFields'),**kwargs)
 
         W2 = WeatherInfo(coords[0],coords[1])
@@ -72,6 +73,7 @@ class WeatherData:
         W.timing['OWM'] = W2.timing['OWM']
         ans['timing'] = W.timing
 
+
         return ans
 
 
@@ -85,6 +87,7 @@ class WeatherData:
         params['unit_system'] = kwargs.get('units',self.units)
         params['lat'] = kwargs.get('lat',self.lat)
         params['lon'] = kwargs.get('lon',self.lon)
+        params['end_time'] = kwargs.get('end_time',None)
         if kwargs.pop('thread',False):
             T = threading.Thread(target=self._makeThreadRequest,args=(url,params))
             T.start()
@@ -100,6 +103,7 @@ class WeatherData:
 
 
     def _makeRequest(self,url,params):
+        print(url,params)
         try:
             r = requests.get(url,params=params)
             data = r.json()
@@ -125,3 +129,17 @@ class WeatherData:
             'error': False,
             'data': data
         }
+
+
+class ISO8601:
+    @staticmethod
+    def addHrs(hours):
+        now = datetime.datetime.now()
+        ahead = datetime.timedelta(hours=hours)
+        ans = now+ahead
+        return ans.isoformat()
+    def addDays(days):
+        now = datetime.datetime.now()
+        ahead = datetime.timedelta(days=days)
+        ans = now+ahead
+        return ans.isoformat()
