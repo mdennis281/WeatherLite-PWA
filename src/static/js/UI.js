@@ -29,6 +29,7 @@ var ui = {
       ui.weather.generate.radar(wData.call);
       ui.weather.generate.forecast.hourly(wData.hourly);
       ui.weather.generate.forecast.daily(wData.daily);
+
       $('#detailed-forecast-today').html(
         app.strFormat.genDesc(today)
       );
@@ -36,7 +37,7 @@ var ui = {
         now.temp.value.toFixed(0) + '°' + now.temp.units
       );
       $('#city').html(
-        wData.OWM.name
+        maps.coord2Name(wData.call.latitude,wData.call.longitude)
       );
       $('#condition').html(ui.weather.codeToStr(now));
       $('#sunrise-time').html(
@@ -49,7 +50,7 @@ var ui = {
         weather.lastFetch().OWM.main.humidity + '%'
       );
       $('#visibility').html(
-        Math.round(weather.lastFetch().OWM.visibility/1609.34) + ' mi' //todo locality
+        app.strFormat.avgValues(today.visibility,true)
       );
 
       $('#loader-container').remove();
