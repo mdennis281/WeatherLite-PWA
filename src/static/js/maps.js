@@ -43,5 +43,26 @@ var maps = {
       });
       app.storage('favoriteLocations',fl);
     }
+  },
+  coord2Name: function(lat,lng,shortName=true) {
+    var match = null;
+    lat = parseFloat(lat).toFixed(3);
+    lng = parseFloat(lng).toFixed(3);
+    (maps.favorites.get()).forEach(function(location){
+      var latMatch = (lat == location.lat.toFixed(3));
+      var lonMatch = (lng == location.lng.toFixed(3));
+      if (latMatch && lonMatch)
+        match = location;
+
+    });
+
+    if (match && shortName) {
+      return match.name.split(',')[0];
+    } else if (match && match.name) {
+      return match.name;
+    } else {
+      return weather.lastFetch().OWM.name;
+    }
+
   }
 }
