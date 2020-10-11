@@ -357,6 +357,21 @@ hr {
   text-align:  center;
   color: #eee;
   transition: all 0.3s ease;
+  position: relative;
+}
+
+.list-bar .bar-ico {
+  position: absolute;
+  top: 1;
+  left: 2;
+  font-size: 25px;
+  opacity: .6;
+}
+.list-bar .bar-ico:after {
+  color: #848484;
+}
+.list-bar .bar-ico:before {
+  color: #5bc0be;
 }
 
 .list-bar i {
