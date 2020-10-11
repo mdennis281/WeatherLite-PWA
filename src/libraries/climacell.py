@@ -41,7 +41,6 @@ class WeatherData:
         )
 
     def join(self):
-        print(self.threads)
         for T in self.threads:
             T.join()
 
@@ -53,12 +52,12 @@ class WeatherData:
 
         W.getHourly(kwargs.get('hourlyFields'),**kwargs)
         W.getDaily(kwargs.get('dailyFields'),**kwargs)
-        W.join()
 
         W2 = WeatherInfo(coords[0],coords[1])
         W2.getOWM()
-        W2.waitUntilComplete()
 
+        W.join()
+        W2.waitUntilComplete()
 
         ans = {'error':False}
         for k,v in W.result.items():
@@ -67,7 +66,6 @@ class WeatherData:
             else:
                 ans['error'] = v['message']
         ans['OWM'] = W2.data.get('OWM')
-        print(ans['error'])
         ans['success'] = (not ans['error']) and (not W2.fail)
 
         W.timing['serverTotal'] = time.time() - start
@@ -91,6 +89,7 @@ class WeatherData:
             T = threading.Thread(target=self._makeThreadRequest,args=(url,params))
             T.start()
             self.threads.append(T)
+            return True
 
         return self._makeRequest(url,params)
 
