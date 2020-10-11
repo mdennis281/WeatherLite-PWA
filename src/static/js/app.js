@@ -63,6 +63,7 @@ app = {
        //if pressed option isnt already selected
       if (! $('#'+option).hasClass('selected')) {
         app.load.div('#page','/parts/'+option,function() {
+          $('#page').scrollTop(0);
           // Sets page url
           window.history.replaceState(option,app.title,'/?page='+option);
           //removes navbar selected icon
@@ -214,6 +215,22 @@ app = {
         desc += '. ';
       }
       return desc;
+    },
+    avgValues: function(data,withUnits=false) {
+      if (data.length = 2) {
+        var units = data[0].min.units;
+        var min = data[0].min.value;
+        var max = data[1].max.value;
+        var avg = ((min+max)/2).toFixed(0);
+        return avg + ((withUnits)? ' '+units : '');
+      } else {
+        var w = data[0];
+        if (w.min) {
+          return w.min.value
+        } else {
+          return w.max.value
+        }
+      }
     }
   },
   /*
