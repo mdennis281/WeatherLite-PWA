@@ -25,11 +25,12 @@ var ui = {
     //Renders the webpage with data retrieved from weather.lastFetch()
     _render: function(wData) {
       var now = wData.hourly[0];
+      var today = wData.daily[0];
       ui.weather.generate.radar(wData.call);
       ui.weather.generate.forecast.hourly(wData.hourly);
       ui.weather.generate.forecast.daily(wData.daily);
       $('#detailed-forecast-today').html(
-        ui.weather.codeToStr(now)
+        app.strFormat.genDesc(today)
       );
       $('#temperature').html(
         now.temp.value.toFixed(0) + '°' + now.temp.units
@@ -39,10 +40,10 @@ var ui = {
       );
       $('#condition').html(ui.weather.codeToStr(now));
       $('#sunrise-time').html(
-        app.strFormat.hourMin(wData.OWM.sys.sunrise * 1000)
+        app.strFormat.hourMin(today.sunrise.value)
       );
       $('#sunset-time').html(
-        app.strFormat.hourMin(wData.OWM.sys.sunset * 1000)
+        app.strFormat.hourMin(today.sunset.value)
       );
       $('#humidity').html(
         weather.lastFetch().OWM.main.humidity + '%'
@@ -117,7 +118,7 @@ var ui = {
       else if (f == 'mostly_cloudy') { return 'mostly cloudy skies' }
       else if (f == 'partly_cloudy') { return 'partly cloudy skies' }
       else if (f == 'mostly_clear') { return 'mostly clear skies' }
-      else if (f == 'clear') { 'clear skies' }
+      else if (f == 'clear') { return 'clear skies' }
       return f;
     },
     //called from ui.weather._render()
@@ -141,7 +142,7 @@ var ui = {
                 '<p class="time">'+time+'</p>'+
                 '<i class="'+ui.weather.selectIcon(w)+'"></i>'+
                 '<p class="wind">'+
-                  w.wind_speed.value.toFixed(1)+
+                  w.wind_speed.value.toFixed(0)+
                   ' '+w.wind_speed.units+
                   ' '+app.strFormat.degreesToBearing(w.wind_direction)+
                 '</p>'+
@@ -216,7 +217,7 @@ var ui = {
           buffer += '<h4>'+app.strFormat.weekday(day.observation_time.value)+'</h4>';
           buffer += '<h6>'+day.temp[0].min.value+'°'+day.temp[0].min.units+' - ';
           buffer += day.temp[1].max.value+'°'+day.temp[1].max.units+'</h6>';
-          buffer += '<p>'+day.detailedForecast+'</p><br/>';
+          buffer += '<p>'+app.strFormat.genDesc(day)+'</p><br/>';
           if (day.wind_speed && day.wind_direction){
             buffer += '<p>Wind from the '+app.strFormat.degreesToBearing(day.wind_direction,true);
             buffer += ' blowing at '+app.strFormat.windSpeed(day.wind_speed);
@@ -247,7 +248,7 @@ var ui = {
   favorites: {
     //populates the favorites list (runs on page load)
     generate: function() {
-      weather.getAll();
+      //weather.getAll();
       var favorites = maps.favorites.get();
       $('#favorites-list').html('');
       favorites.forEach(function(location) {
@@ -374,11 +375,13 @@ var ui = {
             (app.settings().units == 'si'), //isToggled
             function() { //Toggle off callback
               app.settings('units','us');
-              app.storage('weatherCache','{}');
+              app.storage('weatherCache',{});
+              app.refresh();
             },
             function() { //Toggle on callback
               app.settings('units','si');
-              app.storage('weatherCache','{}');
+              app.storage('weatherCache',{});
+              app.refresh();
             }
           )
       }
@@ -391,7 +394,7 @@ var ui = {
         var buffer = '';
         Object.keys(weather.cache()).forEach(function(key){
           var timing = weather.cache()[key].w.timing;
-          var city = weather.cache()[key].data.w.OWM.name
+          var city = weather.cache()[key].w.OWM.name
           buffer += '<h3>'+city+'</h3>';
           buffer += '<p>Client: '+timing.client.toFixed(3)+'s</p>';
           buffer += '<p>Server: '+timing.serverTotal.toFixed(3)+'s</p>';

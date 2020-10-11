@@ -12,7 +12,7 @@ var pageTriggers = {
       weather.getLocal();
     }
     ui.weather.render(function(){
-      weather.getAll();
+      //weather.getAll();
       callback();
     });
   },

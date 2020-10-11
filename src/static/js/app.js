@@ -117,10 +117,18 @@ app = {
       if (hr == 0) hr = 12 //if midnight
       return hr + ' ' + am_pm;
     },
-    weekday: function(date) {
-      var str = (new Date(date)).toLocaleTimeString([],
-        {weekday: 'long',}
-      );
+    weekday: function(dateStr) {
+      var weekdays = [
+        "Sunday", "Monday", "Tuesday",
+        "Wednesday", "Thursday", "Friday", "Saturday"
+      ]
+      var date = (new Date(dateStr));
+      if (dateStr.includes('T')){
+        return weekdays[date.getDay()];
+      } else {
+        return weekdays[date.getUTCDay()];
+      }
+
       return str.split(' ')[0];
     },
     isDaytime: function(date) {
@@ -175,6 +183,37 @@ app = {
         var speed = wind.value.toFixed(0);
         return speed + ' ' + units;
       }
+    },
+    temp: function(temp) {
+      if(Array.isArray(temp)){
+        var units = temp[0].min.units;
+        var min = temp[0].min.value.toFixed(0);
+        var max = temp[1].max.value.toFixed(0);
+        return min + '°-' + max + '°' + units;
+      } else {
+        var units = temp.units;
+        var speed = temp.value.toFixed(0);
+        return speed + ' ' + units;
+      }
+    },
+    genDesc: function(w) {
+      var desc = app.strFormat.weekday(w.observation_time.value)+'\`s';
+      desc += ' forecast shows ' + ui.weather.codeToStr(w) + ' with temperatures';
+      desc += ' ranging between ' + app.strFormat.temp(w.temp)+'. ';
+      if (w.precipitation && w.precipitation_probability.value) {
+        var pp = w.precipitation_probability.value +'%';
+        var pt = app.strFormat.hour(w.precipitation[0].observation_time);
+        desc += 'There is a '+pp+' chance of rain at '+pt+'. ';
+      }
+      if (w.wind_speed) {
+        desc += 'Winds from the ' + app.strFormat.degreesToBearing(w.wind_direction,true);
+        desc += ' blowing at ' + app.strFormat.windSpeed(w.wind_speed);
+        if (w.wind_gust) {
+          desc += ' gusting to '+app.strFormat.windSpeed(w.wind_gust);
+        }
+        desc += '. ';
+      }
+      return desc;
     }
   },
   /*
