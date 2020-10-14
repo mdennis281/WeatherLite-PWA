@@ -394,16 +394,18 @@ var ui = {
       weatherTiming: function() {
         var buffer = '';
         Object.keys(weather.cache()).forEach(function(key){
-          var timing = weather.cache()[key].w.timing;
-          var city = weather.cache()[key].w.OWM.name
-          buffer += '<h3>'+city+'</h3>';
-          buffer += '<p>Client: '+timing.client.toFixed(3)+'s</p>';
-          buffer += '<p>Server: '+timing.serverTotal.toFixed(3)+'s</p>';
-          buffer += '<p>TX/RX: '+timing.tx_rx.toFixed(3)+'s</p>';
-          buffer += '<p>Daily: '+timing.daily.toFixed(3)+'s</p>';
-          buffer += '<p>Hourly: '+timing.hourly.toFixed(3)+'s</p>';
-          buffer += '<p>OWM: '+timing.OWM.toFixed(3)+'s</p>';
-          buffer += '<hr/><br/>';
+          if (key != 'last') {
+            var timing = weather.cache()[key].w.timing;
+            var city = weather.cache()[key].w.OWM.name
+            buffer += '<h3>'+city+'</h3>';
+            buffer += '<p>Client: '+timing.client.toFixed(3)+'s</p>';
+            buffer += '<p>Server: '+timing.serverTotal.toFixed(3)+'s</p>';
+            buffer += '<p>TX/RX: '+timing.tx_rx.toFixed(3)+'s</p>';
+            buffer += '<p>Daily: '+timing.daily.toFixed(3)+'s</p>';
+            buffer += '<p>Hourly: '+timing.hourly.toFixed(3)+'s</p>';
+            buffer += '<p>OWM: '+timing.OWM.toFixed(3)+'s</p>';
+            buffer += '<hr/><br/>';
+          }
         });
         popup.open(buffer)
 
