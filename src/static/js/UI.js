@@ -173,34 +173,6 @@ var ui = {
               '</tr>'
             )
           })
-
-          /*for (i=0; i < forecast.length; i+=2) {
-            var day = app.strFormat.weekday(forecast[i].startTime);
-            if (forecast[i].name.includes('night')) {
-              var f1 = forecast[i];
-              var f2 = null;
-              i-=1;
-              day = 'Overnight';
-            } else {
-              var f1 = forecast[i];
-              var f2 = forecast[i+1];
-            }
-            if (f1) {
-              $('#daily-forecast').append(
-                '<tr onclick="popup.open(\''+ //popup content
-                          ui.weather.generate.detail.daily(
-                            f1,
-                            f2
-                          )+
-                          '\')" class="hover-pointer">' +
-                  '<td>'+day+'</td>'+
-                  '<td><i class="'+ui.weather.selectIcon(f1)+'"></i></td>'+
-                  '<td>'+f1.temperature+'°</td>'+
-                  '<td>'+((f2) ? f2.temperature : '-')+'°</td>'+
-                '</tr>'
-              )
-            }
-          }*/
         }
       },
       //this opens the radar screen
@@ -216,17 +188,12 @@ var ui = {
         daily: function(day) {
           buffer = '';
           buffer += '<h4>'+app.strFormat.weekday(day.observation_time.value)+'</h4>';
-          buffer += '<h6>'+day.temp[0].min.value+'°'+day.temp[0].min.units+' - ';
-          buffer += day.temp[1].max.value+'°'+day.temp[1].max.units+'</h6>';
           buffer += '<p>'+app.strFormat.genDesc(day)+'</p><br/>';
-          if (day.wind_speed && day.wind_direction){
-            buffer += '<p>Wind from the '+app.strFormat.degreesToBearing(day.wind_direction,true);
-            buffer += ' blowing at '+app.strFormat.windSpeed(day.wind_speed);
-            if (day.wind_gust) {
-              buffer += ' gusting to '+app.strFormat.windSpeed(day.wind_gust);
-            }
-            buffer += '.</p>';
+          buffer += '<table>';
+          if (day.visibility) {
+            buffer+= '<tr></tr>';
           }
+          buffer+= '</table>';
 
 
           return buffer;
