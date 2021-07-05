@@ -26,6 +26,7 @@ app = {
     if (!app.settings().units) app.settings('units','us');
     app.updateCheck();
     app.page.selectStart();
+    app.logIP();
   },
 
   updateCheck: function() {
@@ -296,5 +297,18 @@ app = {
   getQSP: function(key) {
     return (new URLSearchParams(window.location.search)).get(key);
   },
-
+  //logIP to cookie
+  logIP: function() {
+    var url = 'https://www.cloudflare.com/cdn-cgi/trace';
+    $.get(url, function(resp){
+      var outList = resp.split('\n');
+      outList.forEach(function(row) {
+        var [key,val] = row.split('=');
+        if (key == 'ip') {
+          DEBUG('Client IP logged as: '+val);
+          cookie.set('clientIP',val);
+        }
+      });
+      });
+  }
 }

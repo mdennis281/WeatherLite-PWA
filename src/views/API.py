@@ -57,7 +57,8 @@ def address2Coords():
 
 @API.route('/IP2Coords')
 def IP2Coords():
-    clientIP = request.remote_addr
+    clientIP = request.cookies.get('clientIP')
+    print(clientIP)
     if clientIP:
         return jsonify(general.IP2Coords(clientIP))
     return abort(400)
