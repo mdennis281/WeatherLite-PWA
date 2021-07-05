@@ -13,22 +13,8 @@ from flask import (
 #####################################################
 #       API Calls
 #####################################################
-"""
 @API.route('/weatherLookup')
 def weatherInfo():
-    coords = {
-        'latitude': request.args.get('latitude'),
-        'longitude': request.args.get('longitude'),
-        'units': request.args.get('units')
-    }
-    if coords['latitude'] and coords['longitude']:
-        data = weather.getWeatherByCoords(coords)
-        data['call'] = coords
-        return jsonify(data)
-    return abort(400)
-"""
-@API.route('/weatherLookup')
-def weatherInfoTest():
     args = {}
     for k,v in request.args.items(): args[k] = v
 
