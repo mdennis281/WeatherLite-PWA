@@ -316,7 +316,6 @@ def callOpenWeatherMap(customParams,wData):
     r = requests.get('https://api.openweathermap.org/data/2.5/weather',
         params=sParams,
     )
-    print(r.url)
 
     if r.status_code == 200:
         data = r.json()

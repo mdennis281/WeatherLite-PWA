@@ -103,7 +103,6 @@ class WeatherData:
 
 
     def _makeRequest(self,url,params):
-        print(url,params)
         try:
             r = requests.get(url,params=params)
             data = r.json()

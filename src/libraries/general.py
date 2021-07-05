@@ -45,7 +45,6 @@ def IP2Coords(IP):
     position = {}
     headers = {'User-Agent': 'keycdn-tools:https://weatherlite.app'}
     data = requests.get('https://tools.keycdn.com/geo.json?host='+IP,headers=headers).json()
-    print(data)
     position['latitude'] = data['data']['geo']['latitude']
     position['longitude'] = data['data']['geo']['longitude']
     return position

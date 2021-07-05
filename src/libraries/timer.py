@@ -28,23 +28,5 @@ def Timer(func):
         value = func(*args,**kwargs) #run fxn
         endTime = time.perf_counter()
         runTime = endTime-startTime
-        """
-        if outPrint: #print
-            print(runTimeStr)
-        if outFile: #append to output file
-            f = open(outFile,'a')
-            f.write(runTimeStr)
-            f.close()
-
-        return runtime if outReturn else value
-        """
         return (value,runTime)
     return wrapper_timer
-
-
-"""
-    #defines output options
-    outPrint = kwargs.get('outPrint',False)
-    outReturn = kwargs.get('outReturn',False)
-    outFile = kwargs.get('outFile',False)
-"""
