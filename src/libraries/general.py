@@ -4,7 +4,7 @@ import textwrap
 import json
 import io
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 
 """
 resizes an image
