@@ -8,7 +8,6 @@ var ui = {
     //waits until the weather object is finished
     //loading. When it is, it will move onto ui.weather._render()
     render: function (callback) {
-      DEBUG('render');
       if (weather.isLoading) {
         setTimeout(function(){ui.weather.render(callback);},150);
       } else {
