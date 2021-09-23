@@ -80,7 +80,7 @@ class WeatherData:
 
 
     def _callAPI(self,endpoint,fields,**kwargs):
-        url = 'https://api.climacell.co/v3' + endpoint
+        url = 'https://api.climacell.co/v4' + endpoint
         params = {}
         params['apikey'] = APIKEY
         params['fields'] = fields
