@@ -50,8 +50,16 @@ var device = {
       return "Unknown"
     }
   },
-  isPWA: (window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone) || document.referrer.includes('android-app://')
+  isPWA: (window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone) || document.referrer.includes('android-app://'),
 
+  unitLocale: function() {
+    var lang = window.navigator.language.toLowerCase();
+    DEBUG('Browser Language: '+lang);
+    if ("en-us" == lang) return 'imperial'; // USA
+    if ("lt" == lang) return 'imperial'; // Liberia
+    if ("my" == lang) return 'imperial'; // Myanmar
+    return 'metric'
+  }
 }
 var ua = window.navigator.userAgent;
 var browser = {}

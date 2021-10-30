@@ -25,6 +25,7 @@ app = {
     });
     if (!app.settings().units) app.settings('units','imperial');
     app.updateCheck();
+    app.errorCheck();
     app.page.selectStart();
     app.logIP();
   },
@@ -36,12 +37,22 @@ app = {
       if (v) {
         if (v != data.version) {
           app.clearCache(0);
-          cookies.purge();
+          cookie.purge();
           app.refresh();
         }
       }
     });
 
+  },
+  /*
+    checking for version issues with the application
+    some of the updates to APIs etc have required changes
+    that would break the app if old configs existed clientside
+  */
+  errorCheck: function() {
+    if (!['metric','imperial'].includes(app.settings().units)){
+        app.settings('units',device.unitLocale());
+    }
   },
 
   load: {
