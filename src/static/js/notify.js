@@ -19,13 +19,18 @@ $.notifyDefaults({
 //n.info() is a basic. informational popup themed for this application
 var n = {
   info: function(title,message,callback) {
+		if (!callback) {
+			callback = function(title,message) {
+				popup.open('<h3>'+title+':</h3><br><p>'+message+'</p>');
+			}
+		}
     $.notify({
       title: title,
       message: message
     },{
       type: "info",
       template: '<div data-notify="container" class="n-container n-info alert alert-{0}"  role="alert">' +
-        '<div class="n-clickable" onclick="('+callback+')(); $.notifyClose();">'+
+        '<div class="n-clickable" onclick="('+callback+')(\''+title+'\',\''+message+'\'); $.notifyClose();">'+
           '<div class="n-icon">'+
       		  '<i class="fad fa-info-circle fa-2x"></i>' +
           '</div>' +
