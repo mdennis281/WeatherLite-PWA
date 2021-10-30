@@ -23,7 +23,7 @@ app = {
     $('#app').animateCss('fadeIn',function(){
       PWANotify();
     });
-    if (!app.settings().units) app.settings('units','us');
+    if (!app.settings().units) app.settings('units','imperial');
     app.updateCheck();
     app.page.selectStart();
     app.logIP();
@@ -145,14 +145,7 @@ app = {
         return true;
       }
     },
-    degreesToBearing: function(wind_dir,full) {
-      if(Array.isArray(wind_dir)){
-        var min = wind_dir[0].min.value;
-        var max = wind_dir[1].max.value;
-        var x = (min+max)/2; //avg
-      } else {
-        var x = wind_dir.value;
-      }
+    degreesToBearing: function(x,full) {
 
       if (x<=22.5 || x>=337.5) {
         return (full) ? 'North' : 'N';
@@ -174,46 +167,30 @@ app = {
         return 'ERROR';
       }
     },
-    windSpeed: function(wind) {
-      if(Array.isArray(wind)){
-        var units = wind[0].min.units;
-        var min = wind[0].min.value.toFixed(0);
-        var max = wind[1].max.value.toFixed(0);
-        return min + '-' + max + ' ' + units;
-      } else {
-        var units = wind.units;
-        var speed = wind.value.toFixed(0);
-        return speed + ' ' + units;
-      }
+    windSpeed: function(w) {
+      var units = app.units.speed();
+      var min = w.values.windSpeed.toFixed(0);
+      var max = w.values.windGust.toFixed(0);
+      return min + '-' + max + ' ' + units;
     },
-    temp: function(temp) {
-      if(Array.isArray(temp)){
-        var units = temp[0].min.units;
-        var min = temp[0].min.value.toFixed(0);
-        var max = temp[1].max.value.toFixed(0);
-        return min + '°-' + max + '°' + units;
-      } else {
-        var units = temp.units;
-        var speed = temp.value.toFixed(0);
-        return speed + ' ' + units;
-      }
+    temp: function(w) {
+      var units = app.units.temp();
+      var min = w.values.temperatureMin.toFixed(0);
+      var max = w.values.temperatureMax.toFixed(0);
+      return min + '°-' + max + '°' + units;
     },
     genDesc: function(w) {
-      var desc = app.strFormat.weekday(w.observation_time.value)+'\`s';
+      var desc = app.strFormat.weekday(w.startTime)+'\`s';
       desc += ' forecast shows ' + ui.weather.codeToStr(w) + ' with temperatures';
-      desc += ' ranging between ' + app.strFormat.temp(w.temp)+'. ';
-      if (w.precipitation && w.precipitation_probability.value) {
-        var pp = w.precipitation_probability.value +'%';
-        var pt = app.strFormat.hour(w.precipitation[0].observation_time);
-        desc += 'There is a '+pp+' chance of rain at '+pt+'. ';
+      desc += ' ranging between ' + app.strFormat.temp(w)+'. ';
+      if (w.values.precipitationProbability) {
+        var pp = w.values.precipitationProbability +'%';
+        //var pt = app.strFormat.hour(w.precipitation[0].observation_time);
+        desc += 'There is a '+pp+' chance of rain today. ';
       }
-      if (w.wind_speed) {
-        desc += 'Winds from the ' + app.strFormat.degreesToBearing(w.wind_direction,true);
-        desc += ' blowing at ' + app.strFormat.windSpeed(w.wind_speed);
-        if (w.wind_gust) {
-          desc += ' gusting to '+app.strFormat.windSpeed(w.wind_gust);
-        }
-        desc += '. ';
+      if (w.values.windSpeed) {
+        desc += 'Winds from the ' + app.strFormat.degreesToBearing(w.values.windDirection,true);
+        desc += ' blowing between ' + app.strFormat.windSpeed(w)+ '. ';
       }
       return desc;
     },
@@ -310,5 +287,10 @@ app = {
         }
       });
       });
+  },
+  units: {
+    dist:  function() { return (app.settings()['units'] == 'metric') ? 'km' : 'mi'},
+    temp:  function() { return (app.settings()['units'] == 'metric') ? 'C' : 'F'},
+    speed: function() { return (app.settings()['units'] == 'metric') ? 'kmph' : 'mph'},
   }
 }

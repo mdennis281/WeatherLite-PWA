@@ -26,30 +26,30 @@ var ui = {
       var now = wData.hourly[0];
       var today = wData.daily[0];
       ui.weather.generate.radar(wData.call);
-      ui.weather.generate.forecast.hourly(wData.hourly);
-      ui.weather.generate.forecast.daily(wData.daily);
+      ui.weather.generate.forecast.hourly(wData.hourly.slice(0, 23));
+      ui.weather.generate.forecast.daily(wData.daily.slice(0, 6));
 
       $('#detailed-forecast-today').html(
         app.strFormat.genDesc(today)
       );
       $('#temperature').html(
-        now.temp.value.toFixed(0) + '°' + now.temp.units
+        now.values.temperature.toFixed(0)+ '°' + app.units.temp()
       );
       $('#city').html(
         maps.coord2Name(wData.call.latitude,wData.call.longitude)
       );
       $('#condition').html(ui.weather.codeToStr(now));
       $('#sunrise-time').html(
-        app.strFormat.hourMin(today.sunrise.value)
+        app.strFormat.hourMin(wData.OWM.sys.sunrise*1000)
       );
       $('#sunset-time').html(
-        app.strFormat.hourMin(today.sunset.value)
+        app.strFormat.hourMin(wData.OWM.sys.sunset*1000)
       );
       $('#humidity').html(
-        weather.lastFetch().OWM.main.humidity + '%'
+        wData.OWM.main.humidity + '%'
       );
       $('#visibility').html(
-        app.strFormat.avgValues(today.visibility,true)
+        now.values.visibility + ' ' + app.units.dist()
       );
 
       $('#loader-container').remove();
@@ -59,67 +59,53 @@ var ui = {
     //Logic to determine which icon to display for the user.
     //Used for both hourly and daily forecasts
     selectIcon: function(w) {
-      var f = w.weather_code.value;
-      var isDay = app.strFormat.isDaytime(w.observation_time.value);
+      var f = w.values.weatherCode;
+      var isDay = app.strFormat.isDaytime(w.startTime);
 
-      if (f == 'freezing_rain_heavy') { return 'fas fa-cloud-sleet' }
-      else if (f == 'freezing_rain') { return 'far fa-cloud-sleet' }
-      else if (f == 'freezing_rain_light') { return 'fal fa-cloud-sleet' }
-      else if (f == 'freezing_drizzle') { return 'far fa-cloud-drizzle' }
-      else if (f == 'ice_pellets_heavy') { return 'fas fa-cloud-hail' }
-      else if (f == 'ice_pellets') { return 'fas fa-cloud-hail-mixed' }
-      else if (f == 'ice_pellets_light') { return 'far fa-cloud-hail-mixed' }
-      else if (f == 'snow_heavy') { return 'fas fa-cloud-snow' }
-      else if (f == 'snow') { return 'far fa-cloud-snow' }
-      else if (f == 'snow_light') { return 'fal fa-cloud-snow' }
-      else if (f == 'flurries') { return 'fas fa-snowflakes' }
-      else if (f == 'tstorm') { return 'far fa-thunderstorm' }
-      else if (f == 'rain_heavy') { return 'fas fa-cloud-rain' }
-      else if (f == 'rain') { return 'fas fa-cloud-sun-rain' }
-      else if (f == 'rain_light') {
+      if (f == 6201) { return 'fas fa-cloud-sleet' }
+      else if (f == 6001) { return 'far fa-cloud-sleet' }
+      else if (f == 6200) { return 'fal fa-cloud-sleet' }
+      else if (f == 6000) { return 'far fa-cloud-drizzle' }
+      else if (f == 7101) { return 'fas fa-cloud-hail' }
+      else if (f == 7000) { return 'fas fa-cloud-hail-mixed' }
+      else if (f == 7102) { return 'far fa-cloud-hail-mixed' }
+      else if (f == 5101) { return 'fas fa-cloud-snow' }
+      else if (f == 5000) { return 'far fa-cloud-snow' }
+      else if (f == 5100) { return 'fal fa-cloud-snow' }
+      else if (f == 5001) { return 'fas fa-snowflakes' }
+      else if (f == 8000) { return 'far fa-thunderstorm' }
+      else if (f == 4201) { return 'fas fa-cloud-rain' }
+      else if (f == 4001) { return 'fas fa-cloud-sun-rain' }
+      else if (f == 4200) {
         return (isDay) ? 'far fa-cloud-sun-rain' : 'far fa-cloud-moon-rain'
-      } else if (f == 'drizzle') { return 'fas fa-cloud-drizzle' }
-      else if (f == 'fog_light') { return 'fal fa-fog' }
-      else if (f == 'fog') { return 'fad fa-fog' }
-      else if (f == 'cloudy') { return 'fad fa-clouds' }
-      else if (f == 'mostly_cloudy') { return 'fas fa-cloud' }
-      else if (f == 'partly_cloudy') {
+      } else if (f == 4000) { return 'fas fa-cloud-drizzle' }
+      else if (f == 2100) { return 'fal fa-fog' }
+      else if (f == 2000) { return 'fad fa-fog' }
+      else if (f == 1001) { return 'fad fa-clouds' }
+      else if (f == 1102) { return 'fas fa-cloud' }
+      else if (f == 1101) {
         return (isDay) ? 'fas fa-clouds-sun' : 'fas fa-clouds-moon'
-      } else if (f == 'mostly_clear') {
+      } else if (f == 1100) {
         return (isDay) ? 'fas fa-cloud-sun' : 'fas fa-cloud-moon'
-      } else if (f == 'clear') {
+      } else if (f == 1000) {
         return (isDay) ? 'fad fa-sun' : 'fad fa-moon-stars'
       }
       return 'fad fa-question';
     },
     codeToStr: function(w) {
-      var f = w.weather_code.value;
-      var isDay = app.strFormat.isDaytime(w.observation_time.value);
-
-      if (f == 'freezing_rain_heavy') { return 'heavy freezing rain' }
-      else if (f == 'freezing_rain') { return 'freezing rain' }
-      else if (f == 'freezing_rain_light') { return 'light freezing rain' }
-      else if (f == 'freezing_drizzle') { return 'freezing drizzle' }
-      else if (f == 'ice_pellets_heavy') { return 'heavy hail' }
-      else if (f == 'ice_pellets') { return 'hail' }
-      else if (f == 'ice_pellets_light') { return 'light hail' }
-      else if (f == 'snow_heavy') { return 'heavy snow' }
-      else if (f == 'snow') { return 'snow' }
-      else if (f == 'snow_light') { return 'light snow' }
-      else if (f == 'flurries') { return 'snow flurries' }
-      else if (f == 'tstorm') { return 'thunderstorms' }
-      else if (f == 'rain_heavy') { return 'heavy rain' }
-      else if (f == 'rain') { return 'rain' }
-      else if (f == 'rain_light') {return 'light rain'}
-      else if (f == 'drizzle') { return 'light drizzle' }
-      else if (f == 'fog_light') { return 'light fog' }
-      else if (f == 'fog') { return 'foggy skies' }
-      else if (f == 'cloudy') { return 'cloudy skies' }
-      else if (f == 'mostly_cloudy') { return 'mostly cloudy skies' }
-      else if (f == 'partly_cloudy') { return 'partly cloudy skies' }
-      else if (f == 'mostly_clear') { return 'mostly clear skies' }
-      else if (f == 'clear') { return 'clear skies' }
-      return f;
+      var code = w.values.weatherCode;
+      var codeKey =  {
+        0: "Unknown", 1000: "Clear",1001: "Cloudy",
+        1100: "Mostly Clear",1101: "Partly Cloudy",1102: "Mostly Cloudy",
+        2000: "Fog",2100: "Light Fog",3000: "Light Wind",
+        3001: "Wind",3002: "Strong Wind",4000: "Drizzle",
+        4001: "Rain",4200: "Light Rain",4201: "Heavy Rain",
+        5000: "Snow",5001: "Flurries",5100: "Light Snow",
+        5101: "Heavy Snow",6000: "Freezing Drizzle",6001: "Freezing Rain",
+        6200: "Light Freezing Rain",6201: "Heavy Freezing Rain",7000: "Ice Pellets",
+        7101: "Heavy Ice Pellets",7102: "Light Ice Pellets",8000: "Thunderstorm"
+      };
+      return codeKey[code];
     },
     //called from ui.weather._render()
     generate: {
@@ -128,10 +114,10 @@ var ui = {
         hourly: function(forecast) {
           forecast = forecast.slice(0,24);
           forecast.forEach(function(w,i){
-            var time = app.strFormat.hour(w.observation_time.value);
+            var time = app.strFormat.hour(w.startTime);
             if (!i) {time = 'Now'}
             $('#hourly-forecast').append(
-              '<td alt="'+w.weather_code.value+'"> '+
+              '<td alt="'+ui.weather.codeToStr(w)+'"> '+
               '<div class="hourly-item" '+
                 'data-toggle="tooltip" '+
                 'data-html="true" '+
@@ -142,33 +128,36 @@ var ui = {
                 '<p class="time">'+time+'</p>'+
                 '<i class="'+ui.weather.selectIcon(w)+'"></i>'+
                 '<p class="wind">'+
-                  w.wind_speed.value.toFixed(0)+
-                  ' '+w.wind_speed.units+
-                  ' '+app.strFormat.degreesToBearing(w.wind_direction)+
+                  w.values.windSpeed.toFixed(0)+
+                  ' '+app.units.speed()+
+                  ' '+app.strFormat.degreesToBearing(w.values.windDirection)+
                 '</p>'+
-                '<p class="temp">'+w.temp.value.toFixed(0)+'°'+w.temp.units+'</p>'+
+                '<p class="temp">'+
+                  w.values.temperature.toFixed(0)+'°'+app.units.temp()+
+                '</p>'+
               '</div></td>'
             );
           });
         },
         //creates the tooltips when tapped
         hourlyDetail: function(x) {
-          return '<p>'+x.weather_code.value+'</p>' +
-            '<p>Wind: '+x.wind_speed.value+' '+x.wind_speed.units+'</p>';
+          return '<p>'+ui.weather.codeToStr(x)+'</p>' +
+            '<p>Wind: '+x.windSpeed+' '+app.units.speed()+'</p>';
         },
         //generate the daily table.
         //also generates the popup when clicking for details
         daily: function(forecast) {
           forecast.forEach(function(f){
-            var day = app.strFormat.weekday(f.observation_time.value);
+            var day = app.strFormat.weekday(f.startTime);
+            var tempUnits = app.units.temp();
             $('#daily-forecast').append(
               '<tr onclick="popup.open(\''+ //popup content
                         ui.weather.generate.detail.daily(f)+
                         '\')" class="hover-pointer">' +
                 '<td>'+day+'</td>'+
                 '<td><i class="'+ui.weather.selectIcon(f)+'"></i></td>'+
-                '<td>'+f.temp[0].min.value.toFixed(0)+'°'+f.temp[0].min.units+'</td>'+
-                '<td>'+f.temp[1].max.value.toFixed(0)+'°'+f.temp[1].max.units+'</td>'+
+                '<td>'+f.values.temperatureMin.toFixed(0)+'°'+tempUnits+'</td>'+
+                '<td>'+f.values.temperatureMax.toFixed(0)+'°'+tempUnits+'</td>'+
               '</tr>'
             )
           })
@@ -186,7 +175,7 @@ var ui = {
         //on a specific day
         daily: function(day) {
           buffer = '';
-          buffer += '<h4>'+app.strFormat.weekday(day.observation_time.value)+'</h4>';
+          buffer += '<h4>'+app.strFormat.weekday(day.startTime)+'</h4>';
           buffer += '<p>'+app.strFormat.genDesc(day)+'</p><br/>';
           buffer += '<table>';
           if (day.visibility) {
@@ -339,14 +328,14 @@ var ui = {
       genToggle: function() {
         general.createToggle(
             '#units-toggle', //parentElement
-            (app.settings().units == 'si'), //isToggled
+            (app.settings().units == 'metric'), //isToggled
             function() { //Toggle off callback
-              app.settings('units','us');
+              app.settings('units','imperial');
               app.storage('weatherCache',{});
               app.refresh();
             },
             function() { //Toggle on callback
-              app.settings('units','si');
+              app.settings('units','metric');
               app.storage('weatherCache',{});
               app.refresh();
             }
