@@ -36,6 +36,7 @@ app = {
       if (v) {
         if (v != data.version) {
           app.clearCache(0);
+          cookies.purge();
           app.refresh();
         }
       }
