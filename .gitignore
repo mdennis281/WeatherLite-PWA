@@ -6,3 +6,4 @@ src/libraries/APIKeys.py
 /src/static/bundles
 tools/
 *.tgz
+.DS_Store
