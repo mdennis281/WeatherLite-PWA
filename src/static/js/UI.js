@@ -49,7 +49,7 @@ var ui = {
         wData.OWM.main.humidity + '%'
       );
       $('#visibility').html(
-        now.values.visibility + ' ' + app.units.dist()
+        now.values.visibility.toFixed(1) + ' ' + app.units.dist()
       );
 
       $('#loader-container').remove();
