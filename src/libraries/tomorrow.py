@@ -12,31 +12,35 @@ class WeatherData:
                 (29.21,-95.37)
         kwargs.units (string)
             Accepted vals:
-                us || si
+                imperial || metric
 
     """
     def __init__(self,coords,**kwargs):
         self.lat, self.lon = coords
-        self.units = kwargs.get('units','us')
+        self.units = kwargs.get('units','imperial')
         self.result = {}
         self.threads = []
         self.timing = {}
 
     def getHourly(self, fields=None,**kwargs):
         if not fields:
-            fields = kwargs.pop('fields','temp,feels_like,humidity,wind_speed,wind_direction,wind_gust,precipitation,precipitation_type,precipitation_probability,visibility,cloud_cover,weather_code')
+            fields = kwargs.pop('fields','temperature,temperatureApparent,humidity,windSpeed,windDirection,windGust,precipitationIntensity,precipitationType,precipitationProbability,visibility,cloudCover,weatherCode')
         return self._callAPI(
-            '/weather/forecast/hourly',
+            'hourly',
+            '/timelines',
             fields,
+            '1h',
             **kwargs
         )
 
     def getDaily(self, fields=None,**kwargs):
         if not fields:
-            fields = kwargs.pop('fields','temp,feels_like,humidity,wind_speed,wind_direction,precipitation,precipitation_probability,visibility,weather_code,sunrise,sunset')
+            fields = kwargs.pop('fields','temperature,temperatureMin,temperatureMax,temperatureApparent,humidity,windSpeed,windDirection,windGust,precipitationIntensity,precipitationType,precipitationProbability,visibility,cloudCover,weatherCode')
         return self._callAPI(
-            '/weather/forecast/daily',
+            'daily',
+            '/timelines',
             fields,
+            '1d',
             **kwargs
         )
 
@@ -49,9 +53,9 @@ class WeatherData:
         kwargs['thread'] = True
         start = time.time()
         W = WeatherData(coords,**kwargs)
-        kwargs['end_time'] = ISO8601.addHrs(kwargs.pop('hourly_limit',24))
+        kwargs['endTime'] = ISO8601.addHrs(kwargs.pop('hourly_limit',24))
         W.getHourly(kwargs.get('hourlyFields'),**kwargs)
-        kwargs['end_time'] = ISO8601.addDays(kwargs.pop('days_limit',7))
+        kwargs['endTime'] = ISO8601.addDays(kwargs.pop('days_limit',7))
         W.getDaily(kwargs.get('dailyFields'),**kwargs)
 
         W2 = WeatherInfo(coords[0],coords[1])
@@ -79,27 +83,37 @@ class WeatherData:
 
 
 
-    def _callAPI(self,endpoint,fields,**kwargs):
-        url = 'https://api.climacell.co/v4' + endpoint
+    def _callAPI(self,callName,endpoint,fields,timeSteps,**kwargs):
+        url = 'https://api.tomorrow.io/v4' + endpoint
         params = {}
         params['apikey'] = APIKEY
         params['fields'] = fields
-        params['unit_system'] = kwargs.get('units',self.units)
-        params['lat'] = kwargs.get('lat',self.lat)
-        params['lon'] = kwargs.get('lon',self.lon)
-        params['end_time'] = kwargs.get('end_time',None)
+        params['units'] = kwargs.get('units',self.units)
+        lat = kwargs.get('lat',self.lat)
+        lon = kwargs.get('lon',self.lon)
+        params['location'] = lat+','+lon
+        params['timesteps'] = timeSteps
+        #params['endTime'] = kwargs.get('endTime',None)
         if kwargs.pop('thread',False):
-            T = threading.Thread(target=self._makeThreadRequest,args=(url,params))
+            T = threading.Thread(target=self._makeThreadRequest,args=(callName,url,params))
             T.start()
             self.threads.append(T)
             return True
 
         return self._makeRequest(url,params)
 
-    def _makeThreadRequest(self,url,params):
+    def _makeThreadRequest(self,callName,url,params):
         start = time.time()
-        self.result[url.split('/')[-1]] = self._makeRequest(url,params)
-        self.timing[url.split('/')[-1]] = time.time() - start
+        data = self._makeRequest(url,params)
+        data = data
+        """
+        try: #this sucks
+
+        except:
+            pass
+        """
+        self.result[callName] = data
+        self.timing[callName] = time.time() - start
 
 
     def _makeRequest(self,url,params):
@@ -126,7 +140,7 @@ class WeatherData:
 
         return {
             'error': False,
-            'data': data
+            'data': data['data']['timelines'][0]['intervals']
         }
 
 

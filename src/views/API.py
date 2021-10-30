@@ -1,5 +1,5 @@
 from src.blueprints import API
-from src.libraries.climacell import WeatherData
+from src.libraries.tomorrow import WeatherData
 from src.libraries import (
     weather,
     general,
