@@ -51,7 +51,6 @@ var ui = {
       $('#visibility').html(
         now.values.visibility.toFixed(1) + ' ' + app.units.dist()
       );
-
       $('#loader-container').remove();
       $('#weather-content').removeClass('div-hide');
     },
@@ -141,8 +140,9 @@ var ui = {
         },
         //creates the tooltips when tapped
         hourlyDetail: function(x) {
+          console.log(x);
           return '<p>'+ui.weather.codeToStr(x)+'</p>' +
-            '<p>Wind: '+x.windSpeed+' '+app.units.speed()+'</p>';
+            '<p>Wind: '+x.values.windSpeed.toFixed(0)+' '+app.units.speed()+'</p>';
         },
         //generate the daily table.
         //also generates the popup when clicking for details
