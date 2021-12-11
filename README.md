@@ -4,6 +4,8 @@ It features saving favorite locations, rain forecasts, heatmaps, etc.
 
 Live Demo here: https://weatherlite.app
 
+The config.ini file will need to be updated with the appropriate api keys before localrun will work.
+
 I have commented each file out pretty well. So it should prove pretty easy to reverse engineer.
 
 ## File tree
@@ -13,7 +15,6 @@ I have commented each file out pretty well. So it should prove pretty easy to re
   * clientAssets.py | stores all the assets loaded in by the client (open the file for more info)
   * libraries
     - init.py | loads in all the necessary external libraries
-    - APIKeys.py | holds all the sensitive info needed to create connections to external services
     - general.py | has functions for things like image manipulation and IP2coordinate conversions
     - googleMaps.py | all the API calls to GCP
     - weather.py | all the API calls to NOAA and OWM
