@@ -1,8 +1,10 @@
 import requests, threading,time,datetime
 
-from src.libraries.APIKeys import tomorrow as APIKEY
+from src.libraries.config import APIKeys
 
 from src.libraries.weather import WeatherInfo
+
+APIKEY = APIKeys['tomorrow']
 
 class WeatherData:
     """

@@ -1,5 +1,5 @@
 from src.clientAssets import files,randomize
-from src.libraries import APIKeys
+from src.libraries.config import APIKeys
 from src.blueprints import general
 from flask import (
 ####    Flask
@@ -18,7 +18,7 @@ def main():
     return render_template(
         'init/index.html',
         assets=assets,
-        analyticsID=APIKeys.GAnalytics
+        analyticsID=APIKeys['GAnalytics']
     )
 
 #####################################################

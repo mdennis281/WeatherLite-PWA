@@ -1,5 +1,5 @@
 from src.libraries.timer import Timer
-from src.libraries import APIKeys
+from src.libraries.config import APIKeys
 import threading
 import requests
 import time
@@ -97,7 +97,7 @@ class WeatherInfo:
         strParams = {
             'lat': self.coords['lat'],
             'lon': self.coords['lng'],
-            'appid': APIKeys.OWM,
+            'appid': APIKeys['OWM'],
             'units': 'imperial'
         }
 
@@ -305,7 +305,7 @@ def callNOAA(coords,wData):
 def callOpenWeatherMap(customParams,wData):
     global TIMING
     start = time.time()
-    sParams = { 'appid': APIKeys.OWM }
+    sParams = { 'appid': APIKeys['OWM'] }
 
     for k,v in customParams.items():
         sParams[k] = v

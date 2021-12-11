@@ -1,4 +1,4 @@
-from src.libraries import APIKeys
+from src.libraries.config import APIKeys
 
 import requests
 """
@@ -11,7 +11,7 @@ import requests
 def geocoding(location):
     params = {
         'address': location,
-        'key': APIKeys.GCP
+        'key': APIKeys['GCP']
     }
 
     data = requests.get(
@@ -44,7 +44,7 @@ def places(query,debug=False):
 
     params = {
         'input': query,
-        'key': APIKeys.GCP,
+        'key': APIKeys['GCP'],
     }
     data = requests.get(
         'https://maps.googleapis.com/maps/api/place/autocomplete/json',
