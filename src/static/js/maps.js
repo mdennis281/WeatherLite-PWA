@@ -7,10 +7,7 @@ var maps = {
     if (location) {
       $.get('/API/placesLookup?query='+location,function(data) {
         if (location == $('#favorite-searchbox').val()) {
-          if (!data.success)
-            n.info('Google Places API Error',data.error);
-          callback(data.data);
-
+          callback(data);
         }
       });
     }

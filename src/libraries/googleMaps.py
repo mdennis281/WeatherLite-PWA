@@ -53,15 +53,4 @@ def places(query,debug=False):
 
 
     if debug: return data['predictions']
-
-    if data['status'] == 'OK':
-        return { 
-            'success': True, 
-            'data': filterResults(data['predictions']) 
-        }
-    return { 
-        'success': False,
-        'error': data['error_message'],
-        'data': []
-    }
-
+    return filterResults(data['predictions'])
