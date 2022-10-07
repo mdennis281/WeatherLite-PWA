@@ -7,4 +7,3 @@ src/libraries/APIKeys.py
 tools/
 *.tgz
 .DS_Store
-wenv/*
