@@ -30,7 +30,12 @@ def geocoding(location):
         Optional:
             debug : will not filter results for addresses
                         (dont need addresses for weather info)
-    Returns: List of location strings
+    Returns: 
+    {
+        'success': boolean,
+        'error': null || string,
+        'data': list
+    }
 """
 def places(query,debug=False):
     def filterResults(locations):
