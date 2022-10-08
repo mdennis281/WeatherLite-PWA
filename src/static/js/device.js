@@ -38,6 +38,8 @@ var device = {
       return "IE"
     } else if (browser.isEdge) {
       return "Edge"
+    } else if (browser.isEdgeChromium) {
+      return "Edge Chromium"
     } else if (browser.isSafari) {
       return "Safari"
     } else if (browser.isChrome) {
@@ -46,6 +48,8 @@ var device = {
       return "Blink"
     } else if (browser.isIOSSafari) {
       return "IOSSafari"
+    } else if (browser.isIOSChrome) {
+      return "IOSChrome"
     } else {
       return "Unknown"
     }
@@ -68,7 +72,9 @@ var browser = {}
 		browser.isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification)); // Safari 3.0+
 		browser.isIE = /*@cc_on!@*/false || !!document.documentMode; // Internet Explorer 6-11
 		browser.isEdge = !browser.isIE && !!window.StyleMedia; // Edge 20+
-		browser.isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime); // Chrome 1+
+		browser.isChrome = !!window.chrome; // Chrome 1+
     browser.isEdgeChromium = browser.isChrome && (navigator.userAgent.indexOf("Edg") != -1);
 		browser.isBlink = (browser.isChrome || browser.isOpera) && !!window.CSS; // Blink engine detection
     browser.isIOSSafari = (!!ua.match(/iPad/i) || !!ua.match(/iPhone/i)) && !!ua.match(/WebKit/i) && !ua.match(/CriOS/i);
+    browser.isIOSChrome = ua.match("CriOS");
+
