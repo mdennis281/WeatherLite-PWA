@@ -29,7 +29,7 @@ var maps = {
           lat: coords.lat,
           lng: coords.lng
         });
-        weather.get(coords);
+        weather.queuedLookup = coords;
         app.storage('favoriteLocations',fl);
 
         if (typeof callback === 'function') callback();
@@ -47,7 +47,7 @@ var maps = {
       app.storage('favoriteLocations',fl);
     }
   },
-  coord2Name: function(lat,lng,shortName=true) {
+  coord2Name: function(lat,lng,wData,shortName=true) {
     var match = null;
     lat = parseFloat(lat).toFixed(3);
     lng = parseFloat(lng).toFixed(3);
@@ -64,7 +64,7 @@ var maps = {
     } else if (match && match.name) {
       return match.name;
     } else {
-      return weather.lastFetch().OWM.name;
+      return wData.OWM.name;
     }
 
   }
