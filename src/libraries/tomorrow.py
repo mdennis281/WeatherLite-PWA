@@ -108,12 +108,7 @@ class WeatherData:
         start = time.time()
         data = self._makeRequest(url,params)
         data = data
-        """
-        try: #this sucks
 
-        except:
-            pass
-        """
         self.result[callName] = data
         self.timing[callName] = time.time() - start
 
@@ -122,7 +117,7 @@ class WeatherData:
         try:
             r = requests.get(url,params=params)
             data = r.json()
-        except JSONDecodeError:
+        except requests.exceptions.ContentDecodingError:
             return {
                 'error': True,
                 'message': 'API did not return valid json'
