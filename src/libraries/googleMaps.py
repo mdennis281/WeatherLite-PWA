@@ -59,7 +59,7 @@ def places(query,debug=False):
 
     if debug: return data['predictions']
 
-    if data['status'] == 'OK':
+    if data['status'] in ['OK','ZERO RESULTS']:
         return { 
             'success': True, 
             'data': filterResults(data['predictions']) 
