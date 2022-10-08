@@ -24,6 +24,7 @@ app = {
       PWANotify();
     });
     if (!app.settings().units) app.settings('units','imperial');
+    weather.initialize();
     app.updateCheck();
     app.errorCheck();
     app.page.selectStart();

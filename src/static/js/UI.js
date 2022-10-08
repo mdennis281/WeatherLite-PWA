@@ -8,20 +8,13 @@ var ui = {
     //waits until the weather object is finished
     //loading. When it is, it will move onto ui.weather._render()
     render: function (callback) {
-      if (weather.isLoading) {
-        setTimeout(function(){ui.weather.render(callback);},150);
-      } else {
-        var wData = weather.lastFetch();
-        if (wData) {
-          ui.weather._render(wData);
-          callback();
-        } else {
-          setTimeout(function(){ui.weather.render(callback);},150);
-        }
-      }
+      weather.getQueued(function(wData){
+        ui.weather._render(wData.w);
+        callback();
+      });
     },
 
-    //Renders the webpage with data retrieved from weather.lastFetch()
+    //Renders the webpage with data retrieved from weather.getQueued()
     _render: function(wData) {
       var now = wData.hourly[0];
       var today = wData.daily[0];
@@ -36,7 +29,7 @@ var ui = {
         now.values.temperature.toFixed(0)+ '°' + app.units.temp()
       );
       $('#city').html(
-        maps.coord2Name(wData.call.latitude,wData.call.longitude)
+        maps.coord2Name(wData.call.latitude,wData.call.longitude,wData)
       );
       $('#condition').html(ui.weather.codeToStr(now));
       $('#sunrise-time').html(
@@ -140,7 +133,6 @@ var ui = {
         },
         //creates the tooltips when tapped
         hourlyDetail: function(x) {
-          console.log(x);
           return '<p>'+ui.weather.codeToStr(x)+'</p>' +
             '<p>Wind: '+x.values.windSpeed.toFixed(0)+' '+app.units.speed()+'</p>';
         },
@@ -210,7 +202,7 @@ var ui = {
       favorites.forEach(function(location) {
         ui.favorites._createLocationEntry(
           location.name,
-          'weather.cache(\'last\',{}); weather.get({lat:'+location.lat+',lng:'+location.lng+'});'
+          'weather.queue({lat:'+location.lat+',lng:'+location.lng+'});'
         );
       });
     },

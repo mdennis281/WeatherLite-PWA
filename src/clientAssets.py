@@ -29,6 +29,8 @@ files = {
         '/static/js/general.js',
         '/static/js/notify.js',
         '/static/js/device.js',
+
+        '/static/js/classes/LocalWeather.js'
     ],
     'CSS': [
         'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css',
