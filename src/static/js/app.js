@@ -29,6 +29,7 @@ app = {
     app.errorCheck();
     app.page.selectStart();
     app.logIP();
+    app.showStartupMsgs();
   },
 
   updateCheck: function() {
@@ -39,6 +40,10 @@ app = {
         if (v != data.version) {
           app.clearCache(0);
           cookie.purge();
+          app.queueStartupMsg(
+            `App Updated to Version: ${data.version}`,
+            'Pretty seamless experience, right? ;)'
+          );
           app.refresh();
         }
       }
@@ -53,7 +58,10 @@ app = {
   errorCheck: function() {
     if (!['metric','imperial'].includes(app.settings().units)){
         app.settings('units',device.unitLocale());
-    }
+    };
+    if (!app.storage('StartupMessage')) {
+      app.storage('StartupMessage',[]);
+    };
   },
 
   load: {
@@ -262,6 +270,37 @@ app = {
     } else {
       localStorage['APPSTORAGE-'+key] = JSON.stringify(data);
     }
+  },
+  /*
+    Stores a message to display next time the app is loaded.
+    usage:
+      app.queueStartupMessage(
+        'A startup message',
+        'Shown next time the app is loaded'
+      )
+  */
+  queueStartupMsg: function (title,msg) {
+    var msgs = app.storage('StartupMessage');
+    msgs.push({
+      'title': title,
+      'message': msg
+    });
+    app.storage(
+      'StartupMessage',
+      msgs
+    );
+  },
+  /*
+    Loaded on init to show most recent startup msgs
+    usage:
+      app.showStartupMsgs();
+  */
+  showStartupMsgs: function () {
+    var msgs = app.storage('StartupMessage');
+    msgs.forEach(function(msg) {
+      n.info(msg.title,msg.message);
+    });
+    app.storage('StartupMessage',[]);
   },
   /*
     attempted solution to clearing cache.
