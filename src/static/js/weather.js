@@ -50,7 +50,7 @@ weather = {
   },
   getQueued: function(callback) {
     weather._queuedLookup.getWeather(callback);
-    //weather._queuedLookup = null;
+    weather._queuedLookup = null;
   },
   _fetchLocation: function (callback) {
     navigator.geolocation.getCurrentPosition(function(position){
