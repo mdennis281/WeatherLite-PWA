@@ -344,14 +344,22 @@ var ui = {
           if (key != 'last') {
             var timing = weather.cache()[key].w.timing;
             var city = weather.cache()[key].w.OWM.name
-            buffer += '<h3>'+city+'</h3>';
-            buffer += '<p>Client: '+timing.client.toFixed(3)+'s</p>';
-            buffer += '<p>Server: '+timing.serverTotal.toFixed(3)+'s</p>';
-            buffer += '<p>TX/RX: '+timing.tx_rx.toFixed(3)+'s</p>';
-            buffer += '<p>Daily: '+timing.daily.toFixed(3)+'s</p>';
-            buffer += '<p>Hourly: '+timing.hourly.toFixed(3)+'s</p>';
-            buffer += '<p>OWM: '+timing.OWM.toFixed(3)+'s</p>';
-            buffer += '<hr/><br/>';
+            buffer += `
+              <h3>${city}:</h3>
+              <p>Client (total): ${timing.client.toFixed(3)}s</p>
+              <div class="timer-box">
+                <p>TX/RX: ${timing.tx_rx.toFixed(3)}s</p>
+                <div class="timer-box">
+                  <p>Server: ${timing.serverTotal.toFixed(3)}s</p>
+                    <div class="timer-box">
+                      <p>Daily: ${timing.daily.toFixed(3)}s</p>
+                      <p>Hourly: ${timing.hourly.toFixed(3)}s</p>
+                      <p>OWM: ${timing.OWM.toFixed(3)}s</p>
+                    </div>
+                </div>
+              </div>
+              <hr />
+            `
           }
         });
         popup.open(buffer)

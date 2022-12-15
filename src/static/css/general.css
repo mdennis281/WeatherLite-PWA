@@ -148,6 +148,15 @@ a i {
   left: 0;
   top: 0;
 }
+
+.timer-box {
+  padding: 1em;
+  width: fit-content;
+  margin: auto;
+  border-top: 1px solid;
+  border-color: #aaa;
+}
+
 /*SCROLLBAR SETTINGS*/
 ::-webkit-scrollbar {
     width: 5px;
