@@ -16,11 +16,13 @@ var ui = {
 
     //Renders the webpage with data retrieved from weather.getQueued()
     _render: function(wData) {
+
+      var todayI = ui.weather.getTodayIndex(wData.daily);
       var now = wData.hourly[0];
-      var today = wData.daily[0];
+      var today = wData.daily[todayI];
       ui.weather.generate.radar(wData.call);
       ui.weather.generate.forecast.hourly(wData.hourly.slice(0, 23));
-      ui.weather.generate.forecast.daily(wData.daily.slice(0, 6));
+      ui.weather.generate.forecast.daily(wData.daily.slice(todayI, todayI+6));
 
       $('#detailed-forecast-today').html(
         app.strFormat.genDesc(today)
@@ -46,6 +48,25 @@ var ui = {
       );
       $('#loader-container').remove();
       $('#weather-content').removeClass('div-hide');
+    },
+
+    // get today's index from w obj 
+    // noticed it pulls data from yesterday sometimes
+    getTodayIndex: function(days) {
+      var i = 0
+      var today = (new Date()).getDate();
+      try {
+        while((new Date(days[i].startTime).getDate() != today)) {
+          i++;
+        }
+        return i;
+      } 
+      //if didnt find
+      catch (TypeError) {
+        DEBUG('getTodayIndex FAIL');
+        return 0;
+      }
+      
     },
 
     //Logic to determine which icon to display for the user.
@@ -109,25 +130,30 @@ var ui = {
             var time = app.strFormat.hour(w.startTime);
             if (!i) {time = 'Now'}
             $('#hourly-forecast').append(
-              '<td alt="'+ui.weather.codeToStr(w)+'"> '+
-              '<div class="hourly-item" '+
-                'data-toggle="tooltip" '+
-                'data-html="true" '+
-                'data-placement="top" '+
-                'v-b-tooltip.hover.viewport '+
-                'title="'+ui.weather.generate.forecast.hourlyDetail(w)+'"'+
-              '>'+
-                '<p class="time">'+time+'</p>'+
-                '<i class="'+ui.weather.selectIcon(w)+'"></i>'+
-                '<p class="wind">'+
-                  w.values.windSpeed.toFixed(0)+
-                  ' '+app.units.speed()+
-                  ' '+app.strFormat.degreesToBearing(w.values.windDirection)+
-                '</p>'+
-                '<p class="temp">'+
-                  w.values.temperature.toFixed(0)+'°'+app.units.temp()+
-                '</p>'+
-              '</div></td>'
+              `
+              <td alt="${ui.weather.codeToStr(w)}>
+                <div 
+                  class="hourly-item"
+                  data-toggle="tooltip"
+                  data-html="true"
+                  data-placement="top"
+                  v-b-tooltip.hover.viewport
+                  title="${ui.weather.generate.forecast.hourlyDetail(w)}"
+                >
+                  <p class="time">${time}</p>
+                  <i class="${ui.weather.selectIcon(w)}"></i>
+                  <p class="rain">
+                    ${w.values.precipitationProbability}%
+                  </p>
+                  <p class="wind">
+                    ${w.values.windSpeed.toFixed(0)} ${app.units.speed()} ${app.strFormat.degreesToBearing(w.values.windDirection)}
+                  </p>
+                  <p class="temp">
+                    ${w.values.temperature.toFixed(0)}°${app.units.temp()}
+                  </p>
+                </div>
+              </td>
+              `
             );
           });
         },
@@ -344,14 +370,22 @@ var ui = {
           if (key != 'last') {
             var timing = weather.cache()[key].w.timing;
             var city = weather.cache()[key].w.OWM.name
-            buffer += '<h3>'+city+'</h3>';
-            buffer += '<p>Client: '+timing.client.toFixed(3)+'s</p>';
-            buffer += '<p>Server: '+timing.serverTotal.toFixed(3)+'s</p>';
-            buffer += '<p>TX/RX: '+timing.tx_rx.toFixed(3)+'s</p>';
-            buffer += '<p>Daily: '+timing.daily.toFixed(3)+'s</p>';
-            buffer += '<p>Hourly: '+timing.hourly.toFixed(3)+'s</p>';
-            buffer += '<p>OWM: '+timing.OWM.toFixed(3)+'s</p>';
-            buffer += '<hr/><br/>';
+            buffer += `
+              <h3>${city}:</h3>
+              <p>Client (total): ${timing.client.toFixed(3)}s</p>
+              <div class="timer-box">
+                <p>TX/RX: ${timing.tx_rx.toFixed(3)}s</p>
+                <div class="timer-box">
+                  <p>Server: ${timing.serverTotal.toFixed(3)}s</p>
+                    <div class="timer-box">
+                      <p>Daily: ${timing.daily.toFixed(3)}s</p>
+                      <p>Hourly: ${timing.hourly.toFixed(3)}s</p>
+                      <p>OWM: ${timing.OWM.toFixed(3)}s</p>
+                    </div>
+                </div>
+              </div>
+              <hr />
+            `
           }
         });
         popup.open(buffer)
