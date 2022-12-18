@@ -9,10 +9,6 @@ from importlib import import_module
 
 app = Flask(__name__)
 
-app.config.update(
-    DEBUG = True,
-    SECRET_KEY = '12345'
-)
 
 #####################################################
 #       Static File Mapping
