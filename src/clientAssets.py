@@ -65,18 +65,3 @@ files = {
     ]
 }
 
-
-# will recreate all the urls seen above, but append ?_=<EPOCH>
-# I used this on line 17 of src/views/general.py
-# This made the URL different than what was cached by the serviceworker
-# meaning all files cached by the serviceworker were unused
-# assets = randomize(files)
-def randomize(assets):
-    data = {}
-    for k in assets.keys():
-        data[k] = []
-        for v in assets[k]:
-            data[k].append(
-                v+'?_='+str(time.time())
-            )
-    return data
