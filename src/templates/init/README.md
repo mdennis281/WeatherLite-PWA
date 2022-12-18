@@ -1,0 +1,2 @@
+The `index.html` is the initial page loaded in when serving this app- it is tasked with loading in all the dependencies necessary to make this app work.
+The other files are simply hooked into the index.
