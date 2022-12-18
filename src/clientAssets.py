@@ -29,7 +29,8 @@ files = {
         '/static/js/general.js',
         '/static/js/notify.js',
         '/static/js/device.js',
-
+        '/static/js/txtFormat.js',
+        
         '/static/js/classes/LocalWeather.js'
     ],
     'CSS': [

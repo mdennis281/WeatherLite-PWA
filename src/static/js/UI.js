@@ -25,7 +25,7 @@ var ui = {
       ui.weather.generate.forecast.daily(wData.daily.slice(todayI, todayI+6));
 
       $('#detailed-forecast-today').html(
-        app.strFormat.genDesc(today)
+        txtFormat.genDesc(today)
       );
       $('#temperature').html(
         now.values.temperature.toFixed(0)+ '°' + app.units.temp()
@@ -35,10 +35,10 @@ var ui = {
       );
       $('#condition').html(ui.weather.codeToStr(now));
       $('#sunrise-time').html(
-        app.strFormat.hourMin(wData.OWM.sys.sunrise*1000)
+        txtFormat.hourMin(wData.OWM.sys.sunrise*1000)
       );
       $('#sunset-time').html(
-        app.strFormat.hourMin(wData.OWM.sys.sunset*1000)
+        txtFormat.hourMin(wData.OWM.sys.sunset*1000)
       );
       $('#humidity').html(
         wData.OWM.main.humidity + '%'
@@ -73,7 +73,7 @@ var ui = {
     //Used for both hourly and daily forecasts
     selectIcon: function(w) {
       var f = w.values.weatherCode;
-      var isDay = app.strFormat.isDaytime(w.startTime);
+      var isDay = txtFormat.isDaytime(w.startTime);
 
       if (f == 6201) { return 'fas fa-cloud-sleet' }
       else if (f == 6001) { return 'far fa-cloud-sleet' }
@@ -127,7 +127,7 @@ var ui = {
         hourly: function(forecast) {
           forecast = forecast.slice(0,24);
           forecast.forEach(function(w,i){
-            var time = app.strFormat.hour(w.startTime);
+            var time = txtFormat.hour(w.startTime);
             if (!i) {time = 'Now'}
             $('#hourly-forecast').append(
               `
@@ -146,7 +146,7 @@ var ui = {
                     ${w.values.precipitationProbability}%
                   </p>
                   <p class="wind">
-                    ${w.values.windSpeed.toFixed(0)} ${app.units.speed()} ${app.strFormat.degreesToBearing(w.values.windDirection)}
+                    ${w.values.windSpeed.toFixed(0)} ${app.units.speed()} ${txtFormat.degreesToBearing(w.values.windDirection)}
                   </p>
                   <p class="temp">
                     ${w.values.temperature.toFixed(0)}°${app.units.temp()}
@@ -166,7 +166,7 @@ var ui = {
         //also generates the popup when clicking for details
         daily: function(forecast) {
           forecast.forEach(function(f){
-            var day = app.strFormat.weekday(f.startTime);
+            var day = txtFormat.weekday(f.startTime);
             var tempUnits = app.units.temp();
             $('#daily-forecast').append(
               '<tr onclick="popup.open(\''+ //popup content
@@ -193,8 +193,8 @@ var ui = {
         //on a specific day
         daily: function(day) {
           buffer = '';
-          buffer += '<h4>'+app.strFormat.weekday(day.startTime)+'</h4>';
-          buffer += '<p>'+app.strFormat.genDesc(day)+'</p><br/>';
+          buffer += '<h4>'+txtFormat.weekday(day.startTime)+'</h4>';
+          buffer += '<p>'+txtFormat.genDesc(day)+'</p><br/>';
           buffer += '<table>';
           if (day.visibility) {
             buffer+= '<tr></tr>';
