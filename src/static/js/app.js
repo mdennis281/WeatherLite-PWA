@@ -65,8 +65,8 @@ app = {
   },
 
   load: {
-    div: function(div,content,callback){
-      fileStorage.get(content,function(data) { //filestorage obj in init.js
+    div: function(div,url,callback){
+      $.get(url,function(data) {
         $(div).html(data);
         if (typeof callback === 'function') callback();
       });
