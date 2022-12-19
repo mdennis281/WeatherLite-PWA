@@ -158,6 +158,21 @@ a i {
   border-color: #aaa;
 }
 
+.sw-table {
+  width: 100%;
+  text-align: center;
+}
+.sw-table td {
+  border: 1px solid;
+  padding: 3px;
+}
+.sw-table th {
+  margin: 3px;
+  padding: 5px;
+  border: 1px solid;
+  background-color: #253050;
+}
+
 /*SCROLLBAR SETTINGS*/
 ::-webkit-scrollbar {
     width: 5px;
