@@ -15,15 +15,6 @@
       </td>
     </tr>
     <tr>
-      <td>Cache Assets</td>
-      <td id="cached-mode-desc" class="sub div-hide"></td>
-      <td>
-        <div class="flex-center">
-          <div class="ml-1" id="cached-mode-toggle"></div>
-        </div>
-      </td>
-    </tr>
-    <tr>
       <td>Restart App</td>
       <td >
         <i class="fad fa-sync btn-active ml-2" onclick="app.refresh()"></i>
@@ -88,12 +79,39 @@
   </div>
   <table class="list-table two-col">
     <tr>
+      <td>Developer Mode</td>
+      <td id="cached-mode-desc" class="sub div-hide"></td>
+      <td>
+        <div class="flex-center">
+          <div class="ml-1" id="cached-mode-toggle"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
       <td>Raw Weather Data</td>
       <td><a onclick="ui.settings.debug.weatherData()" href="#">View</a></td>
     </tr>
     <tr>
       <td>Weather Data Timing</td>
       <td><a onclick="ui.settings.debug.weatherTiming()" href="#">View</a></td>
+    </tr>
+  </table>
+  <div class="list-bar">
+    <i class="fad fa-display-code bar-ico"></i>
+    <span class="title">Service Worker</span>
+  </div>
+  <table class="list-table two-col">
+    <tr>
+      <td>State</td>
+      <td id="sw-state"></td>
+    </tr>
+    <tr>
+      <td>Caches</td>
+      <td id="sw-caches"></td>
+    </tr>
+    <tr>
+      <td>Requests</td>
+      <td id="sw-requests"></td>
     </tr>
   </table>
 </div>

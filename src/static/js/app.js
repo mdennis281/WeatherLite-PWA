@@ -30,6 +30,8 @@ app = {
     app.page.selectStart();
     app.logIP();
     app.showStartupMsgs();
+    sw.logActiveStatus();
+    DEBUG('Initialization Complete')
   },
 
   updateCheck: function() {
@@ -67,6 +69,7 @@ app = {
   load: {
     div: function(div,url,callback){
       $.get(url,function(data) {
+        DEBUG(`Div Load - ${div} - ${url}`)
         $(div).html(data);
         if (typeof callback === 'function') callback();
       });

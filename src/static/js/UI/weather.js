@@ -77,10 +77,10 @@ var uiWeather = {
       else if (f == 7101) { return 'fas fa-cloud-hail' }
       else if (f == 7000) { return 'fas fa-cloud-hail-mixed' }
       else if (f == 7102) { return 'far fa-cloud-hail-mixed' }
-      else if (f == 5101) { return 'fas fa-cloud-snow' }
+      else if (f == 5101) { return 'far fa-igloo' }
       else if (f == 5000) { return 'far fa-cloud-snow' }
       else if (f == 5100) { return 'fal fa-cloud-snow' }
-      else if (f == 5001) { return 'fas fa-snowflakes' }
+      else if (f == 5001) { return 'fad fa-snowflakes' }
       else if (f == 8000) { return 'far fa-thunderstorm' }
       else if (f == 4201) { return 'fas fa-cloud-rain' }
       else if (f == 4001) { return 'fas fa-cloud-sun-rain' }

@@ -3,6 +3,7 @@ var uiSettings = {
     loadContext: function() {
       ui.settings.onlineMode.genToggle();
       ui.settings.units.genToggle();
+      ui.settings.sw.init();
     },
     //refers to the onlinemode toggle btn
     onlineMode: {
@@ -70,5 +71,29 @@ var uiSettings = {
         popup.open(buffer)
 
       }
+    },
+    sw: {
+        init: function() {
+            var swStatus = app.storage('sw-status');
+            if (swStatus && swStatus.state) {
+                $('#sw-state').html(swStatus.state);
+                $('#sw-caches').html(JSON.stringify(swStatus.caches));
+                $('#sw-requests').html(`
+                    <a onclick="ui.settings.sw.showReqs()" href="#">
+                        ${swStatus.requests.length}
+                    </a>
+                `);
+
+                if (swStatus.state == 'activated') {
+                    $('#sw-state').addClass('text-success');
+                } else {
+                    $('#sw-state').addClass('text-warning');
+                }
+            } else {
+                $('#sw-state').html('uninitialized');
+                setTimeout(() => { ui.settings.sw.init() },1000);
+            }
+            
+        }
     }
   }
