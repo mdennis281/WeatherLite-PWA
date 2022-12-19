@@ -11,13 +11,13 @@ var uiSettings = {
       //is toggled on and off
       genToggle: function() {
         general.createToggle(
-          '#cached-mode-toggle', //parentElement
-          !(app.devMode.isEnabled()), //isToggled
+          '#developer-mode-toggle', //parentElement
+          (app.devMode.isEnabled()), //isToggled
           function() { //Toggle off callback
-            app.devMode.enable();
+            app.devMode.disable();
           },
           function() { //Toggle on callback
-            app.devMode.disable();
+            app.devMode.enable();
           }
         )
       }
@@ -94,6 +94,20 @@ var uiSettings = {
                 setTimeout(() => { ui.settings.sw.init() },1000);
             }
             
+        },
+        showReqs: function() {
+            buffer = '<table class="sw-table"><tr><th>cache</th><th>url</th></tr>';
+            var swStatus = app.storage('sw-status');
+            swStatus.requests.forEach(req => {
+                buffer += `
+                    <tr>
+                        <td>${req[0]}</td>
+                        <td>${req[1]}</td>
+                    </tr>
+                `
+            });
+            buffer += '</table>';
+            popup.open(buffer);
         }
     }
   }

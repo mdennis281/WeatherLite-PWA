@@ -54,11 +54,13 @@ weather = {
   },
   _fetchLocation: function (callback) {
     navigator.geolocation.getCurrentPosition(function(position){
+      app.settings('locateMethod','device (precise)');
       var lat = position.coords.latitude;
       var lng = position.coords.longitude;
       if (typeof callback === 'function') callback(lat,lng);
     },function(){ //fail
       $.getJSON('/API/IP2Coords',function(data){
+        app.settings('locateMethod','IP lookup (inaccurate)');
         var lat = data.latitude;
         var lng = data.longitude;
         if (typeof callback === 'function') callback(lat,lng);
