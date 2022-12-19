@@ -69,7 +69,7 @@ app = {
   load: {
     div: function(div,url,callback){
       $.get(url,function(data) {
-        DEBUG(`Div Load - ${div} - ${url}`)
+        DEBUG(`Div Load - ${div} - ${url}`);
         $(div).html(data);
         if (typeof callback === 'function') callback();
       });
