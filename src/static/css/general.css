@@ -101,25 +101,26 @@ p {
   width: 40px;
   position: relative;
 }
-.createToggle-on, .createToggle-off {
+i.createToggle-on.fad.fa-toggle-on, 
+i.createToggle-off.fad.fa-toggle-off {
   font-size: 35px;
   position: absolute;
   top: 0;
   left: 0;
 }
-.createToggle-on::before {
+i.createToggle-on.fad.fa-toggle-on::after {
   color: #166c16;
   opacity: 1;
 }
-.createToggle-on::after {
+i.createToggle-on.fad.fa-toggle-on::before {
   color: #888;
   opacity: 1;
 }
-.createToggle-off::before {
+i.createToggle-off.fad.fa-toggle-off::after {
   color: #888;
   opacity: 1;
 }
-.createToggle-off::after {
+i.createToggle-off.fad.fa-toggle-off::before {
   color: #585858;
   opacity: 1;
 }
