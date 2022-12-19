@@ -44,14 +44,14 @@ self.addEventListener('fetch', function(event) {
     //fetch from external
     const response = await fetch(event.request)
     
-    var rURL = event.request.url;
+    var rURL = event.request.url.toLowerCase();
     var origin = self.location.origin;
 
     // if local
-    if (rURL.startsWith(origin)) {
-      var wDataURL =  origin + '/API/weatherLookup';
+    if (rURL.includes(origin)) {
+      var wDataPath = '/api/weatherLookup';
       //if not API
-      if (rURL.startsWith(wDataURL)) {
+      if (!rURL.includes(wDataPath)) {
         // Put a copy of the response in the runtime cache.
         var cache = await caches.open(ACTIVECACHE)
         await cache.put(event.request, response.clone())
