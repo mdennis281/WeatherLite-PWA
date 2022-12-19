@@ -24,8 +24,8 @@ class LocalWeather {
         var data = weather.cache()[this.coords]
 
         if (data) { // if cached data exists
-            var fetchHour = app.strFormat.hour(data.fetch);
-            var currentHour = app.strFormat.hour(Date.now())
+            var fetchHour = txtFormat.hour(data.fetch);
+            var currentHour = txtFormat.hour(Date.now())
             var timeDiff = (Date.now()-data.fetch)/1000;
 
             var wasFetchThisHour = fetchHour == currentHour;

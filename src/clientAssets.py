@@ -11,30 +11,46 @@ import time
 #        src/templates/init/index.html
 
 files = {
+    'pages': [
+        '/',
+        '/parts/weather',
+        '/parts/favorites',
+        '/parts/settings',
+        '/parts/about',
+        '/parts/navbar',
+        '/parts/popup',
+        '/parts/iOS-PWA',
+    ],
     'JS': [
         'https://code.jquery.com/jquery-3.4.1.min.js',
         'https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js',
         'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js',
         'https://cdn.devduo.us/js/bootstrap-notify.min.js',
         'https://cdn.devduo.us/js/popper.1.11.0.min.js',
+        'https://kit.fontawesome.com/8594651b23.js',
 
         '/static/js/init.js',
         '/static/js/weather.js',
         '/static/js/PWANotify.js',
         '/static/js/popup.js',
         '/static/js/app.js',
-        '/static/js/UI.js',
         '/static/js/pageTriggers.js',
         '/static/js/maps.js',
         '/static/js/general.js',
         '/static/js/notify.js',
         '/static/js/device.js',
-
+        '/static/js/txtFormat.js',
+        '/static/js/SW.js',
+        '/static/js/UI/weather.js',
+        '/static/js/UI/favorites.js',
+        '/static/js/UI/settings.js',
+        '/static/js/UI.js',
+        
         '/static/js/classes/LocalWeather.js'
     ],
     'CSS': [
         'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css',
-        'https://cdn.devduo.us/bundles/FA/css/all.css',
+        #'https://cdn.devduo.us/bundles/FA/css/all.css',
         'https://fonts.googleapis.com/css?family=Inconsolata&display=swap',
         'https://cdn.devduo.us/css/animate.css',
 
@@ -64,18 +80,3 @@ files = {
     ]
 }
 
-
-# will recreate all the urls seen above, but append ?_=<EPOCH>
-# I used this on line 17 of src/views/general.py
-# This made the URL different than what was cached by the serviceworker
-# meaning all files cached by the serviceworker were unused
-# assets = randomize(files)
-def randomize(assets):
-    data = {}
-    for k in assets.keys():
-        data[k] = []
-        for v in assets[k]:
-            data[k].append(
-                v+'?_='+str(time.time())
-            )
-    return data

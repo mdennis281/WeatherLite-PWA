@@ -1,11 +1,11 @@
-from src.clientAssets import files,randomize
+from src.clientAssets import files
 from src.libraries.config import APIKeys
+from src.libraries.general import getAppVersion
 from src.blueprints import general
 from flask import (
 ####    Flask
     render_template,
-    make_response,
-    request,
+    make_response
 )
 
 
@@ -27,7 +27,11 @@ def main():
 @general.route('/worker.js')
 def workerJS():
     r = make_response(
-        render_template('worker.js',assets=files),
+        render_template(
+            'worker.js',
+            assets=files,
+            appVersion = getAppVersion()
+        ),
         200
     )
     r.headers['Content-Type'] = 'text/javascript'

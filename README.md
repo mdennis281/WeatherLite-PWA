@@ -4,9 +4,19 @@ It features saving favorite locations, rain forecasts, heatmaps, etc.
 
 Live Demo here: https://weatherlite.app
 
-The config.ini file will need to be updated with the appropriate api keys before localrun will work.
+### A note on supportability
+This project is by no means exemplary in terms of being supportable. I found joy in building out components like the service worker, frontend version control, caching, etc from scratch.
+When building PWAs for customers, I would strongly recommend utilizing 3rd party libraries that have standardized these kinds of things. Many frontend frameworks like Angular and React have tried and tested libraries to solve these needs. BUT- if youre a nerd like me and want to learn ways to build this stuff from the ground up, look no further!
 
-I have commented each file out pretty well. So it should prove pretty easy to reverse engineer.
+## Local Run
+
+* setup local virtual environment (python 3)
+* enter venv, run `pip install -r requirements.txt` 
+  - encountered versioning problems in the past with windows
+  - the actual code isnt picky about versioning - some libraries are, had success removing the versions in `requirements.txt`
+* update config.ini with appropriate API keys
+  - I wish there was a simpler way of running locally- but unfortunately, this app relies heavily on external datasources
+* run: `python localrun.py`
 
 ## File tree
 * src

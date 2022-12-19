@@ -29,7 +29,9 @@ var pageTriggers = {
     $('#device-os').html(device.getOS());
     $('#device-isPWA').html((device.isPWA) ? 'Yes' : 'No');
     $('#app-version').html(app.settings().version);
+    $('#ip-addr').html(cookie.get('clientIP'));
     weather._fetchLocation(function(lat,lng){
+      $('#loc-mthd').html(app.settings().locateMethod);
       $('#lat-val').html(Number((lat).toFixed(2)));
       $('#lon-val').html(Number((lng).toFixed(2)));
       var link = 'https://www.google.com/maps/place/'+lat+','+lng;

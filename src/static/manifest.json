@@ -17,6 +17,11 @@
       "sizes": "150x150"
     },
     {
+      "src": "/app/images/appIcon.png?width=192",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
       "src": "/app/images/appIcon.png?width=250",
       "type": "image/png",
       "sizes": "250x250"
@@ -25,6 +30,23 @@
       "src": "/app/images/appIcon.png?width=500",
       "type": "image/png",
       "sizes": "500x500"
+    },
+    {
+      "src": "/app/images/appIcon.png?width=512",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "static/img/splashscreens/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "static/img/splashscreens/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "display": "standalone",

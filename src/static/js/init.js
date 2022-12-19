@@ -10,32 +10,6 @@ function DEBUG(message){
   }
 }
 
-//Caches files to localstorage
-//Not really used anymore since
-//Moved over to google's PWA caching standard
-var fileStorage = {
-  get: function(file,callback) {
-    var content = localStorage.getItem('FILESTORAGE-'+file);
-    //if file in localstorage and devmode not enabled
-    if (content && (!cookie.get('devMode'))) {
-      DEBUG('Loaded From LocalStorage: ' + file)
-      callback(content);
-    } else {
-      fileStorage.fetch(file,callback);
-      DEBUG('Loaded From Web: ' + file)
-    }
-  },
-  cache: function(name,script) {
-    localStorage.setItem(name,script)
-  },
-  fetch: function(URL,callback) {
-    $.get(URL+'?_=' + new Date().getTime(), function(data) {
-      fileStorage.cache('FILESTORAGE-'+URL,data);
-      callback(data);
-    },null,'text');
-  }
-}
-
 //A solution to get and set non-private cookies
 var cookie =  {
   get: function(name) {
