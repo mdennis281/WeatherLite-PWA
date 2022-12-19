@@ -15,9 +15,14 @@ var uiSettings = {
           (app.devMode.isEnabled()), //isToggled
           function() { //Toggle off callback
             app.devMode.disable();
+            n.info('Developer Mode Disabled','Probably for the best...');
           },
           function() { //Toggle on callback
             app.devMode.enable();
+            n.info(
+                'Developer Mode Enabled',
+                'Only a true developer will be able to identify what\'s changed!'
+            );
           }
         )
       }
