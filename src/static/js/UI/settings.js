@@ -98,6 +98,10 @@ var uiSettings = {
                 $('#sw-state').html('uninitialized');
                 setTimeout(() => { ui.settings.sw.init() },1000);
             }
+            // noticed that this doesnt initially include the cache on load
+            if (!swStatus.caches.length) {
+                setTimeout(() => { ui.settings.sw.init() },2000);
+            }
             
         },
         showReqs: function() {

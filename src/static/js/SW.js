@@ -21,8 +21,10 @@ var sw = {
                 });
             })
         }
-        if (!swStatus.state) {
+        if (!swStatus.state || !swStatus.caches.length) {
             setTimeout(() => { sw.logActiveStatus() },1000);
+        } else {
+            DEBUG('SW fully initialized');
         }
         
     },
