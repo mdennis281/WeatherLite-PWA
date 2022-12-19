@@ -173,6 +173,10 @@ a i {
   background-color: #253050;
 }
 
+.trans {
+  transition: all 0.3s ease;
+}
+
 /*SCROLLBAR SETTINGS*/
 ::-webkit-scrollbar {
     width: 5px;
