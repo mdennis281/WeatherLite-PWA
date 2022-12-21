@@ -31,6 +31,7 @@ self.addEventListener('install', event => {
 
 
 self.addEventListener('fetch', function(event) {
+  if (event.request.method !== 'GET') { return; }
 
   event.respondWith((async () => {
 
@@ -49,9 +50,8 @@ self.addEventListener('fetch', function(event) {
 
     // if local
     if (isCachedOrigin) {
-      var wDataPath = '/api/weatherlookup';
-      //if not API
-      if (!rURL.includes(wDataPath)) {
+      //if not Dynamic data from API
+      if (!isURLDynamicData(rURL)) {
         // Put a copy of the response in the runtime cache.
         var cache = await caches.open(ACTIVECACHE)
         await cache.put(event.request, response.clone())
@@ -107,6 +107,15 @@ function SWLog(msg) {
   if (l1 || l2) {
     console.log('SW :: '+msg)
   }
+}
+
+function isURLDynamicData(url) {
+  for (const urlPart of DYNAMIC_DATA) { 
+    if (url.includes(urlPart)) {
+      return true;
+    }
+  };
+  return false;
 }
 
 async function addResourcesToCache() {
