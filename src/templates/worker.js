@@ -1,25 +1,24 @@
-var ACTIVECACHE = 'weatherlite-{{appVersion}}';
+var ACTIVECACHE = 'WL-{{appVersion}}';
+var OFFLINECACHE = 'WL-Offline-{{appVersion}}';
+
+var CACHES = [ACTIVECACHE,OFFLINECACHE];
+
+var CACHED_ORIGINS = [
+  'localhost',
+  '127.0.0.1',
+  'weatherlite.app',
+  'ka-p.fontawesome.com',
+  'fonts.gstatic.com'
+]
+
+var DYNAMIC_DATA = [
+  '/api/weatherlookup',
+  '/api/app/version'
+]
 
 
 
-function SWLog(msg) {
-  var origin = self.location.origin;
 
-  var l1 =  origin.includes('127.0.0.1');
-  var l2 = origin.includes('localhost');
-
-  if (l1 || l2) {
-    console.log('SW :: '+msg)
-  }
-}
-
-async function addResourcesToCache() {
-  var cache = await caches.open(ACTIVECACHE)
-    SWLog('Adding precache');
-    await cache.addAll(PRECACHE);
-    SWLog('Precache added - Activating');
-    self.skipWaiting();
-};
 
 // The install handler takes care of precaching the resources we always need.
 self.addEventListener('install', event => {
@@ -32,6 +31,7 @@ self.addEventListener('install', event => {
 
 
 self.addEventListener('fetch', function(event) {
+  if (event.request.method !== 'GET') { return; }
 
   event.respondWith((async () => {
 
@@ -42,21 +42,29 @@ self.addEventListener('fetch', function(event) {
     }
 
     //fetch from external
-    const response = await fetch(event.request)
+    const response = await fetch(event.request).catch(() => caches.match(OFFLINECACHE))
     
     var rURL = event.request.url.toLowerCase();
-    var origin = self.location.origin;
+    var isCachedOrigin = isURLInCachedOrigins(rURL);
+
 
     // if local
-    if (rURL.includes(origin)) {
-      var wDataPath = '/api/weatherLookup';
-      //if not API
-      if (!rURL.includes(wDataPath)) {
+    if (isCachedOrigin) {
+      //if not Dynamic data from API
+      if (!isURLDynamicData(rURL)) {
         // Put a copy of the response in the runtime cache.
         var cache = await caches.open(ACTIVECACHE)
         await cache.put(event.request, response.clone())
         SWLog(`cached: ${rURL}`);
+      } else {
+        SWLog(`Skipped cache - URLPathFilter : ${rURL}`);
+        var offlineCache = await caches.open(OFFLINECACHE);
+        await offlineCache.put(event.request, response.clone())
       }
+    } else {
+      SWLog(`Skipped cache - OriginFilter : ${rURL}`);
+      var offlineCache = await caches.open(OFFLINECACHE);
+      await offlineCache.put(event.request, response.clone())
     } 
     
     return response;
@@ -66,18 +74,71 @@ self.addEventListener('fetch', function(event) {
 
 // The activate handler takes care of cleaning up old caches.
 self.addEventListener('activate', event => {
-  const currentCaches = [ACTIVECACHE];
+  SWLog('Activation Started');
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return cacheNames.filter(cacheName => !currentCaches.includes(cacheName));
-    }).then(cachesToDelete => {
-      return Promise.all(cachesToDelete.map(cacheToDelete => {
-        SWLog(`Deleting Cache - ${cacheToDelete}`);
-        return caches.delete(cacheToDelete);
-      }));
-    }).then(() => self.clients.claim())
+    cleanupCaches()
   );
 });
+
+async function cleanupCaches() {
+  var cacheNames = await caches.keys();
+  var cachesToDelete = await cacheNames.filter(
+    cacheName => !CACHES.includes(cacheName)
+  );
+  await cachesToDelete.map(cacheToDelete => {
+    SWLog(`Deleting Cache - ${cacheToDelete}`);
+    return caches.delete(cacheToDelete);
+  })
+  SWLog(`Claiming Client - SW Version - ${ACTIVECACHE}`)
+  await self.clients.claim();
+
+}
+
+
+function SWLog(msg) {
+/*
+  enables verbose logging if running on localhost
+*/
+  var origin = self.location.origin;
+
+  var l1 =  origin.includes('127.0.0.1');
+  var l2 = origin.includes('localhost');
+
+  if (l1 || l2) {
+    console.log('SW :: '+msg)
+  }
+}
+
+function isURLDynamicData(url) {
+  for (const urlPart of DYNAMIC_DATA) { 
+    if (url.includes(urlPart)) {
+      return true;
+    }
+  };
+  return false;
+}
+
+async function addResourcesToCache() {
+  var cache = await caches.open(ACTIVECACHE)
+    SWLog('Adding precache');
+    await cache.addAll(PRECACHE);
+    SWLog('Precache added - Activating');
+    self.skipWaiting();
+};
+
+
+function isURLInCachedOrigins(url) {
+/*
+  determines if passed url is in origin
+  used to decide whether or not to cache the request
+*/
+  for (const origin of CACHED_ORIGINS) { 
+    if (url.includes('//'+origin)) {
+      return true;
+    }
+  };
+  return false;
+}
 
 
 var PRECACHE = [

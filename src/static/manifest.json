@@ -53,5 +53,6 @@
   "background_color": "#1c2541",
   "theme_color": "#1c2541",
   "orientation": "portrait",
-  "start_url": "/"
+  "start_url": "/",
+  "id": "/"
 }
