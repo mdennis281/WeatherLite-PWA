@@ -100,7 +100,10 @@ var uiSettings = {
             }
             // noticed that this doesnt initially include the cache on load
             if (!swStatus.caches.length) {
+              // confirm service worker is supported
+              if ('serviceWorker' in navigator) {
                 setTimeout(() => { ui.settings.sw.init() },2000);
+              }
             }
             
         },
