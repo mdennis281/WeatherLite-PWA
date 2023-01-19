@@ -45,6 +45,7 @@ files = {
         '/static/js/UI/favorites.js',
         '/static/js/UI/settings.js',
         '/static/js/UI.js',
+        '/static/js/cookie.js',
         
         '/static/js/classes/LocalWeather.js'
     ],
