@@ -25,9 +25,8 @@ files = {
         'https://code.jquery.com/jquery-3.4.1.min.js',
         'https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js',
         'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js',
-        'https://cdn.devduo.us/js/bootstrap-notify.min.js',
-        'https://cdn.devduo.us/js/popper.1.11.0.min.js',
         'https://kit.fontawesome.com/8594651b23.js',
+        'https://cdn.jsdelivr.net/npm/bootstrap-notify@3.1.3/bootstrap-notify.min.js',
 
         '/static/js/init.js',
         '/static/js/weather.js',
@@ -52,7 +51,7 @@ files = {
         'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css',
         #'https://cdn.devduo.us/bundles/FA/css/all.css',
         'https://fonts.googleapis.com/css?family=Inconsolata&display=swap',
-        'https://cdn.devduo.us/css/animate.css',
+        'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css',
 
         '/static/css/general.css',
         '/static/css/app.css',
@@ -72,9 +71,6 @@ files = {
     # they dont need to be loaded at the initial load of the app, but the
     # external packages eventually use them.
     'subAssets': [
-        'https://cdn.devduo.us/bundles/FA/webfonts/fa-duotone-900.woff2',
-        'https://cdn.devduo.us/bundles/FA/webfonts/fa-solid-900.woff2',
-        'https://cdn.devduo.us/bundles/FA/webfonts/fa-brands-400.woff2',
         'https://fonts.gstatic.com/s/inconsolata/v18/QldKNThLqRwH-OJ1UHjlKGlZ5qg.woff2',
         '/manifest.json'
     ]
