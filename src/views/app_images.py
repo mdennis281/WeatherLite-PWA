@@ -1,4 +1,4 @@
-from src.blueprints import appImages
+from src.blueprints import app_images
 from src.libraries import general
 
 from flask import (
@@ -12,7 +12,7 @@ from flask import (
 #####################################################
 
 
-@appImages.route('/<path:imagePath>')
+@app_images.route('/<path:imagePath>')
 def customImage(imagePath,imageWidth=None, imageHeight=None):
     if not imageWidth:
         imageWidth = request.args.get('width')

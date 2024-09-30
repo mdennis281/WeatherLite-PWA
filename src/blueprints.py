@@ -18,14 +18,14 @@ def Initialize(view_path, url_prefix):
     )
 
 general      = Initialize('general', '/')
-webParts     = Initialize('webParts','/parts')
-API          = Initialize('API','/API')
-appImages    = Initialize('appImages','/app/images')
+web_parts     = Initialize('web_parts','/parts')
+api          = Initialize('api','/API')
+app_images    = Initialize('app_images','/app/images')
 
 
-all = (
+blueprint_list = (
     general,
-    webParts,
-    API,
-    appImages
+    web_parts,
+    api,
+    app_images
 )

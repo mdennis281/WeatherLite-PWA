@@ -1,9 +1,9 @@
-from src.blueprints import API
+from src.blueprints import api
 from src.libraries.tomorrow import WeatherData
 from src.libraries import (
+    google_maps,
     weather,
-    general,
-    googleMaps
+    general
 )
 from flask import (
     jsonify,
@@ -13,7 +13,7 @@ from flask import (
 #####################################################
 #       API Calls
 #####################################################
-@API.route('/weatherLookup')
+@api.route('/weatherLookup')
 def weatherInfo():
     args = {}
     for k,v in request.args.items(): args[k] = v
@@ -34,29 +34,29 @@ def weatherInfo():
 
 
 
-@API.route('/address2Coords')
+@api.route('/address2Coords')
 def address2Coords():
     location = request.args.get('address')
     if location:
-        return jsonify(googleMaps.geocoding(location))
+        return jsonify(google_maps.geocoding(location))
     return abort(400)
 
-@API.route('/IP2Coords')
+@api.route('/IP2Coords')
 def IP2Coords():
     clientIP = request.cookies.get('clientIP')
     if clientIP:
         return jsonify(general.IP2Coords(clientIP))
     return abort(400)
 
-@API.route('/placesLookup')
+@api.route('/placesLookup')
 def placesLookup():
     query = request.args.get('query')
     debug = request.args.get('debug')
     if query:
-        return jsonify(googleMaps.places(query,debug))
+        return jsonify(google_maps.places(query,debug))
     return abort(400)
 
-@API.route('/app/version')
+@api.route('/app/version')
 def getVersion():
     return jsonify({
         'version': general.getAppVersion()
