@@ -1,9 +1,11 @@
 from src.blueprints import blueprint_list as blueprints
 from src.libraries.general import appleTouchIcon
+from importlib import import_module
 
 from flask import (
     Flask,
-    send_file
+    send_file,
+    request
 )
 
 app = Flask(__name__)
@@ -33,7 +35,7 @@ def apple_touch_icon():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return "Page Not Found", 404
+    return f"'{request.path}' not found", 404
 
 @app.errorhandler(400)
 def malformed_request(e):
@@ -45,6 +47,7 @@ def malformed_request(e):
 #####################################################
 
 for blueprint in blueprints:
+    import_module(blueprint.import_name)
     app.register_blueprint(blueprint)
 
 
