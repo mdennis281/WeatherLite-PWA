@@ -1,7 +1,12 @@
-import configparser
+from dotenv import load_dotenv
+import os
 
 
-settings = configparser.ConfigParser()
-settings.read('config.ini')
+load_dotenv()
 
-APIKeys = settings['APIKeys']
+APIKeys = {
+    'OWM' : os.getenv('OWM'),
+    'GCP' : os.getenv('GCP'),
+    'tomorrow' : os.getenv('tomorrow'),
+    'GAnalytics' : os.getenv('GAnalytics')
+}
