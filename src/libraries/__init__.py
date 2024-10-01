@@ -1,7 +1,7 @@
 from src.libraries import (
     general,
+    google_maps,
     weather,
-    googleMaps,
     timer,
     tomorrow,
     config

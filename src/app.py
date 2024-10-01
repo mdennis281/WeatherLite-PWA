@@ -1,11 +1,12 @@
-from src.blueprints import all as blueprints
+from src.blueprints import blueprint_list as blueprints
 from src.libraries.general import appleTouchIcon
+from importlib import import_module
 
 from flask import (
     Flask,
-    send_file
+    send_file,
+    request
 )
-from importlib import import_module
 
 app = Flask(__name__)
 
@@ -14,22 +15,18 @@ app = Flask(__name__)
 #       Static File Mapping
 #####################################################
 
-app.add_url_rule(
-    '/manifest.json',
-    'manifest',
-    lambda: app.send_static_file('manifest.json')
-)
 
+@app.route('/manifest.json')
+def manifest():
+    return app.send_static_file('manifest.json')
 
-app.add_url_rule(
-    '/apple-touch-icon.png',
-    'apple-touch-icon',
-    lambda: send_file(
+@app.route('/apple-touch-icon.png')
+def apple_touch_icon():
+    return send_file(
         appleTouchIcon(),
         mimetype='image/png',
         as_attachment=False
     )
-)
 
 
 #####################################################
@@ -38,7 +35,7 @@ app.add_url_rule(
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return "Page Not Found", 404
+    return f"'{request.path}' not found", 404
 
 @app.errorhandler(400)
 def malformed_request(e):
@@ -52,3 +49,5 @@ def malformed_request(e):
 for blueprint in blueprints:
     import_module(blueprint.import_name)
     app.register_blueprint(blueprint)
+
+

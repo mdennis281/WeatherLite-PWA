@@ -5,21 +5,10 @@ import time
 """
     Timer Decorator
     Description:
-        times functions as a decorator
-    Optional kwargs:
-        outPrint
-            Default: False
-            Input: bool
-            Behavior: if set to True, will print timed fxn
-        outFile
-            Default: False
-            Input: string (filepath)
-            Behavior: if defined, will append timed result to file
-        outReturn
-            Default: False
-            Input: bool
-            Behavior: if set to True, replace return with float val of runtime
-"""
+        Times functions as a decorator
+    Returns:
+        Tuple containing function result and runtime
+    """
 def Timer(func):
 
     @functools.wraps(func)

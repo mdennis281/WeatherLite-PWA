@@ -17,13 +17,16 @@ Args:
     returns:
         PNG image
 """
-def imageResizer(imagePath,width,height):
+def imageResizer(imagePath, width, height=None):
     imagePath = './src/static/img/' + imagePath
-    img = Image.open(imagePath)
+    try:
+        img = Image.open(imagePath)
+    except IOError:
+        raise FileNotFoundError(f"Image not found: {imagePath}")
     if not height: #will maintain aspect ratio if undefined.
         wpercent = (width/float(img.size[0]))
         height = int((float(img.size[1])*float(wpercent)))
-    img = img.resize((width,height), Image.ANTIALIAS)
+    img = img.resize((width,height), Image.LANCZOS)
     output = io.BytesIO()
     img.save(output, format='PNG')
     output.seek(0,0)
@@ -51,10 +54,9 @@ def IP2Coords(IP):
 
 #returns current version of app from appInfo.json
 def getAppVersion():
-    f = open('appInfo.json')
-    data = f.read()
-    f.close()
-
-    data = json.loads(data)
-
-    return data['version']
+    try:
+        with open('appInfo.json') as f:
+            data = json.load(f)
+        return data.get('version', '0.0.1')
+    except FileNotFoundError:
+        return '0.0.1'
