@@ -178,10 +178,7 @@ var uiWeather = {
       },
       //this opens the radar screen
       radar: function(coords) {
-        var url = 'https://maps.darksky.net/@radar,'+
-                  coords.latitude+','+coords.longitude+',10'
-
-        $('#radar-container .body').html('<iframe src="'+url+'" />')
+        // Apple bought this - no longer available
       },
       detail: {
         //generates content seen when tapping the detail for weather
@@ -204,8 +201,12 @@ var uiWeather = {
     radar: {
       //shows the iframe
       open: function() {
-        $('#radar-container').removeClass('div-hide');
-        $('#radar-container .body iframe').focus();
+        n.info(
+          'Radar No longer available :(', 
+          'Apple acquired DarkSky & Immediately removed the free tier.'
+        )
+        // $('#radar-container').removeClass('div-hide');
+        // $('#radar-container .body iframe').focus();
       },
       //hides the iframe
       close: function() {
