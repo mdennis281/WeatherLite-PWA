@@ -8,3 +8,4 @@ tools/
 *.tgz
 .DS_Store
 wenv/*
+.env
