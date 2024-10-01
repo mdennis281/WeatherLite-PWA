@@ -42,31 +42,40 @@ self.addEventListener('fetch', function(event) {
     }
 
     //fetch from external
-    const response = await fetch(event.request).catch(() => caches.match(OFFLINECACHE))
-    
-    var rURL = event.request.url.toLowerCase();
-    var isCachedOrigin = isURLInCachedOrigins(rURL);
+    const response = await fetch(event.request).catch(() => caches.match(OFFLINECACHE));
 
+    if (!response) {
+      SWLog(`No response for ${rURL}. Serving offline cache.`);
+      return caches.match(OFFLINECACHE); // return from offline cache if response is undefined
+    }
 
-    // if local
-    if (isCachedOrigin) {
-      //if not Dynamic data from API
-      if (!isURLDynamicData(rURL)) {
-        // Put a copy of the response in the runtime cache.
-        var cache = await caches.open(ACTIVECACHE)
-        await cache.put(event.request, response.clone())
-        SWLog(`cached: ${rURL}`);
+    if (response.ok) {
+      var rURL = event.request.url.toLowerCase();
+      var isCachedOrigin = isURLInCachedOrigins(rURL);
+
+      // if local
+      if (isCachedOrigin) {
+        // if not Dynamic data from API
+        if (!isURLDynamicData(rURL)) {
+          // Put a copy of the response in the runtime cache.
+          var cache = await caches.open(ACTIVECACHE);
+          await cache.put(event.request, response.clone());
+          SWLog(`cached: ${rURL}`);
+        } else {
+          SWLog(`Skipped cache - URLPathFilter : ${rURL}`);
+          var offlineCache = await caches.open(OFFLINECACHE);
+          await offlineCache.put(event.request, response.clone());
+        }
       } else {
-        SWLog(`Skipped cache - URLPathFilter : ${rURL}`);
+        SWLog(`Skipped cache - OriginFilter : ${rURL}`);
         var offlineCache = await caches.open(OFFLINECACHE);
-        await offlineCache.put(event.request, response.clone())
+        await offlineCache.put(event.request, response.clone());
       }
     } else {
-      SWLog(`Skipped cache - OriginFilter : ${rURL}`);
-      var offlineCache = await caches.open(OFFLINECACHE);
-      await offlineCache.put(event.request, response.clone())
-    } 
-    
+      SWLog(`Failed to fetch ${rURL}.`);
+      return caches.match(OFFLINECACHE); // return offline cache if fetch failed
+    }
+
     return response;
 
   })());
