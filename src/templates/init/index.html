@@ -42,7 +42,13 @@
 ################################################################################
 -->
   {% for src in assets.JS %}
-	<script src="{{src}}"></script>{% endfor %}
+    {% if 'fontawesome' in src %}
+	<!-- fontawesome icons not loading correctly on iOS -->
+        <script src="{{src}}" crossorigin="anonymous"></script>
+    {% else %}
+        <script src="{{src}}"></script>
+    {% endif %}
+  {% endfor %}
 
   </head>
 
