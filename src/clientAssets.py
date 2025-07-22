@@ -52,6 +52,9 @@ files = {
         'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css',
         'https://fonts.googleapis.com/css?family=Inconsolata&display=swap',
         'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.compat.css',
+        'https://kit.fontawesome.com/6825e8f688.css',
+        'https://ka-p.fontawesome.com/releases/v7.0.0/css/pro.min.css?token=6825e8f688',
+
         '/static/css/general.css',
         '/static/css/app.css',
         '/static/css/popup.css',
