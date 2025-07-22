@@ -26,8 +26,7 @@ files = {
         'https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js',
         'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js',
         'https://cdn.jsdelivr.net/npm/bootstrap-notify@3.1.3/bootstrap-notify.min.js',
-        'https://raw.githubusercontent.com/craigmdennis/animateCSS/master/dist/jquery.animatecss.min.js',
-        # ^ an oldie but a goodie
+        
 
         '/static/js/init.js',
         '/static/js/weather.js',
@@ -45,6 +44,7 @@ files = {
         '/static/js/UI/favorites.js',
         '/static/js/UI/settings.js',
         '/static/js/UI.js',
+        '/static/js/animatecss.min.js', # an oldie but a goodie
         
         '/static/js/classes/LocalWeather.js'
     ],
