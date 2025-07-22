@@ -25,10 +25,8 @@ files = {
         'https://code.jquery.com/jquery-3.4.1.min.js',
         'https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js',
         'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js',
-        'https://kit.fontawesome.com/8594651b23.js',
         'https://cdn.jsdelivr.net/npm/bootstrap-notify@3.1.3/bootstrap-notify.min.js',
-        'https://raw.githubusercontent.com/craigmdennis/animateCSS/master/dist/jquery.animatecss.min.js',
-        # ^ an oldie but a goodie
+        
 
         '/static/js/init.js',
         '/static/js/weather.js',
@@ -46,6 +44,7 @@ files = {
         '/static/js/UI/favorites.js',
         '/static/js/UI/settings.js',
         '/static/js/UI.js',
+        '/static/js/animatecss.min.js', # an oldie but a goodie
         
         '/static/js/classes/LocalWeather.js'
     ],
@@ -53,6 +52,8 @@ files = {
         'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css',
         'https://fonts.googleapis.com/css?family=Inconsolata&display=swap',
         'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.compat.css',
+        'https://kit.fontawesome.com/6825e8f688.css',
+        'https://ka-p.fontawesome.com/releases/v7.0.0/css/pro.min.css?token=6825e8f688',
 
         '/static/css/general.css',
         '/static/css/app.css',

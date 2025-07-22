@@ -34,50 +34,40 @@ self.addEventListener('fetch', function(event) {
   if (event.request.method !== 'GET') { return; }
 
   event.respondWith((async () => {
-
-    //check cache
-    const cachedResponse = await caches.match(event.request);
-    if (cachedResponse) {
-      return cachedResponse;
-    }
-
-    //fetch from external
-    const response = await fetch(event.request).catch(() => caches.match(OFFLINECACHE));
+    let response = await caches.match(event.request);
 
     if (!response) {
-      SWLog(`No response for ${rURL}. Serving offline cache.`);
-      return caches.match(OFFLINECACHE); // return from offline cache if response is undefined
+      SWLog(`Cache miss for ${event.request.url}. Attempting network fetch.`);
+      try {
+        response = await fetch(event.request);
+        if (response && response.ok) {
+          const rURL = event.request.url.toLowerCase();
+          const isCachedOrigin = isURLInCachedOrigins(rURL);
+
+          // Cache response if applicable
+          if (isCachedOrigin && !isURLDynamicData(rURL)) {
+            const cache = await caches.open(ACTIVECACHE);
+            await cache.put(event.request, response.clone());
+            SWLog(`Cached response for ${rURL}`);
+          }
+        } else {
+          SWLog(`Network fetch failed or returned invalid response for ${event.request.url}.`);
+        }
+      } catch (error) {
+        SWLog(`Network fetch error for ${event.request.url}: ${error.message}`);
+      }
     }
 
-    if (response.ok) {
-      var rURL = event.request.url.toLowerCase();
-      var isCachedOrigin = isURLInCachedOrigins(rURL);
-
-      // if local
-      if (isCachedOrigin) {
-        // if not Dynamic data from API
-        if (!isURLDynamicData(rURL)) {
-          // Put a copy of the response in the runtime cache.
-          var cache = await caches.open(ACTIVECACHE);
-          await cache.put(event.request, response.clone());
-          SWLog(`cached: ${rURL}`);
-        } else {
-          SWLog(`Skipped cache - URLPathFilter : ${rURL}`);
-          var offlineCache = await caches.open(OFFLINECACHE);
-          await offlineCache.put(event.request, response.clone());
-        }
-      } else {
-        SWLog(`Skipped cache - OriginFilter : ${rURL}`);
-        var offlineCache = await caches.open(OFFLINECACHE);
-        await offlineCache.put(event.request, response.clone());
-      }
-    } else {
-      SWLog(`Failed to fetch ${rURL}.`);
-      return caches.match(OFFLINECACHE); // return offline cache if fetch failed
+    if (!response) {
+      SWLog(`No valid response available for ${event.request.url}. Serving fallback response.`);
+      response = new Response('Service is unavailable', {
+        status: 503,
+        statusText: 'Service Unavailable',
+        headers: { 'Content-Type': 'text/plain' }
+      });
     }
 
     return response;
-
   })());
 });
 
@@ -113,9 +103,7 @@ function SWLog(msg) {
   var l1 =  origin.includes('127.0.0.1');
   var l2 = origin.includes('localhost');
 
-  if (l1 || l2) {
-    console.log('SW :: '+msg)
-  }
+  console.log('SW :: '+msg);
 }
 
 function isURLDynamicData(url) {
