@@ -41,14 +41,10 @@
 	                            Javascript
 ################################################################################
 -->
+  <!-- Caching fontawesome with SW does not play nice on iOS -->
+  <script src="https://kit.fontawesome.com/8594651b23.js" crossorigin="anonymous"></script>
   {% for src in assets.JS %}
-    {% if 'fontawesome' in src %}
-	<!-- fontawesome icons not loading correctly on iOS -->
-        <script src="{{src}}" crossorigin="anonymous"></script>
-    {% else %}
-        <script src="{{src}}"></script>
-    {% endif %}
-  {% endfor %}
+	<script src="{{src}}"></script>{% endfor %}
 
   </head>
 
