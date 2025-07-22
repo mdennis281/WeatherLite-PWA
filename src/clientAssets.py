@@ -52,6 +52,7 @@ files = {
         'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css',
         'https://fonts.googleapis.com/css?family=Inconsolata&display=swap',
         'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.compat.css',
+        'https://kit.fontawesome.com/6825e8f688.css',
 
         '/static/css/general.css',
         '/static/css/app.css',
