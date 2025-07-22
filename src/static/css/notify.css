@@ -81,7 +81,9 @@
 .n-dismiss {
   width: 10%;
   height:100%;
-  right: 0px;
+  /* library is forcing my hand with !important */
+  right: 0px !important;
+  top: 0px !important;
   text-align: center;
   background-color: rgba(11, 19, 43, 0.46);
   position:absolute;
@@ -89,4 +91,7 @@
 }
 .n-dismiss i {
   line-height: 58px;
+}
+.progress-bar {
+  transition: width 0.6s ease;
 }
