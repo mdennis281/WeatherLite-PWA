@@ -25,7 +25,6 @@ files = {
         'https://code.jquery.com/jquery-3.4.1.min.js',
         'https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js',
         'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js',
-        'https://kit.fontawesome.com/8594651b23.js',
         'https://cdn.jsdelivr.net/npm/bootstrap-notify@3.1.3/bootstrap-notify.min.js',
         'https://raw.githubusercontent.com/craigmdennis/animateCSS/master/dist/jquery.animatecss.min.js',
         # ^ an oldie but a goodie
